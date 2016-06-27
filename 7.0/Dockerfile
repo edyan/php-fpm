@@ -1,4 +1,5 @@
 FROM debian:jessie
+MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
@@ -40,11 +41,11 @@ COPY www.conf   /etc/php/7.0/fpm/pool.d/
 RUN mkdir /var/log/php
 
 COPY run.sh     /run.sh
-RUN chmod +x /run.sh
+RUN  chmod +x    /run.sh
 
-ENV ENVIRONMENT dev \
-    FPM_UID 33 \
-    FPM_GID 33
+ENV ENVIRONMENT dev
+ENV FPM_UID 33
+ENV FPM_GID 33
 
 EXPOSE 9000
 
