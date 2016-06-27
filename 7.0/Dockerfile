@@ -29,8 +29,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php7.0-tidy \
     php7.0-xdebug && \
     apt-get clean && \
-    rm -Rf /var/apt/lists/* \
-    rm -Rf /usr/share/man/ /usr/share/doc/
+    rm -Rf /var/lib/apt/lists/* \
+    rm -Rf /usr/share/man/* /usr/share/doc/*
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
