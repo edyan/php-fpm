@@ -1,14 +1,12 @@
 FROM debian:wheezy
 
-ENV ENVIRONMENT dev
-
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils ca-certificates curl vim
 
 RUN echo "deb http://packages.dotdeb.org wheezy-php55 all" >> /etc/apt/sources.list.d/dotdeb-php55.org.list && \
     curl -sS http://www.dotdeb.org/dotdeb.gpg | apt-key add -
-    
+
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     php-pear \
@@ -39,6 +37,10 @@ RUN mkdir /var/log/php
 
 COPY run.sh     /run.sh
 RUN chmod +x /run.sh
+
+ENV ENVIRONMENT dev \
+    FPM_UID 33 \
+    FPM_GID 33
 
 EXPOSE 9000
 

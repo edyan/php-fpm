@@ -1,7 +1,5 @@
 FROM debian:squeeze
 
-ENV ENVIRONMENT dev
-
 RUN echo "deb http://archive.debian.org/debian/ squeeze main contrib non-free" > /etc/apt/sources.list && \
     echo "deb http://security.debian.org/ squeeze/updates main contrib non-free" >> /etc/apt/sources.list
 
@@ -44,6 +42,10 @@ RUN mkdir /var/log/php
 
 COPY run.sh     /run.sh
 RUN chmod +x /run.sh
+
+ENV ENVIRONMENT dev \
+    FPM_UID 33 \
+    FPM_GID 33
 
 EXPOSE 9000
 

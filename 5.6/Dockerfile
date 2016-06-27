@@ -1,7 +1,5 @@
 FROM debian:jessie
 
-ENV ENVIRONMENT dev
-
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils ca-certificates curl vim
@@ -39,8 +37,10 @@ RUN mkdir /var/log/php
 COPY run.sh     /run.sh
 RUN chmod +x /run.sh
 
+ENV ENVIRONMENT dev \
+    FPM_UID 33 \
+    FPM_GID 33
+
 EXPOSE 9000
 
 CMD ["/run.sh"]
-
-
