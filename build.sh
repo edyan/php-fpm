@@ -4,5 +4,10 @@ if [ -z "$1" -o ! -d "$1" ]; then
     exit 1
 fi
 cd $1
-docker build -t "inetprocess:testphp${1}" .
-docker run -e "PHP_GID=1000" inetprocess:testapache${1}
+docker build -t "inetprocesstestphp${1}" .
+echo ""
+echo ""
+if [ $? -eq 0 ]; then
+    #docker run -e "PHP_GID=1000" inetprocesstestphp${1}
+    echo -e "\x1b[1;32mBuild Done\e[0m"
+fi

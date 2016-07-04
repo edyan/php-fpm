@@ -30,7 +30,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php7.0-sqlite3 \
     php7.0-sybase \
     php7.0-tidy \
-    php7.0-xdebug && \
+    php7.0-xdebug \
+    php7.0-xml && \
     apt-get clean && \
     rm -Rf /var/lib/apt/lists/* \
     rm -Rf /usr/share/man/* /usr/share/doc/*
