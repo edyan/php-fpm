@@ -22,6 +22,21 @@ php:
 ## Environment variables
 Two variables have been created (`FPM_UID` and `FPM_GID`) to override the www-data user and group ids. Taking the current user login / pass that runs the container, it will allow anoybody to own the files read / written by the fpm daemon (owned by www-data).
 
+## Custom php.ini directives
+If you need to alter the php configuration, you can mount a volume containing `.conf` files to `/etc/php5/fpm/user-conf.d/` for PHP 5.x or `/etc/php/7.0/fpm/user-conf.d/` for PHP 7.0.
+
+Example:
+```yaml
+volumes:
+    - ./conf/php-fpm-override:/etc/php5/fpm/user-conf.d
+```
+
+If you have a file named `conf/php-fpm-override/memory.conf` containing :
+```conf
+php_value[memory_limit] = 127M
+```
+
+The memory limit will be set to 127Mb. Be careful that you need to stop then start your container to make sure the parameters are taken into account.
 
 ## PHP version
 To use a specific PHP version, append the version number to the image name.

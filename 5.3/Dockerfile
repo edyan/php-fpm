@@ -51,6 +51,7 @@ COPY www.conf       /etc/php5/fpm/pool.d/
 
 # For custom Configuration that comes from outside (via a docker compose mount)
 RUN mkdir /etc/php5/fpm/user-conf.d
+RUN echo "; Default empty file" > /etc/php5/fpm/user-conf.d/example.conf
 RUN mkdir /var/log/php
 
 COPY run.sh     /run.sh

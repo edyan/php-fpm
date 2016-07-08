@@ -26,8 +26,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php5-ldap \
     php5-mcrypt \
     php5-mongo \
-    php5-mysql \
-    php5-mysqlnd \
+    php5-mysqli \
     php5-odbc \
     php5-pgsql \
     php5-sqlite \
@@ -49,6 +48,7 @@ COPY www.conf       /etc/php5/fpm/pool.d/
 
 # For custom Configuration that comes from outside (via a docker compose mount)
 RUN mkdir /etc/php5/fpm/user-conf.d
+RUN echo "; Default empty file" > /etc/php5/fpm/user-conf.d/example.conf
 RUN mkdir /var/log/php
 
 COPY run.sh     /run.sh

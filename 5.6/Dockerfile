@@ -10,22 +10,27 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    php-pear \
-    php5-apcu \
     php5-cli \
     php5-curl \
     php5-fpm \
     php5-gd \
+    php5-geoip \
     php5-imagick \
     php5-imap \
     php5-intl \
     php5-json \
+    php5-ldap \
     php5-mcrypt \
-    php5-memcached \
-    php5-mysql \
+    php5-mongo \
+    php5-mysqlnd \
+    php5-odbc \
+    php5-pgsql \
     php5-sqlite \
+    php5-ssh2 \
     php5-tidy \
+    php5-xcache \
     php5-xdebug \
+    php5-xhprof \
     php5-xsl && \
     apt-get clean && \
     rm -Rf /var/lib/apt/lists/* \
@@ -39,6 +44,7 @@ COPY www.conf       /etc/php5/fpm/pool.d/
 
 # For custom Configuration that comes from outside (via a docker compose mount)
 RUN mkdir /etc/php5/fpm/user-conf.d
+RUN echo "; Default empty file" > /etc/php5/fpm/user-conf.d/example.conf
 RUN mkdir /var/log/php
 
 COPY run.sh     /run.sh
