@@ -38,10 +38,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY php.ini    /etc/php/7.0/fpm/conf.d/
-COPY php.ini    /etc/php/7.0/cli/conf.d/
-COPY www.conf   /etc/php/7.0/fpm/pool.d/
+COPY php-cli.ini    /etc/php/7.0/cli/conf.d/30-custom-php.ini
+COPY php-fpm.ini    /etc/php/7.0/fpm/conf.d/30-custom-php.ini
+COPY www.conf       /etc/php/7.0/fpm/pool.d/
 
+# For custom Configuration that comes from outside (via a docker compose mount)
+RUN mkdir /etc/php/7.0/fpm/user-conf.d
 RUN mkdir /var/log/php
 
 COPY run.sh     /run.sh

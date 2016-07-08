@@ -13,30 +13,42 @@ RUN echo "deb http://packages.dotdeb.org wheezy-php55 all" >> /etc/apt/sources.l
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    php-pear \
+    php5-apcu \
     php5-cli \
     php5-curl \
     php5-fpm \
     php5-gd \
+    php5-geoip \
     php5-imagick \
     php5-imap \
     php5-intl \
     php5-json \
+    php5-ldap \
     php5-mcrypt \
+    php5-mongo \
     php5-mysql \
+    php5-mysqlnd \
+    php5-odbc \
+    php5-pgsql \
     php5-sqlite \
+    php5-ssh2 \
     php5-tidy \
-    php5-xdebug && \
+    php5-xcache \
+    php5-xdebug \
+    php5-xhprof \
+    php5-xsl && \
     apt-get clean && \
     rm -Rf /var/lib/apt/lists/* \
     rm -Rf /usr/share/man/* /usr/share/doc/*
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY php.ini    /etc/php5/fpm/conf.d/
-COPY php.ini    /etc/php5/cli/conf.d/
-COPY www.conf   /etc/php5/fpm/pool.d/
+COPY php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
+COPY php-fpm.ini    /etc/php5/fpm/conf.d/30-custom-php.ini
+COPY www.conf       /etc/php5/fpm/pool.d/
 
+# For custom Configuration that comes from outside (via a docker compose mount)
+RUN mkdir /etc/php5/fpm/user-conf.d
 RUN mkdir /var/log/php
 
 COPY run.sh     /run.sh
