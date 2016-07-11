@@ -3,7 +3,7 @@ MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils ca-certificates curl vim && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils ca-certificates curl && \
     apt-get clean && \
     rm -Rf /var/lib/apt/lists/* \
     rm -Rf /usr/share/man/* /usr/share/doc/*
@@ -48,6 +48,13 @@ COPY www.conf       /etc/php/7.0/fpm/pool.d/
 RUN mkdir /etc/php/7.0/fpm/user-conf.d
 RUN echo "; Default empty file" > /etc/php/7.0/fpm/user-conf.d/example.conf
 RUN mkdir /var/log/php
+
+# Create home for www-data
+RUN mkdir /home/www-data
+RUN chown www-data: /home/www-data
+RUN usermod -d /home/www-data www-data
+RUN mkdir /run/php
+RUN chown www-data: /run/php
 
 COPY run.sh     /run.sh
 RUN  chmod +x    /run.sh
