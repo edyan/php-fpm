@@ -35,8 +35,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     rm -Rf /var/lib/apt/lists/* \
     rm -Rf /usr/share/man/* /usr/share/doc/*
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
 COPY php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
 COPY php-fpm.ini    /etc/php5/fpm/conf.d/30-custom-php.ini
 COPY www.conf       /etc/php5/fpm/pool.d/
