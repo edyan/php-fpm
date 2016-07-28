@@ -33,7 +33,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php7.0-ssh2 \
     php7.0-tidy \
     php7.0-xdebug \
-    php7.0-xsl && \
+    php7.0-xsl \
+    php7.0-zip && \
     apt-get clean && \
     rm -Rf /var/lib/apt/lists/* \
     rm -Rf /usr/share/man/* /usr/share/doc/*
