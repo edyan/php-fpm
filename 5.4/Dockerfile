@@ -41,8 +41,9 @@ RUN echo "extension=xhprof.so" > /etc/php5/mods-available/xhprof.ini && \
     php5enmod xhprof
 
 RUN apt-get purge build-essential php5-dev -y && \
-    apt-get autoremove -y && \
-    apt-get clean && \
+    apt-get autoremove -y
+
+RUN apt-get clean && \
     rm -Rf /var/lib/apt/lists/* \
     rm -Rf /usr/share/man/* /usr/share/doc/*
 
