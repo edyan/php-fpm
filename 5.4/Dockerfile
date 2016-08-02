@@ -38,7 +38,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 RUN pecl install -f xhprof
 
 RUN echo "extension=xhprof.so" > /etc/php5/mods-available/xhprof.ini && \
-    php5enmod xhprof
+    php5enmod xhprof && \
+    rm -Rf /tmp/pear
 
 RUN apt-get purge build-essential php5-dev -y && \
     apt-get autoremove -y
@@ -58,7 +59,7 @@ RUN mkdir /var/log/php
 
 # Create home for www-data
 RUN mkdir /home/www-data
-RUN chown www-data: /home/www-data
+RUN chown www-data:www-data /home/www-data
 RUN usermod -d /home/www-data www-data
 
 COPY run.sh     /run.sh

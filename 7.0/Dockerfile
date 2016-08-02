@@ -50,10 +50,10 @@ RUN mkdir /var/log/php
 
 # Create home for www-data
 RUN mkdir /home/www-data
-RUN chown www-data: /home/www-data
+RUN chown www-data:www-data /home/www-data
 RUN usermod -d /home/www-data www-data
 RUN mkdir /run/php
-RUN chown www-data: /run/php
+RUN chown www-data:www-data /run/php
 
 COPY run.sh     /run.sh
 RUN  chmod +x    /run.sh
