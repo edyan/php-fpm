@@ -10,9 +10,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    build-essential \
     php-apc \
+    php-pear \
     php5-cli \
     php5-curl \
+    php5-dev \
     php5-ffmpeg \
     php5-fpm \
     php5-gd \
@@ -30,7 +33,15 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php5-sqlite \
     php5-tidy \
     php5-xdebug \
-    php5-xsl && \
+    php5-xsl
+
+RUN pecl install -f xhprof
+
+RUN echo "extension=xhprof.so" > /etc/php5/mods-available/xhprof.ini && \
+    php5enmod xhprof
+
+RUN apt-get purge build-essential php5-dev -y && \
+    apt-get autoremove -y && \
     apt-get clean && \
     rm -Rf /var/lib/apt/lists/* \
     rm -Rf /usr/share/man/* /usr/share/doc/*
