@@ -20,7 +20,7 @@ php:
 ```
 
 ## Environment variables
-Two variables have been created (`FPM_UID` and `FPM_GID`) to override the www-data user and group ids. Taking the current user login / pass that runs the container, it will allow anoybody to own the files read / written by the fpm daemon (owned by www-data).
+Two variables have been created (`FPM_UID` and `FPM_GID`) to override the www-data user and group ids. Giving the current user login / pass that runs the container, it will allow anybody to own the files read / written by the fpm daemon (started by www-data).
 
 ## Custom php.ini directives
 If you need to alter the php configuration, you can mount a volume containing `.conf` files to `/etc/php5/fpm/user-conf.d/` for PHP 5.x or `/etc/php/7.0/fpm/user-conf.d/` for PHP 7.0.

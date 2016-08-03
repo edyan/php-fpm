@@ -31,6 +31,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php5-xsl && \
     php5enmod xhprof && \
 
+    # Because of a wrong comment in the official xhprof ini file
+    echo "extension = xhprof.so" > /etc/php5/cli/conf.d/20-xhprof.ini && \
+
     DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
     DEBIAN_FRONTEND=noninteractive apt-get clean && \
     rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
