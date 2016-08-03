@@ -35,18 +35,20 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php5-xdebug \
     php5-xsl
 
-RUN pecl install -f xhprof
+RUN pecl install -f xhprof mongo
 
 RUN echo "extension=xhprof.so" > /etc/php5/mods-available/xhprof.ini && \
     php5enmod xhprof && \
+    echo "extension=mongo.so" > /etc/php5/mods-available/mongo.ini && \
+    php5enmod mongo && \
     rm -Rf /tmp/pear
 
-RUN apt-get purge build-essential php5-dev -y && \
-    apt-get autoremove -y
-
-RUN apt-get clean && \
+RUN DEBIAN_FRONTEND=noninteractive apt-get purge apt-utils build-essential ca-certificates php5-dev php-pear -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get clean && \
     rm -Rf /var/lib/apt/lists/* \
     rm -Rf /usr/share/man/* /usr/share/doc/*
+
 
 COPY php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
 COPY php-fpm.ini    /etc/php5/fpm/conf.d/30-custom-php.ini

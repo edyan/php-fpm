@@ -15,10 +15,15 @@ RUN echo "deb http://packages.dotdeb.org squeeze all" >> /etc/apt/sources.list.d
     curl -sS http://www.dotdeb.org/dotdeb.gpg | apt-key add -
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+    # Else I have an unmet dependency with php5-dev
+    DEBIAN_FRONTEND=noninteractive apt-get install libc6=2.11.3-4 libc-bin=2.11.3-4 --force-yes -y --no-install-recommends && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    build-essential \
+    php-pear \
     php5-apc \
     php5-cli \
     php5-curl \
+    php5-dev \
     php5-ffmpeg \
     php5-fpm \
     php5-gd \
@@ -38,10 +43,20 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php5-tidy \
     php5-xhprof \
     php5-xdebug \
-    php5-xsl && \
-    apt-get clean && \
+    php5-xsl
+
+RUN pecl install -f xhprof mongo
+
+RUN echo "extension=xhprof.so" > /etc/php5/conf.d/xhprof.ini && \
+    echo "extension=mongo.so" > /etc/php5/conf.d/mongo.ini && \
+    rm -Rf /tmp/pear
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get purge apt-utils build-essential ca-certificates php5-dev php-pear -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get clean && \
     rm -Rf /var/lib/apt/lists/* \
     rm -Rf /usr/share/man/* /usr/share/doc/*
+
 
 COPY php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
 COPY php-fpm.ini    /etc/php5/fpm/conf.d/30-custom-php.ini

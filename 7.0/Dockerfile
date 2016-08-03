@@ -35,7 +35,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php7.0-xdebug \
     php7.0-xsl \
     php7.0-zip && \
-    apt-get clean && \
+    DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get clean && \
     rm -Rf /var/lib/apt/lists/* \
     rm -Rf /usr/share/man/* /usr/share/doc/*
 
