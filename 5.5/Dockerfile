@@ -1,17 +1,26 @@
 FROM debian:wheezy
 MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
 
+
+# DotDeb configuration + Upgrade the system
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ca-certificates curl && \
+
+    echo "deb http://packages.dotdeb.org wheezy-php55 all" >> /etc/apt/sources.list.d/dotdeb-php55.org.list && \
+    curl -sS http://www.dotdeb.org/dotdeb.gpg | apt-key add - && \
+
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils ca-certificates curl && \
-    apt-get clean && \
-    rm -Rf /var/lib/apt/lists/* \
-    rm -Rf /usr/share/man/* /usr/share/doc/*
 
-RUN echo "deb http://packages.dotdeb.org wheezy-php55 all" >> /etc/apt/sources.list.d/dotdeb-php55.org.list && \
-    curl -sS http://www.dotdeb.org/dotdeb.gpg | apt-key add -
+    DEBIAN_FRONTEND=noninteractive apt-get purge ca-certificates curl -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get clean && \
+    rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
 
+
+# Install PHP
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     php5-apcu \
     php5-cli \
@@ -36,19 +45,21 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php5-xdebug \
     php5-xhprof \
     php5-xsl && \
-    DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
+
     DEBIAN_FRONTEND=noninteractive apt-get clean && \
-    rm -Rf /var/lib/apt/lists/* \
-    rm -Rf /usr/share/man/* /usr/share/doc/*
+    rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
+
 
 COPY php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
 COPY php-fpm.ini    /etc/php5/fpm/conf.d/30-custom-php.ini
 COPY www.conf       /etc/php5/fpm/pool.d/
 
+
 # For custom Configuration that comes from outside (via a docker compose mount)
 RUN mkdir /etc/php5/fpm/user-conf.d
 RUN echo "; Default empty file" > /etc/php5/fpm/user-conf.d/example.conf
 RUN mkdir /var/log/php
+
 
 # Create home for www-data
 RUN mkdir /home/www-data

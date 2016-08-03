@@ -1,14 +1,11 @@
 FROM debian:jessie
 MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
 
+# Upgrade the system and Install PHP
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils ca-certificates curl && \
-    apt-get clean && \
-    rm -Rf /var/lib/apt/lists/* \
-    rm -Rf /usr/share/man/* /usr/share/doc/*
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
+
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     php5-cli \
     php5-curl \
@@ -33,24 +30,28 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php5-xhprof \
     php5-xsl && \
     php5enmod xhprof && \
+
     DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
     DEBIAN_FRONTEND=noninteractive apt-get clean && \
-    rm -Rf /var/lib/apt/lists/* \
-    rm -Rf /usr/share/man/* /usr/share/doc/*
+    rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
+
 
 COPY php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
 COPY php-fpm.ini    /etc/php5/fpm/conf.d/30-custom-php.ini
 COPY www.conf       /etc/php5/fpm/pool.d/
+
 
 # For custom Configuration that comes from outside (via a docker compose mount)
 RUN mkdir /etc/php5/fpm/user-conf.d
 RUN echo "; Default empty file" > /etc/php5/fpm/user-conf.d/example.conf
 RUN mkdir /var/log/php
 
+
 # Create home for www-data
 RUN mkdir /home/www-data
 RUN chown www-data:www-data /home/www-data
 RUN usermod -d /home/www-data www-data
+
 
 COPY run.sh     /run.sh
 RUN  chmod +x    /run.sh
