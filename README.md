@@ -1,3 +1,5 @@
+[![](https://images.microbadger.com/badges/image/inetprocess/php.svg)](https://microbadger.com/images/inetprocess/php "Get your own image badge on microbadger.com")
+
 # iNet Process PHP FPM Docker Image
 Docker Hub: https://hub.docker.com/r/inetprocess/php
 
