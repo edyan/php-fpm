@@ -12,7 +12,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
 
-    DEBIAN_FRONTEND=noninteractive apt-get purge ca-certificates curl -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get purge curl -y && \
     DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
     DEBIAN_FRONTEND=noninteractive apt-get clean && \
     rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
