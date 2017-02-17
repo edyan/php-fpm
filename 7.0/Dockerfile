@@ -68,7 +68,7 @@ RUN mkdir /var/log/php
 RUN mkdir /home/www-data
 RUN chown www-data:www-data /home/www-data
 RUN usermod -d /home/www-data www-data
-RUN mkdir /run/php
+RUN mkdir -p /run/php
 RUN chown www-data:www-data /run/php
 
 
