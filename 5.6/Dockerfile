@@ -8,6 +8,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates \
+    php5-apcu \
     php5-cli \
     php5-curl \
     php5-fpm \
@@ -26,7 +27,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php5-sqlite \
     php5-ssh2 \
     php5-tidy \
-    php5-xcache \
     php5-xdebug \
     php5-xhprof \
     php5-xsl && \
