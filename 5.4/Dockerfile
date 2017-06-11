@@ -38,7 +38,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends build-essential php-pear php5-dev && \
 
-    pecl install -f xhprof mongo && \
+    pecl channel-update pecl.php.net && \
+    pecl install -f xhprof-beta mongo && \
     rm -Rf /tmp/pear && \
 
     DEBIAN_FRONTEND=noninteractive apt-get purge build-essential php-pear php5-dev -y && \

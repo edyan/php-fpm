@@ -2,9 +2,7 @@ FROM debian:squeeze
 MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
 
 # Because the official image does not have the right repos
-RUN echo "deb http://archive.debian.org/debian/ squeeze main contrib non-free" > /etc/apt/sources.list && \
-    echo "deb http://security.debian.org/ squeeze/updates main contrib non-free" >> /etc/apt/sources.list
-
+RUN echo "deb http://archive.debian.org/debian/ squeeze main contrib non-free" > /etc/apt/sources.list
 
 # DotDeb configuration and upgrade the system
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
@@ -62,7 +60,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends build-essential php-pear php5-dev && \
 
-    pecl install -f xhprof mongo && \
+    pecl channel-update pecl.php.net && \
+    pecl install -f xhprof-beta mongo && \
     rm -Rf /tmp/pear && \
 
     DEBIAN_FRONTEND=noninteractive apt-get purge build-essential php-pear php5-dev -y && \

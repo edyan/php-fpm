@@ -25,6 +25,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    php7.0-apcu \
     php7.0-cli \
     php7.0-curl \
     php7.0-fpm \

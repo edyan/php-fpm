@@ -41,7 +41,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php5-sqlite \
     php5-ssh2 \
     php5-tidy \
-    php5-xcache \
     php5-xdebug \
     php5-xhprof \
     php5-xsl && \
