@@ -1,12 +1,14 @@
 FROM inetprocess/php:5.6
 MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
 
-# Upgrade the system and Install GIT
+RUN echo "deb http://http.debian.net/debian jessie-backports main contrib non-free" >> /etc/apt/sources.list.d/jessie-backports.list
+
+# Upgrade the system and Install GIT and Libreoffice
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
 
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -t jessie-backports -y --no-install-recommends git libreoffice-writer && \
 
     DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
     DEBIAN_FRONTEND=noninteractive apt-get clean && \

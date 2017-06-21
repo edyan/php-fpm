@@ -47,8 +47,17 @@ Eg: `image: inetprocess/php:5.6`
 
 The following PHP versions are available:
 
-* PHP 7.0 (jessie stable)
+* PHP 7.0 (jessie stable) ... to be replaced by stretch !
 * PHP 5.6 (jessie stable)
 * PHP 5.5 (wheezy stable)
 * PHP 5.4 (wheezy stable)
 * PHP 5.3 (squeeze stable)
+
+
+## Specific versions
+### inetprocess/5.6-git
+That's exactly the same container than the 5.6 + the package git installed. Useful for Continuous integration with Gitlab.
+
+### inetprocess/5.6-libreoffice
+That's exactly the same container than the 5.6 + the packages git and libreoffice 5 installed.
+We use it for internal purpose, when we need to test tools with libreoffice (Generate PDF for instance)

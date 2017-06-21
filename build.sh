@@ -12,8 +12,8 @@ echo ""
 echo ""
 if [ $? -eq 0 ]; then
     echo -e "\x1b[1;32mBuild Done. To run it: \e[0m"
-    echo 'docker stop "php-test-ctn"'
-    echo 'docker rm "php-test-ctn"'
-    echo 'docker run -d --hostname "php-test-ctn" --name "php-test-ctn" inet_php_test'
+    echo 'docker run -d --rm --hostname "php-test-ctn" --name "php-test-ctn" inet_php_test'
     echo 'docker exec -i -t "php-test-ctn" /bin/bash'
+    echo "Once Done : "
+    echo 'docker stop "php-test-ctn"'
 fi
