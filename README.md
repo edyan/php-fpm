@@ -3,7 +3,7 @@
 # iNet Process PHP FPM Docker Image
 Docker Hub: https://hub.docker.com/r/inetprocess/php
 
-Docker containers to expose PHP FPM with a specific version of PHP (5.3 -> 7.0) installed with main PHP extensions (curl, pdo, gd, etc ....) as well as XDebug. It's mainly made for development purposes.
+Docker containers to expose PHP FPM with a specific version of PHP (5.3 -> 7.1) installed with main PHP extensions (curl, pdo, gd, etc ....) as well as XDebug. It's mainly made for development purposes.
 
 The aim of these containers is to be used with docker-compose and especially with our Docker LAMP stack [inetprocess/lamp](https://github.com/inetprocess/docker-lamp)
 
@@ -25,7 +25,7 @@ php:
 Two variables have been created (`FPM_UID` and `FPM_GID`) to override the www-data user and group ids. Giving the current user login / pass that runs the container, it will allow anybody to own the files read / written by the fpm daemon (started by www-data).
 
 ## Custom php.ini directives
-If you need to alter the php configuration, you can mount a volume containing `.conf` files to `/etc/php5/fpm/user-conf.d/` for PHP 5.x or `/etc/php/7.0/fpm/user-conf.d/` for PHP 7.0.
+If you need to alter the php configuration, you can mount a volume containing `.conf` files to `/etc/php5/fpm/user-conf.d/` for PHP 5.x or `/etc/php/7.x/fpm/user-conf.d/` for PHP 7.x
 
 Example:
 ```yaml
@@ -47,7 +47,8 @@ Eg: `image: inetprocess/php:5.6`
 
 The following PHP versions are available:
 
-* PHP 7.0 (jessie stable) ... to be replaced by stretch !
+* PHP 7.1 (stretch stable + sury packages)
+* PHP 7.0 (stretch stable)
 * PHP 5.6 (jessie stable)
 * PHP 5.5 (wheezy stable)
 * PHP 5.4 (wheezy stable)
