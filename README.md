@@ -1,17 +1,17 @@
-[![](https://images.microbadger.com/badges/image/inetprocess/php.svg)](https://microbadger.com/images/inetprocess/php "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/edyan/php.svg)](https://microbadger.com/images/edyan/php "Get your own image badge on microbadger.com")
 
 # iNet Process PHP FPM Docker Image
-Docker Hub: https://hub.docker.com/r/inetprocess/php
+Docker Hub: https://hub.docker.com/r/edyan/php
 
 Docker containers to expose PHP FPM with a specific version of PHP (5.3 -> 7.1) installed with main PHP extensions (curl, pdo, gd, etc ....) as well as XDebug. It's mainly made for development purposes.
 
-The aim of these containers is to be used with docker-compose and especially with our Docker LAMP stack [inetprocess/lamp](https://github.com/inetprocess/docker-lamp)
+The aim of these containers is to be used with docker-compose and especially with our [Docker LAMP stack](https://github.com/inetprocess/marina)
 
 ## Usage
 Add the following to your docker-compose.yml file:
 ```yaml
 php:
-    image: inetprocess/php
+    image: edyan/php
     environment:
         FPM_UID: 1000
         FPM_GID: 1000
@@ -43,7 +43,7 @@ The memory limit will be set to 127Mb. Be careful that you need to stop then sta
 ## PHP version
 To use a specific PHP version, append the version number to the image name.
 
-Eg: `image: inetprocess/php:5.6`
+Eg: `image: edyan/php:5.6`
 
 The following PHP versions are available:
 
@@ -56,9 +56,9 @@ The following PHP versions are available:
 
 
 ## Specific versions
-### inetprocess/5.6-git
+### edyan/5.6-git
 That's exactly the same container than the 5.6 + the package git installed. Useful for Continuous integration with Gitlab.
 
-### inetprocess/5.6-libreoffice
+### edyan/5.6-libreoffice
 That's exactly the same container than the 5.6 + the packages git and libreoffice 5 installed.
 We use it for internal purpose, when we need to test tools with libreoffice (Generate PDF for instance)

@@ -1,4 +1,4 @@
-FROM inetprocess/php:5.6-git
+FROM edyan/php:5.6-git
 MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
 
 RUN echo "deb http://http.debian.net/debian jessie-backports main contrib non-free" >> /etc/apt/sources.list.d/jessie-backports.list
