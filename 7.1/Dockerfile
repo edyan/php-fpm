@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:stretch-slim
 MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
 
 # DotDeb configuration + Upgrade the system

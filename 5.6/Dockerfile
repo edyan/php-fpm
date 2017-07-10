@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:jessie-slim
 MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
 
 # Upgrade the system and Install PHP

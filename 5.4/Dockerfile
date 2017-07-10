@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM debian:wheezy-slim
 MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
 
 
