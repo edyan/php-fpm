@@ -3,9 +3,17 @@
 # PHP FPM Docker Image
 Docker Hub: https://hub.docker.com/r/edyan/php
 
-Docker containers to expose PHP FPM with a specific version of PHP (5.3 -> 7.1) installed with main PHP extensions (curl, pdo, gd, etc ....) as well as XDebug. It's mainly made for development purposes.
+Docker containers to expose PHP FPM with a specific version of PHP (5.3 -> 7.1) installed
+with main PHP extensions (curl, pdo, gd, etc ....) as well as XDebug.
 
-The aim of these containers is to be used with docker-compose and especially with our [Docker LAMP stack](https://github.com/inetprocess/marina)
+It's mainly made for development purposes but can also be used as Production.
+
+The aim of these containers is to be used with docker-compose and especially with
+[our Marina Stack](https://github.com/edyan/marina)
+
+**Why using debian and not the official PHP images ?**
+*Because a lot of hosts are based on Debian, so it's to have in development the same environment than in dev*
+
 
 ## Usage
 Add the following to your docker-compose.yml file:
@@ -22,10 +30,17 @@ php:
 ```
 
 ## Environment variables
-Two variables have been created (`FPM_UID` and `FPM_GID`) to override the www-data user and group ids. Giving the current user login / pass that runs the container, it will allow anybody to own the files read / written by the fpm daemon (started by www-data).
+Two variables have been created (`FPM_UID` and `FPM_GID`) to override the www-data user and group ids.
+Giving the current user login / pass that runs the container, it will allow anybody to own the files
+read / written by the fpm daemon (started by www-data).
+
+Another variable will activate / deactivate development modules: `ENVIRONMENT`.
+Set to `dev` it'll activate xhprof and xdebug as well as changing `max_execution_time` to `-1` and `display_errors`
+to `On`. Set to something else (Example: `production`) it'll do the opposite.
 
 ## Custom php.ini directives
-If you need to alter the php configuration, you can mount a volume containing `.conf` files to `/etc/php5/fpm/user-conf.d/` for PHP 5.x or `/etc/php/7.x/fpm/user-conf.d/` for PHP 7.x
+If you need to alter the php configuration, you can mount a volume containing `.conf` files to
+ `/etc/php5/fpm/user-conf.d/` for PHP 5.x or `/etc/php/7.x/fpm/user-conf.d/` for PHP 7.x
 
 Example:
 ```yaml
@@ -38,7 +53,8 @@ If you have a file named `conf/php-fpm-override/memory.conf` containing :
 php_value[memory_limit] = 127M
 ```
 
-The memory limit will be set to 127Mb. Be careful that you need to stop then start your container to make sure the parameters are taken into account.
+The memory limit will be set to 127Mb. Be careful that you need to stop then start your container to make
+sure the parameters are taken into account.
 
 ## PHP version
 To use a specific PHP version, append the version number to the image name.
@@ -57,7 +73,9 @@ The following PHP versions are available:
 
 ## Specific versions
 ### edyan/5.6-git
-That's exactly the same container than the 5.6 + the package git installed. Useful for Continuous integration with Gitlab.
+That's exactly the same container than the 5.6 + `git` and `openssh-client` installed.
+Useful for Continuous integration with Gitlab.
+
 
 ### edyan/5.6-libreoffice
 That's exactly the same container than the 5.6 + the packages git and libreoffice 5 installed.

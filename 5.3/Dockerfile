@@ -61,21 +61,19 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends build-essential php-pear php5-dev && \
 
     pecl channel-update pecl.php.net && \
-    pecl install -f xhprof-beta mongo && \
+    pecl install -f mongo && \
     rm -Rf /tmp/pear && \
 
     DEBIAN_FRONTEND=noninteractive apt-get purge build-essential php-pear php5-dev -y && \
     DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
     DEBIAN_FRONTEND=noninteractive apt-get clean && \
-    rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
+    rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
 
-
-RUN echo "extension=xhprof.so" > /etc/php5/conf.d/xhprof.ini && \
     echo "extension=mongo.so" > /etc/php5/conf.d/mongo.ini
 
 
-COPY php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
-COPY php-fpm.ini    /etc/php5/fpm/conf.d/30-custom-php.ini
+COPY php-cli.ini    /etc/php5/cli/conf.d/zz-custom-php.ini
+COPY php-fpm.ini    /etc/php5/fpm/conf.d/zz-custom-php.ini
 COPY www.conf       /etc/php5/fpm/pool.d/
 
 
