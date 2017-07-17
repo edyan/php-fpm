@@ -49,6 +49,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php7.1-xsl \
     php7.1-zip \
     php-apcu \
+    php-bcmath \
     php-geoip \
     php-imagick \
     php-mongodb \
