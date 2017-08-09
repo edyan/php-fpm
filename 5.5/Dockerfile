@@ -22,6 +22,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+
+    iptables \
+
     php5-apcu \
     php5-cli \
     php5-curl \

@@ -28,6 +28,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates \
+
+    iptables \
+
     php7.1-bz2 \
     php7.1-cli \
     php7.1-curl \
@@ -55,7 +58,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php-mongodb \
     php-ssh2 \
     php-tideways && \
-    
+
     DEBIAN_FRONTEND=noninteractive apt-get clean && \
     rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
 

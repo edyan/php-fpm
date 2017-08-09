@@ -9,10 +9,13 @@ with main PHP extensions (curl, pdo, gd, etc ....) as well as XDebug.
 It's mainly made for development purposes but can also be used as Production.
 
 The aim of these containers is to be used with docker-compose and especially with
-[our Marina Stack](https://github.com/edyan/marina)
+[our Stakkr Stack](https://github.com/edyan/stakkr).
 
 **Why using debian and not the official PHP images ?**
 *Because a lot of hosts are based on Debian, so it's to have in development the same environment than in dev*
+
+**Why iptables ?**
+*Because stakkr blocks SMTP ports to avoid a lot of emails to be send during developments and by mistake*
 
 
 ## Usage
