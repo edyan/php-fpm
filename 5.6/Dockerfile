@@ -27,6 +27,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php5-mysqlnd \
     php5-odbc \
     php5-pgsql \
+    php5-readline \
     php5-sqlite \
     php5-ssh2 \
     php5-tidy \

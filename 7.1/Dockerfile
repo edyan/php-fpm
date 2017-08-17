@@ -46,6 +46,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php7.1-opcache \
     php7.1-odbc \
     php7.1-pgsql \
+    php7.1-readline \
     php7.1-sqlite3 \
     php7.1-tidy \
     php7.1-xdebug \
