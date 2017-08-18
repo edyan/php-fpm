@@ -38,7 +38,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php7.2-json \
     php7.2-ldap \
     php7.2-mbstring \
-    # MISSING # php7.2-mcrypt \
     php7.2-mysql \
     php7.2-odbc \
     php7.2-opcache \
@@ -67,6 +66,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php-ssh2 \
     php-tideways \
     php-xdebug && \
+
+    # Remove useless files installed for other PHP Versions
+    rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 /usr/lib/php/20160303 /usr/lib/php/7.1  && \
+    rm -rf /etc/php/5.6 /etc/php/7.0 /etc/php/7.1 && \
 
     DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
     DEBIAN_FRONTEND=noninteractive apt-get autoclean && \

@@ -66,6 +66,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php-tideways \
     php-xdebug && \
 
+    # Remove useless files installed for other PHP Versions
+    rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 && \
+    rm -rf /etc/php/5.6 /etc/php/7.0 && \
+
     DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
     DEBIAN_FRONTEND=noninteractive apt-get autoclean && \
     DEBIAN_FRONTEND=noninteractive apt-get clean && \
