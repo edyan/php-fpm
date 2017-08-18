@@ -40,6 +40,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php-ssh2 \
     php-tideways && \
 
+    DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get autoclean && \
     DEBIAN_FRONTEND=noninteractive apt-get clean && \
     rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
 

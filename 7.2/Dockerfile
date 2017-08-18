@@ -20,45 +20,47 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     iptables \
 
-    php7.1-bcmath \
-    php7.1-bz2 \
-    # php7.1-cgi \
-    php7.1-cli \
-    # php7.1-common \
-    php7.1-curl \
-    # php7.1-dba \
-    # php7.1-dev \
-    # php7.1-enchant \
-    php7.1-fpm \
-    php7.1-gd \
-    php7.1-gmp \
-    php7.1-imap \
-    php7.1-interbase \
-    php7.1-intl \
-    php7.1-json \
-    php7.1-ldap \
-    php7.1-mbstring \
-    php7.1-mcrypt \
-    php7.1-mysql \
-    php7.1-odbc \
-    php7.1-opcache \
-    php7.1-pgsql \
-    # php7.1-phpdbg \
-    # php7.1-pspell \
-    php7.1-readline \
-    # php7.1-recode \
-    # php7.1-snmp \
-    php7.1-soap \
-    php7.1-sqlite3 \
-    # php7.1-sybase \
-    php7.1-tidy \
-    php7.1-xml \
-    php7.1-xmlrpc \
-    php7.1-zip \
+    php7.2-bcmath \
+    php7.2-bz2 \
+    # php7.2-cgi \
+    php7.2-cli \
+    # php7.2-common \
+    php7.2-curl \
+    # php7.2-dba \
+    # php7.2-dev \
+    # php7.2-enchant \
+    php7.2-fpm \
+    php7.2-gd \
+    php7.2-gmp \
+    php7.2-imap \
+    php7.2-interbase \
+    php7.2-intl \
+    php7.2-json \
+    php7.2-ldap \
+    php7.2-mbstring \
+    # MISSING # php7.2-mcrypt \
+    php7.2-mysql \
+    php7.2-odbc \
+    php7.2-opcache \
+    php7.2-pgsql \
+    # php7.2-phpdbg \
+    # php7.2-pspell \
+    php7.2-readline \
+    # php7.2-recode \
+    # php7.2-snmp \
+    php7.2-soap \
+    php7.2-sqlite3 \
+    # php7.2-sybase \
+    php7.2-tidy \
+    php7.2-xml \
+    php7.2-xmlrpc \
+    php7.2-zip \
 
+    # The following packages are not available yet for PHP 7.2 .. that'll probably come
     php-apcu \
     php-geoip \
     php-imagick \
+    php-mcrypt \
     php-memcache \
     php-memcached \
     php-mongodb \
@@ -71,14 +73,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get clean && \
     rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
 
-COPY php-cli.ini    /etc/php/7.1/cli/conf.d/30-custom-php.ini
-COPY php-fpm.ini    /etc/php/7.1/fpm/conf.d/30-custom-php.ini
-COPY www.conf       /etc/php/7.1/fpm/pool.d/
+COPY php-cli.ini    /etc/php/7.2/cli/conf.d/30-custom-php.ini
+COPY php-fpm.ini    /etc/php/7.2/fpm/conf.d/30-custom-php.ini
+COPY www.conf       /etc/php/7.2/fpm/pool.d/
 
 
 # For custom Configuration that comes from outside (via a docker compose mount)
-RUN mkdir /etc/php/7.1/fpm/user-conf.d
-RUN echo "; Default empty file" > /etc/php/7.1/fpm/user-conf.d/example.conf
+RUN mkdir /etc/php/7.2/fpm/user-conf.d
+RUN echo "; Default empty file" > /etc/php/7.2/fpm/user-conf.d/example.conf
 RUN mkdir /var/log/php
 
 

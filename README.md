@@ -4,7 +4,7 @@
 # PHP FPM Docker Image
 Docker Hub: https://hub.docker.com/r/edyan/php
 
-Docker containers to expose PHP FPM with a specific version of PHP (5.3 -> 7.1) installed
+Docker containers to expose PHP FPM with a specific version of PHP (5.3 -> 7.2) installed
 with main PHP extensions (curl, pdo, gd, etc ....) as well as XDebug.
 
 It's mainly made for development purposes but can also be used as Production.
@@ -16,7 +16,7 @@ The aim of these containers is to be used with docker-compose and especially wit
 *Because a lot of hosts are based on Debian, so it's to have in development the same environment than in dev*
 
 **Why iptables ?**
-*Because stakkr blocks SMTP ports to avoid a lot of emails to be send during developments and by mistake*
+*Because [stakkr](https://github.com/edyan/stakkr) blocks SMTP ports to avoid a lot of emails to be send during developments and by mistake*
 
 
 ## Usage
@@ -67,11 +67,12 @@ Eg: `image: edyan/php:5.6`
 
 The following PHP versions are available:
 
-* PHP 7.1 (stretch stable + sury packages)
-* PHP 7.0 (stretch stable)
-* PHP 5.6 (jessie stable)
-* PHP 5.5 (wheezy stable)
-* PHP 5.4 (wheezy stable)
+* PHP 7.2 (stretch slim + sury packages)
+* PHP 7.1 (stretch slim + sury packages)
+* PHP 7.0 (stretch slim)
+* PHP 5.6 (jessie slim)
+* PHP 5.5 (wheezy slim)
+* PHP 5.4 (wheezy slim)
 * PHP 5.3 (squeeze stable)
 
 
