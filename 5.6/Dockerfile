@@ -11,29 +11,63 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
     iptables \
 
+    # php5-adodb \
     php5-apcu \
+    # php5-cgi \
     php5-cli \
     php5-curl \
+    # php5-dbg \
+    # php5-dev \
+    # php5-enchant \
     php5-fpm \
     php5-gd \
     php5-geoip \
+    # php5-geos \
+    php5-gmp \
+    # php5-gnupg \
     php5-imagick \
     php5-imap \
+    php5-interbase \
     php5-intl \
     php5-json \
+    # php5-lasso \
     php5-ldap \
     php5-mcrypt \
+    php5-memcache \
+    php5-memcached \
     php5-mongo \
+    # php5-msgpack \
+    # php5-mysql \
     php5-mysqlnd \
+    # php5-mysqlnd-ms \
+    # php5-oauth \
     php5-odbc \
+    # php5-pecl-http \
+    # php5-pecl-http-dev \
     php5-pgsql \
+    # php5-phpdbg \
+    php5-pspell \
+    # php5-radius \
     php5-readline \
+    # php5-recode \
+    php5-redis \
+    # php5-remctl \
+    # php5-rrd \
+    # php5-sasl \
+    # php5-snmp \
     php5-sqlite \
     php5-ssh2 \
-    php5-tidy \
+    # php5-stomp \
+    # php5-svn \
+    # php5-sybase \
+    # php5-tidy \
+    # php5-uprofiler \
+    # php5-xcache \
     php5-xdebug \
     php5-xhprof \
+    php5-xmlrpc \
     php5-xsl && \
+
     php5enmod xhprof && \
 
     # Because of a wrong comment in the official xhprof ini file

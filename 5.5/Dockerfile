@@ -25,30 +25,66 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
     iptables \
 
+    # php5-adodb \
     php5-apcu \
+    # php5-cgi \
     php5-cli \
+    # php5-common \
     php5-curl \
+    # php5-dbg \
+    # php5-dev \
+    # php5-enchant \
+    # php5-ffmpeg \
     php5-fpm \
     php5-gd \
+    # php5-gdcm \
+    # php5-gearman \
     php5-geoip \
+    php5-gmp \
     php5-imagick \
     php5-imap \
+    php5-interbase \
     php5-intl \
     php5-json \
+    # php5-lasso \
     php5-ldap \
+    # php5-mapscript \
     php5-mcrypt \
+    php5-memcache \
+    # php5-memcached \
+    # php5-ming \
     php5-mongo \
-    php5-mysqli \
+    # php5-mysql \
+    php5-mysqlnd \
     php5-odbc \
     php5-pgsql \
+    # php5-pinba \
+    # php5-ps \
+    php5-pspell \
+    # php5-radius \
     php5-readline \
+    php5-recode \
+    php5-redis \
+    # php5-remctl \
+    # php5-rrd \
+    # php5-sasl \
+    # php5-snmp \
+    # php5-spplus \
     php5-sqlite \
     php5-ssh2 \
-    php5-tidy \
+    # php5-svn \
+    # php5-sybase \
+    # php5-tidy \
+    # php5-tokyo-tyrant \
+    # php5-vtkgdcm \
+    # php5-xcache \
     php5-xdebug \
     php5-xhprof \
+    php5-xmlrpc \
     php5-xsl && \
 
+    DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get autoclean && \
     DEBIAN_FRONTEND=noninteractive apt-get clean && \
     rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
 
