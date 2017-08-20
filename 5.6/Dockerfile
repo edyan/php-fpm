@@ -23,7 +23,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php5-gd \
     php5-geoip \
     # php5-geos \
-    php5-gmp \
+    # php5-gmp \
     # php5-gnupg \
     php5-imagick \
     php5-imap \
@@ -33,7 +33,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     # php5-lasso \
     php5-ldap \
     php5-mcrypt \
-    php5-memcache \
+    # php5-memcache \
     php5-memcached \
     php5-mongo \
     # php5-msgpack \
@@ -46,7 +46,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     # php5-pecl-http-dev \
     php5-pgsql \
     # php5-phpdbg \
-    php5-pspell \
+    # php5-pspell \
     # php5-radius \
     php5-readline \
     # php5-recode \
