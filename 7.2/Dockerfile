@@ -55,18 +55,16 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php7.2-xmlrpc \
     php7.2-zip \
 
-    # The following packages are not available yet for PHP 7.2 .. that'll probably come
     php-apcu \
     php-geoip \
     php-imagick \
-    php-mcrypt \
     php-memcache \
     php-memcached \
     php-mongodb \
     php-ssh2 \
     php-tideways \
-    php-xdebug && \
-
+    # NOT COMPATIBLE YET php-xdebug \
+    && \
     # Remove useless files installed for other PHP Versions
     rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 /usr/lib/php/20160303 /usr/lib/php/7.1  && \
     rm -rf /etc/php/5.6 /etc/php/7.0 /etc/php/7.1 && \
