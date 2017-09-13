@@ -66,13 +66,27 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     php5-xdebug \
     php5-xhprof \
     php5-xmlrpc \
-    php5-xsl && \
+    php5-xsl \
 
+    # To Build modules from pear
+    build-essential php-pear php5-dev pkg-config libssl-dev && \
+
+    # Build modules
+    pecl channel-update pecl.php.net && \
+    pecl install -f mongodb && \
+    rm -Rf /tmp/pear && \
+
+    # Enable module mongodb
+    echo "extension=mongodb.so" > /etc/php5/mods-available/mongodb.ini && \
+    php5enmod mongodb && \
+
+    # Enable XhProf
     php5enmod xhprof && \
-
     # Because of a wrong comment in the official xhprof ini file
     echo "extension = xhprof.so" > /etc/php5/cli/conf.d/20-xhprof.ini && \
 
+    # Clean
+    DEBIAN_FRONTEND=noninteractive apt-get purge build-essential php-pear php5-dev pkg-config libssl-dev -y && \
     DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
     DEBIAN_FRONTEND=noninteractive apt-get autoclean && \
     DEBIAN_FRONTEND=noninteractive apt-get clean && \
