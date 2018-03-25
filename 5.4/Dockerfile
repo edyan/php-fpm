@@ -1,5 +1,5 @@
 FROM debian:wheezy-slim
-MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
+MAINTAINER Emmanuel Dyan <emmanueldyan@gmail.com>
 
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \

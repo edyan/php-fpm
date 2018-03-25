@@ -1,5 +1,5 @@
 FROM debian:wheezy-slim
-MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
+MAINTAINER Emmanuel Dyan <emmanueldyan@gmail.com>
 
 
 # DotDeb configuration + Upgrade the system

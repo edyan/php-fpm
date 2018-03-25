@@ -1,5 +1,5 @@
 FROM edyan/php:5.6
-MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
+MAINTAINER Emmanuel Dyan <emmanueldyan@gmail.com>
 
 # Upgrade the system and Install GIT
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \

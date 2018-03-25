@@ -1,5 +1,5 @@
 FROM        debian:squeeze
-MAINTAINER  Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
+MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
 

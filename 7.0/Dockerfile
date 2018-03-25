@@ -1,5 +1,5 @@
 FROM debian:stretch-slim
-MAINTAINER Emmanuel Dyan <emmanuel.dyan@inetprocess.com>
+MAINTAINER Emmanuel Dyan <emmanueldyan@gmail.com>
 
 # Upgrade the system and Install PHP
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
