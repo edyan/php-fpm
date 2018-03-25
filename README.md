@@ -68,7 +68,7 @@ Eg: `image: edyan/php:5.6`
 The following PHP versions are available:
 
 * PHP 7.2 (stretch slim + sury packages)
-* PHP 7.1 (stretch slim + sury packages)
+* PHP 7.1 (stretch slim + sury packages + support of SQLServer with MS Drivers)
 * PHP 7.0 (stretch slim)
 * PHP 5.6 (jessie slim)
 * PHP 5.5 (wheezy slim)
@@ -77,6 +77,9 @@ The following PHP versions are available:
 
 
 ## Specific versions
+### edyan/7.1
+That one has a driver for SQL Server.
+
 ### edyan/5.6-git
 That's exactly the same container than the 5.6 + `git` and `openssh-client` installed.
 Useful for Continuous integration with Gitlab.
