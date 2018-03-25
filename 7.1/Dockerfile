@@ -4,18 +4,17 @@ MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 ARG         DEBIAN_FRONTEND=noninteractive
 
 # sury configuration + Upgrade the system + Install all packages
-RUN         apt-get update && \
+RUN         apt update && \
             # Install a few required packages
-            apt-get install -y --no-install-recommends apt-transport-https gnupg ca-certificates curl && \
+            apt install -y --no-install-recommends apt-transport-https gnupg ca-certificates curl && \
             # Setup sury repos
-            echo "deb https://packages.sury.org/php/ stretch main" >> /etc/apt/sources.list.d/sury.org.list && \
+            echo "deb https://packages.sury.org/php/ stretch main" > /etc/apt/sources.list.d/sury.org.list && \
             curl -sS https://packages.sury.org/php/apt.gpg | apt-key add - && \
             # Update, upgrade
-            apt-get update -y && \
-            apt-get upgrade -y && \
-            apt-get purge --auto-remove curl gnupg -y && \
+            apt update -y && \
+            apt upgrade -y && \
             # Packages
-            apt-get install -y --no-install-recommends \
+            apt install -y --no-install-recommends \
             iptables \
             php7.1-bcmath \
             php7.1-bz2 \
@@ -61,8 +60,13 @@ RUN         apt-get update && \
             php-ssh2 \
             php-tideways \
             php-xdebug && \
-            # Install SQLServer drivers
-            apt-get install -y --no-install-recommends unixodbc unixodbc-dev php-pear php7.1-dev gcc g++ build-essential && \
+            # Install all requirements for SQLServer
+            echo "deb [arch=amd64] https://packages.microsoft.com/debian/9/prod stretch main" > /etc/apt/sources.list.d/mssql.list && \
+            curl -sS https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+            apt update && \
+            ACCEPT_EULA=Y apt install -y --no-install-recommends \
+                msodbcsql17 mssql-tools unixodbc unixodbc-dev php-pear php7.1-dev gcc g++ build-essential && \
+            # sqlsrv from PECL
             pecl channel-update pecl.php.net && \
             # Compile
             pecl install sqlsrv && \
@@ -73,14 +77,14 @@ RUN         apt-get update && \
             echo "extension=pdo_sqlsrv.so" > /etc/php/7.1/mods-available/pdo_sqlsrv.ini && \
             ln -s /etc/php/7.1/mods-available/pdo_sqlsrv.ini /etc/php/7.1/cli/conf.d/20-pdo_sqlsrv.ini && \
             # Clean
-            apt-get purge --autoremove -y unixodbc-dev php-pear php7.1-dev gcc g++ build-essential && \
+            apt purge --autoremove -y unixodbc-dev php-pear php7.1-dev gcc g++ build-essential curl gnupg && \
             # Remove useless files installed for other PHP Versions
             rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 && \
             rm -rf /etc/php/5.6 /etc/php/7.0 && \
             # Clean
-            apt-get autoremove -y && \
-            apt-get autoclean && \
-            apt-get clean && \
+            apt autoremove -y && \
+            apt autoclean && \
+            apt clean && \
             rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
 
 COPY        php-cli.ini    /etc/php/7.1/cli/conf.d/30-custom-php.ini
