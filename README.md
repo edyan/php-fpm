@@ -77,7 +77,7 @@ The following PHP versions are available:
 
 
 ## Specific versions
-### edyan/7.1-sqlsrv
+### edyan/7.1-sqlsrv & edyan/7.2-sqlsrv
 That one has a driver for SQL Server (with MS Drivers).
 
 ### edyan/5.6-git
