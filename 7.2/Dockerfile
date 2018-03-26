@@ -4,17 +4,17 @@ MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 ARG         DEBIAN_FRONTEND=noninteractive
 
 # sury configuration + Upgrade the system + Install all packages
-RUN         apt-get update && \
+RUN         apt update && \
             # Install a few required packages
-            apt-get install -y --no-install-recommends apt-transport-https gnupg ca-certificates curl && \
+            apt install -y --no-install-recommends apt-transport-https gnupg ca-certificates curl && \
             # Setup sury repos
             echo "deb https://packages.sury.org/php/ stretch main" >> /etc/apt/sources.list.d/sury.org.list && \
             curl -sS https://packages.sury.org/php/apt.gpg | apt-key add - && \
             # Update, upgrade
-            apt-get update -y && \
-            apt-get upgrade -y && \
+            apt update -y && \
+            apt upgrade -y && \
             # Packages
-            apt-get install -y --no-install-recommends \
+            apt install -y --no-install-recommends \
             iptables \
             php7.2-bcmath \
             php7.2-bz2 \
@@ -58,18 +58,17 @@ RUN         apt-get update && \
             php-mongodb \
             php-ssh2 \
             php-tideways \
-            # NOT ready php-xdebug \
-            && \
+            php-xdebug && \
             # Clean
-            apt-get purge --autoremove -y curl gnupg && \
             # Remove useless files installed for other PHP Versions
             rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 /usr/lib/php/20160303 /usr/lib/php/7.1 && \
             rm -rf /etc/php/5.6 /etc/php/7.0 /etc/php/7.1 && \
-            # Clean
-            apt-get autoremove -y && \
-            apt-get autoclean && \
-            apt-get clean && \
-            rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
+            # Remove useless packages / files
+            apt purge --autoremove -y curl gnupg && \
+            apt autoremove -y && \
+            apt autoclean && \
+            apt clean && \
+            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
 
 COPY        php-cli.ini    /etc/php/7.2/cli/conf.d/30-custom-php.ini
 COPY        php-fpm.ini    /etc/php/7.2/fpm/conf.d/30-custom-php.ini
