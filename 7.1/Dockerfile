@@ -46,7 +46,7 @@ RUN         apt update && \
             # php7.1-snmp \
             php7.1-soap \
             php7.1-sqlite3 \
-            php7.1-sybase \
+            # php7.1-sybase \
             php7.1-tidy \
             php7.1-xml \
             php7.1-xmlrpc \
@@ -60,28 +60,8 @@ RUN         apt update && \
             php-ssh2 \
             php-tideways \
             php-xdebug && \
-            # Install all requirements for SQLServer
-            echo "deb [arch=amd64] https://packages.microsoft.com/debian/9/prod stretch main" > /etc/apt/sources.list.d/mssql.list && \
-            curl -sS https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-            apt update && \
-            ACCEPT_EULA=Y apt install -y --no-install-recommends \
-                msodbcsql17 mssql-tools unixodbc unixodbc-dev php-pear php7.1-dev gcc g++ build-essential && \
-            # sqlsrv from PECL
-            pecl channel-update pecl.php.net && \
-            # Compile
-            pecl install sqlsrv && \
-            pecl install pdo_sqlsrv && \
-            # Activate
-            echo "extension=sqlsrv.so" > /etc/php/7.1/mods-available/sqlsrv.ini && \
-            ln -s /etc/php/7.1/mods-available/sqlsrv.ini /etc/php/7.1/cli/conf.d/20-sqlsrv.ini && \
-            echo "extension=pdo_sqlsrv.so" > /etc/php/7.1/mods-available/pdo_sqlsrv.ini && \
-            ln -s /etc/php/7.1/mods-available/pdo_sqlsrv.ini /etc/php/7.1/cli/conf.d/20-pdo_sqlsrv.ini && \
             # Clean
-            apt purge --autoremove -y unixodbc-dev php-pear php7.1-dev gcc g++ build-essential curl gnupg && \
-            # Remove useless files installed for other PHP Versions
-            rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 && \
-            rm -rf /etc/php/5.6 /etc/php/7.0 && \
-            # Clean
+            apt purge --autoremove -y curl gnupg && \
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \
