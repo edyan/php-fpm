@@ -13,7 +13,6 @@ RUN         apt-get update && \
             # Update, upgrade
             apt-get update -y && \
             apt-get upgrade -y && \
-            apt-get purge --autoremove -y curl gnupg && \
             # Packages
             apt-get install -y --no-install-recommends \
             iptables \
@@ -59,21 +58,10 @@ RUN         apt-get update && \
             php-mongodb \
             php-ssh2 \
             php-tideways \
-            # NOT php-xdebug \
+            # NOT ready php-xdebug \
             && \
-            # Install SQLServer drivers
-            apt-get install -y --no-install-recommends unixodbc unixodbc-dev php-pear php7.2-dev gcc g++ build-essential && \
-            pecl channel-update pecl.php.net && \
-            # Compile
-            pecl install sqlsrv && \
-            pecl install pdo_sqlsrv && \
-            # Activate
-            echo "extension=sqlsrv.so" > /etc/php/7.2/mods-available/sqlsrv.ini && \
-            ln -s /etc/php/7.2/mods-available/sqlsrv.ini /etc/php/7.2/cli/conf.d/20-sqlsrv.ini && \
-            echo "extension=pdo_sqlsrv.so" > /etc/php/7.2/mods-available/pdo_sqlsrv.ini && \
-            ln -s /etc/php/7.2/mods-available/pdo_sqlsrv.ini /etc/php/7.2/cli/conf.d/20-pdo_sqlsrv.ini && \
             # Clean
-            apt-get purge --autoremove -y unixodbc-dev php-pear php7.2-dev gcc g++ build-essential && \
+            apt-get purge --autoremove -y curl gnupg && \
             # Remove useless files installed for other PHP Versions
             rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 /usr/lib/php/20160303 /usr/lib/php/7.1 && \
             rm -rf /etc/php/5.6 /etc/php/7.0 /etc/php/7.1 && \
