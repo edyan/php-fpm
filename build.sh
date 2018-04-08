@@ -8,13 +8,17 @@ if [ -z "$1" -o ! -d "$1" ]; then
 fi
 
 VERSION=$1
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
 
 cd $1
 docker build -t "edyan_php${VERSION}_test" .
 echo ""
 echo ""
 if [ $? -eq 0 ]; then
-    echo -e "\x1b[1;32mBuild Done. To run it: \e[0m"
+    echo -e "${GREEN}Build Done${NC}."
+    echo ""
+    echo "Run :"
     echo "  docker run -d --rm --hostname php${VERSION}-test-ctn --name php${VERSION}-test-ctn edyan_php${VERSION}_test"
     echo "  docker exec -i -t php${VERSION}-test-ctn /bin/bash"
     echo "Once Done : "
