@@ -1,14 +1,13 @@
-FROM edyan/php:5.6
-MAINTAINER Emmanuel Dyan <emmanueldyan@gmail.com>
+FROM        edyan/php:5.6
+MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
+
+ARG         DEBIAN_FRONTEND=noninteractive
 
 # Upgrade the system and Install GIT
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-
-    DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
-
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git openssh-client && \
-
-    DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
-    DEBIAN_FRONTEND=noninteractive apt-get autoclean && \
-    DEBIAN_FRONTEND=noninteractive apt-get clean && \
-    rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
+RUN         apt-get update && \
+            apt-get upgrade -y && \
+            apt-get install -y --no-install-recommends git openssh-client && \
+            apt-get autoremove -y && \
+            apt-get autoclean && \
+            apt-get clean && \
+            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*

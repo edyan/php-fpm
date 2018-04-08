@@ -61,7 +61,7 @@ RUN         apt-get update && \
 RUN         apt-get update && \
             # Else I have an unmet dependency with php5-dev
             apt-get install --force-yes -y --no-install-recommends libc6=2.11.3-4 libc-bin=2.11.3-4 && \
-            # Build tools
+            # Build tools (after the previous installation else it crashes)
             apt-get install --force-yes -y --no-install-recommends build-essential php-pear php5-dev && \
             # pear for mongo
             pecl channel-update pecl.php.net && \
@@ -70,11 +70,11 @@ RUN         apt-get update && \
             # Clean
             apt-get purge build-essential php-pear php5-dev -y && \
             apt-get autoremove -y && \
+            apt-get autoclean && \
             apt-get clean && \
-            rm -Rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
             # Activate extension
             echo "extension=mongo.so" > /etc/php5/conf.d/mongo.ini
-
 
 COPY        php-cli.ini    /etc/php5/cli/conf.d/zz-custom-php.ini
 COPY        php-fpm.ini    /etc/php5/fpm/conf.d/zz-custom-php.ini
