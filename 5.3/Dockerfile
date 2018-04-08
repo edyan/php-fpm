@@ -67,14 +67,14 @@ RUN         apt-get update && \
             pecl channel-update pecl.php.net && \
             pecl install -f mongo && \
             rm -Rf /tmp/pear && \
+            # Activate extension
+            echo "extension=mongo.so" > /etc/php5/conf.d/mongo.ini && \
             # Clean
             apt-get purge build-essential php-pear php5-dev -y && \
             apt-get autoremove -y && \
             apt-get autoclean && \
             apt-get clean && \
             rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
-            # Activate extension
-            echo "extension=mongo.so" > /etc/php5/conf.d/mongo.ini
 
 COPY        php-cli.ini    /etc/php5/cli/conf.d/zz-custom-php.ini
 COPY        php-fpm.ini    /etc/php5/fpm/conf.d/zz-custom-php.ini
