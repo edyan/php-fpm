@@ -15,6 +15,12 @@ RUN         apt update && \
                 gcc g++ build-essential && \
             # sqlsrv from PECL
             pecl channel-update pecl.php.net && \
+            # upgrade Tar as it contains a bug
+            cd /tmp && \
+            curl http://download.pear.php.net/package/Archive_Tar-1.4.3.tgz --output Archive_Tar-1.4.3.tgz && \
+            tar -zxf Archive_Tar-1.4.3.tgz && \
+            cp /tmp/Archive_Tar-1.4.3/Archive/Tar.php /usr/share/php/Archive/Tar.php && \
+            pear upgrade pear/PEAR && \
             # Compile
             pecl install sqlsrv && \
             pecl install pdo_sqlsrv && \
