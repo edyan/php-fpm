@@ -63,7 +63,7 @@ RUN         apt update && \
             php-tideways \
             php-xdebug && \
             # Use PHP To upgrade composer
-            /usr/local/bin/composer --self-update && \
+            /usr/local/bin/composer self-update && \
             # Clean
             # Remove useless files installed for other PHP Versions
             rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 /usr/lib/php/20170718 && \
