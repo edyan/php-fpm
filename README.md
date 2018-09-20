@@ -80,6 +80,9 @@ The following PHP versions are available:
 ### edyan/7.1-sqlsrv & edyan/7.2-sqlsrv
 That one has a driver for SQL Server (with MS Drivers).
 
+### edyan/7.1-ci
+An image containing tools for CI : git and composer
+
 ### edyan/5.6-git
 That's exactly the same container than the 5.6 + `git` and `openssh-client` installed.
 Useful for Continuous integration with Gitlab.
