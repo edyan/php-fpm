@@ -6,13 +6,12 @@ ARG         DEBIAN_FRONTEND=noninteractive
 # sury configuration + Upgrade the system + Install all packages
 RUN         apt update && \
             # Install a few required packages
-            apt install -y --no-install-recommends apt-transport-https ca-certificates curl git gnupg && \
+            apt install -y --no-install-recommends apt-transport-https ca-certificates curl git gnupg unzip && \
             # Setup sury repos
             echo "deb https://packages.sury.org/php/ stretch main" > /etc/apt/sources.list.d/sury.org.list && \
             curl -sS https://packages.sury.org/php/apt.gpg | apt-key add - && \
             curl https://getcomposer.org/download/1.7.2/composer.phar --output /usr/local/bin/composer && \
             chmod +x /usr/local/bin/composer && \
-            /usr/local/bin/composer --self-update && \
             # Update, upgrade
             apt update -y && \
             apt upgrade -y && \
@@ -63,6 +62,8 @@ RUN         apt update && \
             php-ssh2 \
             php-tideways \
             php-xdebug && \
+            # Use PHP To upgrade composer
+            /usr/local/bin/composer --self-update && \
             # Clean
             # Remove useless files installed for other PHP Versions
             rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 /usr/lib/php/20170718 && \
