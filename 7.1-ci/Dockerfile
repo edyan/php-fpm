@@ -6,7 +6,7 @@ ARG         DEBIAN_FRONTEND=noninteractive
 # sury configuration + Upgrade the system + Install all packages
 RUN         apt update && \
             # Install a few required packages
-            apt install -y --no-install-recommends apt-transport-https ca-certificates curl git gnupg unzip && \
+            apt install -y --no-install-recommends apt-transport-https ca-certificates curl git gnupg openssh-client unzip && \
             # Setup sury repos
             echo "deb https://packages.sury.org/php/ stretch main" > /etc/apt/sources.list.d/sury.org.list && \
             curl -sS https://packages.sury.org/php/apt.gpg | apt-key add - && \
