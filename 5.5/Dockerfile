@@ -1,42 +1,41 @@
-FROM        debian:wheezy-slim
+FROM        ubuntu:14.04
 MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
-# DotDeb configuration + Upgrade the system
-RUN         apt-get update && \
-            # Install minimum requirements
-            apt-get install -y --no-install-recommends ca-certificates curl && \
-            # Setup DotDeb Repos
-            echo "deb http://packages.dotdeb.org wheezy-php55 all" >> /etc/apt/sources.list.d/dotdeb-php55.org.list && \
-            curl -sS http://www.dotdeb.org/dotdeb.gpg | apt-key add - && \
-            apt-get update && \
-            # Install PHP
-            apt-get install -y --no-install-recommends \
+# Set a default conf for apt install
+RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends
+# Upgrade the system + Install all packages
+RUN         apt update && \
+            apt upgrade -y && \
+            # Packages
+            apt install -y \
                 iptables \
                 # php5-adodb \
                 php5-apcu \
                 # php5-cgi \
                 php5-cli \
-                # php5-common \
                 php5-curl \
                 # php5-dbg \
                 # php5-dev \
                 # php5-enchant \
+                # php5-exactimage
                 # php5-ffmpeg \
                 php5-fpm \
                 php5-gd \
                 # php5-gdcm \
                 # php5-gearman \
                 php5-geoip \
-                php5-gmp \
+                # php5-gmp \
+                # php5-gnupg
                 php5-imagick \
                 php5-imap \
-                php5-interbase \
+                # php5-interbase \
                 php5-intl \
                 php5-json \
                 # php5-lasso \
                 php5-ldap \
+                # php5-librdf
                 # php5-mapscript \
                 php5-mcrypt \
                 php5-memcache \
@@ -45,7 +44,7 @@ RUN         apt-get update && \
                 php5-mongo \
                 # php5-mysql \
                 php5-mysqlnd \
-                php5-odbc \
+                # php5-odbc \
                 php5-pgsql \
                 # php5-pinba \
                 # php5-ps \
@@ -58,9 +57,8 @@ RUN         apt-get update && \
                 # php5-rrd \
                 # php5-sasl \
                 # php5-snmp \
-                # php5-spplus \
                 php5-sqlite \
-                php5-ssh2 \
+                # php5-spplus \
                 # php5-svn \
                 # php5-sybase \
                 # php5-tidy \
@@ -70,7 +68,8 @@ RUN         apt-get update && \
                 php5-xdebug \
                 php5-xhprof \
                 php5-xmlrpc \
-                php5-xsl && \
+                php5-xsl \
+                libssh2-php && \
             # Clean
             apt-get autoremove -y && \
             apt-get autoclean && \
@@ -82,6 +81,8 @@ COPY        php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
 COPY        php-fpm.ini    /etc/php5/fpm/conf.d/30-custom-php.ini
 COPY        www.conf       /etc/php5/fpm/pool.d/
 
+# Clean a deprecated comment in xhprof
+RUN         sed -i 's/#/; /g' /etc/php5/fpm/conf.d/20-xhprof.ini
 
 # For custom Configuration that comes from outside (via a docker compose mount)
 RUN         mkdir /etc/php5/fpm/user-conf.d

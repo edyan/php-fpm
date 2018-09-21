@@ -18,41 +18,40 @@ RUN         apt update && \
             # Packages
             apt install -y \
                 iptables \
-                php7.1-bcmath \
-                php7.1-bz2 \
-                # php7.1-cgi \
-                php7.1-cli \
-                # php7.1-common \
-                php7.1-curl \
-                # php7.1-dba \
-                # php7.1-dev \
-                # php7.1-enchant \
-                php7.1-fpm \
-                php7.1-gd \
-                php7.1-gmp \
-                php7.1-imap \
-                php7.1-interbase \
-                php7.1-intl \
-                php7.1-json \
-                php7.1-ldap \
-                php7.1-mbstring \
-                php7.1-mcrypt \
-                php7.1-mysql \
-                php7.1-odbc \
-                php7.1-opcache \
-                php7.1-pgsql \
-                # php7.1-phpdbg \
-                # php7.1-pspell \
-                php7.1-readline \
-                # php7.1-recode \
-                # php7.1-snmp \
-                php7.1-soap \
-                php7.1-sqlite3 \
-                # php7.1-sybase \
-                php7.1-tidy \
-                php7.1-xml \
-                php7.1-xmlrpc \
-                php7.1-zip \
+                php7.3-bcmath \
+                php7.3-bz2 \
+                # php7.3-cgi \
+                php7.3-cli \
+                # php7.3-common \
+                php7.3-curl \
+                # php7.3-dba \
+                # php7.3-dev \
+                # php7.3-enchant \
+                php7.3-fpm \
+                php7.3-gd \
+                php7.3-gmp \
+                php7.3-imap \
+                php7.3-interbase \
+                php7.3-intl \
+                php7.3-json \
+                php7.3-ldap \
+                php7.3-mbstring \
+                php7.3-mysql \
+                php7.3-odbc \
+                php7.3-opcache \
+                php7.3-pgsql \
+                # php7.3-phpdbg \
+                # php7.3-pspell \
+                php7.3-readline \
+                # php7.3-recode \
+                # php7.3-snmp \
+                php7.3-soap \
+                php7.3-sqlite3 \
+                # php7.3-sybase \
+                php7.3-tidy \
+                php7.3-xml \
+                php7.3-xmlrpc \
+                php7.3-zip \
                 php-apcu \
                 php-geoip \
                 php-imagick \
@@ -72,13 +71,13 @@ RUN         apt update && \
             apt clean && \
             rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
 
-COPY        php-cli.ini    /etc/php/7.1/cli/conf.d/30-custom-php.ini
-COPY        php-fpm.ini    /etc/php/7.1/fpm/conf.d/30-custom-php.ini
-COPY        www.conf       /etc/php/7.1/fpm/pool.d/
+COPY        php-cli.ini    /etc/php/7.3/cli/conf.d/30-custom-php.ini
+COPY        php-fpm.ini    /etc/php/7.3/fpm/conf.d/30-custom-php.ini
+COPY        www.conf       /etc/php/7.3/fpm/pool.d/
 
 # For custom Configuration that comes from outside (via a docker compose mount)
-RUN         mkdir /etc/php/7.1/fpm/user-conf.d
-RUN         echo "; Default empty file" > /etc/php/7.1/fpm/user-conf.d/example.conf
+RUN         mkdir /etc/php/7.3/fpm/user-conf.d
+RUN         echo "; Default empty file" > /etc/php/7.3/fpm/user-conf.d/example.conf
 RUN         mkdir /var/log/php
 
 

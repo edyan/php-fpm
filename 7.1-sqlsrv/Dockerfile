@@ -6,11 +6,11 @@ ARG         ACCEPT_EULA=Y
 
 # sury configuration + Upgrade the system + Install all packages
 RUN         apt update && \
-            apt install -y --no-install-recommends curl gnupg && \
+            apt install -y curl gnupg && \
             echo "deb [arch=amd64] https://packages.microsoft.com/debian/9/prod stretch main" > /etc/apt/sources.list.d/mssql.list && \
             curl -sS https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
             apt update && \
-            apt install -y --no-install-recommends \
+            apt install -y \
                 msodbcsql17 mssql-tools unixodbc unixodbc-dev php-pear php7.1-dev php7.1-sybase \
                 gcc g++ build-essential && \
             # sqlsrv from PECL

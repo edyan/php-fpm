@@ -3,9 +3,12 @@ MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
+# Set a default conf for apt install
+RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends
+# Install packages
 RUN         apt-get update && \
             apt-get upgrade -y && \
-            apt-get install -y --no-install-recommends \
+            apt-get install -y \
                 iptables \
                 # All PHP Packages
                 php-apc \
@@ -30,7 +33,7 @@ RUN         apt-get update && \
                 php5-xdebug \
                 php5-xsl && \
             # Now Build
-            apt-get install -y --no-install-recommends \
+            apt-get install -y \
                 build-essential php-pear php5-dev libcurl4-openssl-dev pkg-config && \
             pecl channel-update pecl.php.net && \
             pecl install -f xhprof-beta mongo && \

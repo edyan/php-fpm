@@ -3,10 +3,12 @@ MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
+# Set a default conf for apt install
+RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends
 # Upgrade the system and Install PHP
 RUN         apt-get update && \
             apt-get upgrade -y && \
-            apt-get install -y --no-install-recommends \
+            apt-get install -y \
                 ca-certificates \
                 iptables \
                 # php5-adodb \

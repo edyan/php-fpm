@@ -1,64 +1,60 @@
-FROM        debian:stretch-slim
+FROM        ubuntu:18.04
 MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
-# sury configuration + Upgrade the system + Install all packages
+# Set a default conf for apt install
+RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends
+# Upgrade the system + Install all packages
 RUN         apt update && \
-            # Install a few required packages
-            apt install -y --no-install-recommends apt-transport-https gnupg ca-certificates curl && \
-            # Setup sury repos
-            echo "deb https://packages.sury.org/php/ stretch main" >> /etc/apt/sources.list.d/sury.org.list && \
-            curl -sS https://packages.sury.org/php/apt.gpg | apt-key add - && \
-            # Update, upgrade
-            apt update -y && \
             apt upgrade -y && \
             # Packages
-            apt install -y --no-install-recommends \
-            iptables \
-            php7.2-bcmath \
-            php7.2-bz2 \
-            # php7.2-cgi \
-            php7.2-cli \
-            # php7.2-common \
-            php7.2-curl \
-            # php7.2-dba \
-            # php7.2-dev \
-            # php7.2-enchant \
-            php7.2-fpm \
-            php7.2-gd \
-            php7.2-gmp \
-            php7.2-imap \
-            php7.2-interbase \
-            php7.2-intl \
-            php7.2-json \
-            php7.2-ldap \
-            php7.2-mbstring \
-            php7.2-mysql \
-            php7.2-odbc \
-            php7.2-opcache \
-            php7.2-pgsql \
-            # php7.2-phpdbg \
-            # php7.2-pspell \
-            php7.2-readline \
-            # php7.2-recode \
-            # php7.2-snmp \
-            php7.2-soap \
-            php7.2-sqlite3 \
-            php7.2-sybase \
-            php7.2-tidy \
-            php7.2-xml \
-            php7.2-xmlrpc \
-            php7.2-zip \
-            php-apcu \
-            php-geoip \
-            php-imagick \
-            php-memcache \
-            php-memcached \
-            php-mongodb \
-            php-ssh2 \
-            php-tideways \
-            php-xdebug && \
+            apt install -y \
+                ca-certificates \
+                iptables \
+                php7.2-bcmath \
+                php7.2-bz2 \
+                # php7.2-cgi \
+                php7.2-cli \
+                php7.2-curl \
+                # php7.2-dba \
+                # php7.2-dev \
+                # php7.2-enchant \
+                php7.2-fpm \
+                php7.2-gd \
+                # php7.2-gmp \
+                php7.2-imap \
+                # php7.2-interbase \
+                php7.2-intl \
+                php7.2-json \
+                php7.2-ldap \
+                php7.2-mbstring \
+                php7.2-mysql \
+                # php7.2-odbc \
+                php7.2-opcache \
+                php7.2-pgsql \
+                # php7.2-phpdbg \
+                # php7.2-pspell \
+                php7.2-readline \
+                # php7.2-recode \
+                # php7.2-snmp \
+                php7.2-soap \
+                php7.2-sqlite3 \
+                # php7.2-sybase \
+                # php7.2-tidy \
+                php7.2-xml \
+                php7.2-xmlrpc \
+                # php7.2-xsl
+                php7.2-zip \
+                php-apcu \
+                php-geoip \
+                php-imagick \
+                php-memcache \
+                php-memcached \
+                php-mongodb \
+                php-ssh2 \
+                php-tideways \
+                php-xdebug && \
             # Clean
             # Remove useless files installed for other PHP Versions
             rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 /usr/lib/php/20160303 /usr/lib/php/7.1 && \
