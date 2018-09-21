@@ -81,8 +81,6 @@ COPY        php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
 COPY        php-fpm.ini    /etc/php5/fpm/conf.d/30-custom-php.ini
 COPY        www.conf       /etc/php5/fpm/pool.d/
 
-# Clean a deprecated comment in xhprof
-RUN         sed -i 's/#/; /g' /etc/php5/fpm/conf.d/20-xhprof.ini
 
 # For custom Configuration that comes from outside (via a docker compose mount)
 RUN         mkdir /etc/php5/fpm/user-conf.d
