@@ -85,7 +85,7 @@ RUN         apt-get update && \
             apt-get autoremove -y && \
             apt-get autoclean && \
             apt-get clean && \
-            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+            rm -Rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
 
 
 COPY        php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini

@@ -7,14 +7,14 @@ ARG         DEBIAN_FRONTEND=noninteractive
 RUN         apt update && \
             apt upgrade -y && \
             # Install a few required packages
-            apt install -y curl git gnupg openssh-client unzip && \
+            apt install -y curl git openssh-client unzip && \
             # Install composer
             curl https://getcomposer.org/download/1.7.2/composer.phar --output /usr/local/bin/composer && \
             chmod +x /usr/local/bin/composer && \
             # Upgrade composer
             /usr/local/bin/composer self-update && \
             # Clean
-            apt purge --autoremove -y curl gnupg && \
+            apt purge --autoremove -y curl && \
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \

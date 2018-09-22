@@ -74,8 +74,10 @@ RUN         apt update && \
             apt-get autoremove -y && \
             apt-get autoclean && \
             apt-get clean && \
-            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+            rm -rf /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
 
+# Remove deprecated comment
+RUN         sed -i 's/^#/; /' /etc/php5/mods-available/xhprof.ini
 
 COPY        php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
 COPY        php-fpm.ini    /etc/php5/fpm/conf.d/30-custom-php.ini

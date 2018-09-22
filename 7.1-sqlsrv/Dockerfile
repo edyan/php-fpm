@@ -31,4 +31,4 @@ RUN         apt update && \
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \
-            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+            rm -Rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*

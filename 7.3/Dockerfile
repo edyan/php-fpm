@@ -22,7 +22,6 @@ RUN         apt update && \
                 php7.3-bz2 \
                 # php7.3-cgi \
                 php7.3-cli \
-                # php7.3-common \
                 php7.3-curl \
                 # php7.3-dba \
                 # php7.3-dev \
@@ -37,7 +36,7 @@ RUN         apt update && \
                 php7.3-ldap \
                 php7.3-mbstring \
                 php7.3-mysql \
-                php7.3-odbc \
+                # php7.3-odbc \
                 php7.3-opcache \
                 php7.3-pgsql \
                 # php7.3-phpdbg \
@@ -48,23 +47,25 @@ RUN         apt update && \
                 php7.3-soap \
                 php7.3-sqlite3 \
                 # php7.3-sybase \
-                php7.3-tidy \
+                # php7.3-tidy \
                 php7.3-xml \
                 php7.3-xmlrpc \
                 php7.3-zip \
-                php-apcu \
-                php-geoip \
-                php-imagick \
-                php-memcache \
-                php-memcached \
-                php-mongodb \
-                php-ssh2 \
-                php-tideways \
-                php-xdebug && \
+                # Not ready yet :
+                # php-apcu \
+                # php-geoip \
+                # php-imagick \
+                # php-memcache \
+                # php-memcached \
+                # php-mongodb \
+                # php-ssh2 \
+                # php-tideways \
+                # php-xdebug && \
+                && \
             # Clean
             # Remove useless files installed for other PHP Versions
-            rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 /usr/lib/php/20170718 && \
-            rm -rf /etc/php/5.6 /etc/php/7.0 /etc/php/7.2 && \
+            rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 /usr/lib/php/20160303 /usr/lib/php/20170718 && \
+            rm -rf /etc/php/5.6 /etc/php/7.0 /etc/php/7.1 /etc/php/7.2 && \
             apt purge --autoremove -y curl gnupg && \
             apt autoremove -y && \
             apt autoclean && \

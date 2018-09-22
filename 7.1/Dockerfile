@@ -49,14 +49,13 @@ RUN         apt update && \
                 php7.1-soap \
                 php7.1-sqlite3 \
                 # php7.1-sybase \
-                php7.1-tidy \
+                # php7.1-tidy \
                 php7.1-xml \
                 php7.1-xmlrpc \
                 php7.1-zip \
                 php-apcu \
                 php-geoip \
                 php-imagick \
-                php-memcache \
                 php-memcached \
                 php-mongodb \
                 php-ssh2 \
@@ -70,7 +69,7 @@ RUN         apt update && \
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \
-            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+            rm -rf /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
 
 COPY        php-cli.ini    /etc/php/7.1/cli/conf.d/30-custom-php.ini
 COPY        php-fpm.ini    /etc/php/7.1/fpm/conf.d/30-custom-php.ini

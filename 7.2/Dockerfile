@@ -64,7 +64,7 @@ RUN         apt update && \
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \
-            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+            rm -rf /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
 
 COPY        php-cli.ini    /etc/php/7.2/cli/conf.d/30-custom-php.ini
 COPY        php-fpm.ini    /etc/php/7.2/fpm/conf.d/30-custom-php.ini

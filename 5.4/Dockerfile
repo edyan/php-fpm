@@ -43,7 +43,7 @@ RUN         apt-get update && \
             apt-get autoremove -y && \
             apt-get autoclean && \
             apt-get clean && \
-            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+            rm -Rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
 
 RUN         echo "extension=xhprof.so" > /etc/php5/mods-available/xhprof.ini && \
             php5enmod xhprof && \
