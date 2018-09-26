@@ -39,7 +39,7 @@ RUN         apt update && \
                 # php5-mapscript \
                 php5-mcrypt \
                 php5-memcache \
-                # php5-memcached \
+                php5-memcached \
                 # php5-ming \
                 php5-mongo \
                 # php5-mysql \
