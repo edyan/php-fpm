@@ -33,4 +33,6 @@ RUN         apt update && \
             apt clean && \
             rm -Rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
 
+COPY        test.php /root/test.php
+
 RUN         mkdir /var/log/php
