@@ -14,7 +14,7 @@ RUN         apt update && \
             apt update && \
             apt install -y \
                 # To keep
-                libssl1.0 msodbcsql17 mssql-tools unixodbc php7.2-sybase \
+                msodbcsql17 mssql-tools unixodbc php7.2-sybase \
                 # remove later
                 unixodbc-dev php-pear php7.2-dev  \
                 gcc g++ build-essential && \
@@ -35,11 +35,15 @@ RUN         apt update && \
             ln -s /etc/php/7.2/mods-available/pdo_sqlsrv.ini /etc/php/7.2/cli/conf.d/20-pdo_sqlsrv.ini && \
             # Remove useless packages / files
             apt purge --autoremove -y curl gnupg unixodbc-dev php-pear php7.2-dev gcc g++ build-essential && \
+            # I need that to make it work
+            apt install -y libssl1.0 && \
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \
             rm -Rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/* /tmp/*
 
 COPY        test.php /root/test.php
+
+RUN         php /root/test.php
 
 RUN         mkdir /var/log/php
