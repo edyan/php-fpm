@@ -83,5 +83,5 @@ The following PHP versions are available:
 ### edyan/7.1-sqlsrv & edyan/7.2-sqlsrv
 That one has a driver for SQL Server (with MS Drivers).
 
-### edyan/7.1-ci
-An image containing tools for CI (such as Gitlab): git, composer and ssh tools.
+### edyan/x.x-ci
+Images containing tools for CI (such as Gitlab): git, composer and ssh client (ssh-add, ssh-keygen, ...).

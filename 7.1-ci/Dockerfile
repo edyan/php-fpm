@@ -19,3 +19,5 @@ RUN         apt update && \
             apt autoclean && \
             apt clean && \
             rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+
+RUN         mkdir /var/log/php

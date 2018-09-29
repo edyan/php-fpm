@@ -32,3 +32,5 @@ RUN         apt update && \
             apt autoclean && \
             apt clean && \
             rm -Rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+
+RUN         mkdir /var/log/php
