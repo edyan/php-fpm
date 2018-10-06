@@ -1,23 +1,23 @@
-FROM        edyan/php:5.6
+FROM        edyan/php:7.3
 MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
 # Install new package
-RUN         apt-get update && \
-            apt-get upgrade -y && \
+RUN         apt update && \
+            apt upgrade -y && \
             # Install a few required packages
-            apt-get install -y curl git openssh-client unzip && \
+            apt install -y curl git openssh-client unzip && \
             # Install composer
             curl https://getcomposer.org/composer.phar --output /usr/local/bin/composer && \
             chmod +x /usr/local/bin/composer && \
             # Upgrade composer
             /usr/local/bin/composer self-update && \
             # Clean
-            apt-get purge -y curl && \
-            apt-get autoremove -y && \
-            apt-get autoclean && \
-            apt-get clean && \
+            apt purge --autoremove -y curl && \
+            apt autoremove -y && \
+            apt autoclean && \
+            apt clean && \
             rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
 
 RUN         mkdir /var/log/php

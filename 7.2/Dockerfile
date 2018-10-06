@@ -52,6 +52,7 @@ RUN         apt update && \
                 php-memcache \
                 php-memcached \
                 php-mongodb \
+                php-redis \
                 php-ssh2 \
                 php-tideways \
                 php-xdebug && \

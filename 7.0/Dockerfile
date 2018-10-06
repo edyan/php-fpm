@@ -38,6 +38,7 @@ RUN         apt-get update && \
                 php-geoip \
                 php-imagick \
                 php-mongodb \
+                php-redis \
                 php-ssh2 \
                 php-tideways && \
             # Clean

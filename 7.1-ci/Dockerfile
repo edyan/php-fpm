@@ -9,7 +9,7 @@ RUN         apt update && \
             # Install a few required packages
             apt install -y curl git openssh-client unzip && \
             # Install composer
-            curl https://getcomposer.org/download/1.7.2/composer.phar --output /usr/local/bin/composer && \
+            curl https://getcomposer.org/composer.phar --output /usr/local/bin/composer && \
             chmod +x /usr/local/bin/composer && \
             # Upgrade composer
             /usr/local/bin/composer self-update && \
