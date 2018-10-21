@@ -29,10 +29,7 @@ php:
     environment:
         FPM_UID: 1000
         FPM_GID: 1000
-    volumes_from:
-        - app
-    links:
-        - mysql
+
 ```
 
 ## Environment variables
