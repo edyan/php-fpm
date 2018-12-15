@@ -66,7 +66,7 @@ Eg: `image: edyan/php:5.6`
 
 The following PHP versions are available:
 
-* PHP 7.3 (stretch slim + sury packages) - WIP
+* PHP 7.3 (buster slim)
 * PHP 7.2 (Ubuntu 18.04)
 * PHP 7.1 (stretch slim + sury packages)
 * PHP 7.0 (stretch slim)
