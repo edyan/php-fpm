@@ -3,11 +3,17 @@ MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
+# Set right repos
+RUN         echo "deb http://archive.debian.org/debian wheezy main contrib" > /etc/apt/sources.list
+RUN         echo "deb http://archive.debian.org/debian wheezy-backports main contrib" >> /etc/apt/sources.list
+
 # Set a default conf for apt install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends
 # Install packages
 RUN         apt-get update && \
             apt-get upgrade -y && \
+            # Because else it doesn't work ;)
+            apt-get install --reinstall -y --force-yes perl-base=5.14.2-21+deb7u3 libc6=2.13-38+deb7u10 libc-bin=2.13-38+deb7u10 && \
             apt-get install -y \
                 iptables \
                 # All PHP Packages
