@@ -4,7 +4,7 @@
 # PHP FPM Docker Image
 Docker Hub: https://hub.docker.com/r/edyan/php
 
-Docker containers to expose PHP FPM with a specific version of PHP (5.3 -> 7.2) installed
+Docker containers to expose PHP FPM with a specific version of PHP (5.3 -> 7.3) installed
 with main PHP extensions (curl, pdo, gd, etc ....) as well as XDebug.
 
 It's mainly made for development purposes but can also be used as Production.
