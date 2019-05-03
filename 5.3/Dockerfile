@@ -4,9 +4,9 @@ MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 ARG         DEBIAN_FRONTEND=noninteractive
 
 # Set a default conf for apt install
-RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends
-# Upgrade the system + Install all packages
-RUN         apt-get update && \
+RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
+            # Upgrade the system + Install all packages
+            apt-get update && \
             # Install all packages below :
             apt-get install -y \
                 # IPtables for stakkr
@@ -66,8 +66,7 @@ RUN         apt-get update && \
                 libssh2-php && \
             # Clean and save space
             apt-get clean && \
-            rm -Rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
-
+            rm -rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
 
 # Install xhprof and mongo
 RUN         apt-get update && \
@@ -96,15 +95,14 @@ COPY        www.conf       /etc/php5/fpm/pool.d/
 RUN         sed -i 's/;daemonize = yes/daemonize = no/g' /etc/php5/fpm/php-fpm.conf
 
 # For custom Configuration that comes from outside (via a docker compose mount)
-RUN         mkdir /etc/php5/fpm/user-conf.d
-RUN         echo "; Default empty file" > /etc/php5/fpm/user-conf.d/example.conf
-RUN         mkdir /var/log/php
-
-# Create home for www-data
-RUN         mkdir /home/www-data
-RUN         chown www-data:www-data /home/www-data
-RUN         usermod -d /home/www-data www-data
-
+RUN         mkdir /etc/php5/fpm/user-conf.d && \
+            echo "; Default empty file" > /etc/php5/fpm/user-conf.d/example.conf && \
+            # Global Logs
+            mkdir /var/log/php && \
+            # Create home for www-data
+            mkdir /home/www-data && \
+            chown www-data:www-data /home/www-data && \
+            usermod -d /home/www-data www-data
 
 COPY        run.sh     /run.sh
 RUN         chmod +x    /run.sh

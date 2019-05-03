@@ -6,7 +6,6 @@ ARG         ACCEPT_EULA=Y
 ARG         MS_REMOTE_PACKAGE=https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
 ARG         MS_LOCAL_PACKAGE=/tmp/packages-microsoft-prod.deb
 
-# sury configuration + Upgrade the system + Install all packages
 RUN         apt update && \
             apt install -y curl gnupg && \
             curl $MS_REMOTE_PACKAGE --output $MS_LOCAL_PACKAGE && \

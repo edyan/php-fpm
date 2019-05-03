@@ -4,7 +4,6 @@ MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 ARG         DEBIAN_FRONTEND=noninteractive
 ARG         ACCEPT_EULA=Y
 
-# sury configuration + Upgrade the system + Install all packages
 RUN         apt update && \
             apt install -y curl gnupg && \
             echo "deb [arch=amd64] https://packages.microsoft.com/debian/9/prod stretch main" > /etc/apt/sources.list.d/mssql.list && \

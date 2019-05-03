@@ -3,14 +3,14 @@ MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
-# Set right repos
-RUN         echo "deb http://archive.debian.org/debian wheezy main contrib" > /etc/apt/sources.list
-RUN         echo "deb http://archive.debian.org/debian wheezy-backports main contrib" >> /etc/apt/sources.list
 
 # Set a default conf for apt install
-RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends
-# Install packages
-RUN         apt-get update && \
+RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
+            # Set right repos
+            echo "deb http://archive.debian.org/debian wheezy main contrib" > /etc/apt/sources.list && \
+            echo "deb http://archive.debian.org/debian wheezy-backports main contrib" >> /etc/apt/sources.list && \
+            # Upgrade the system + Install all packages
+            apt-get update && \
             apt-get upgrade -y && \
             # Because else it doesn't work ;)
             apt-get install --reinstall -y --force-yes perl-base=5.14.2-21+deb7u3 libc6=2.13-38+deb7u10 libc-bin=2.13-38+deb7u10 && \
@@ -60,18 +60,15 @@ COPY        php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
 COPY        php-fpm.ini    /etc/php5/fpm/conf.d/30-custom-php.ini
 COPY        www.conf       /etc/php5/fpm/pool.d/
 
-
 # For custom Configuration that comes from outside (via a docker compose mount)
-RUN         mkdir /etc/php5/fpm/user-conf.d
-RUN         echo "; Default empty file" > /etc/php5/fpm/user-conf.d/example.conf
-RUN         mkdir /var/log/php
-
-
-# Create home for www-data
-RUN         mkdir /home/www-data
-RUN         chown www-data:www-data /home/www-data
-RUN         usermod -d /home/www-data www-data
-
+RUN         mkdir /etc/php5/fpm/user-conf.d && \
+            echo "; Default empty file" > /etc/php5/fpm/user-conf.d/example.conf && \
+            # Global Logs
+            mkdir /var/log/php && \
+            # Create home for www-data
+            mkdir /home/www-data && \
+            chown www-data:www-data /home/www-data && \
+            usermod -d /home/www-data www-data
 
 COPY        run.sh     /run.sh
 RUN         chmod +x    /run.sh

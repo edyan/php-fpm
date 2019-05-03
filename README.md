@@ -10,22 +10,24 @@ with main PHP extensions (curl, pdo, gd, etc ....) as well as XDebug.
 It's mainly made for development purposes but can also be used as Production.
 
 The aim of these containers is to be used with docker-compose and especially with
-[our Stakkr Stack](https://github.com/stakkr-org/stakkr).
+[our Stakkr Tool](https://github.com/stakkr-org/stakkr).
 
-**Why using debian / ubuntu and not the official PHP images ?**
-*Because a lot of hosts are based on Debian or Ubuntu, so it's to have in development the same environment than in dev*
+**Why using Debian / Ubuntu and not the official PHP images?**
+*Because a lot of hosts are based on Debian or Ubuntu, so it's to have in development 
+the same environment than in dev*
 
 We try to use, as much as possible, distros officials PHP versions to avoid extra repositories.
 
-**Why iptables ?**
-*Because [stakkr](https://github.com/stakkr-org/stakkr) blocks SMTP ports to avoid a lot of emails to be send during developments and by mistake*
+**Why iptables?**
+*Because [stakkr](https://github.com/stakkr-org/stakkr) blocks SMTP ports to avoid a 
+lot of emails to be send during developments and by mistake*
 
 
 ## Usage
 Add the following to your docker-compose.yml file:
 ```yaml
 php:
-    image: edyan/php
+    image: edyan/php:7.3
     environment:
         FPM_UID: 1000
         FPM_GID: 1000
@@ -48,7 +50,7 @@ If you need to alter the php configuration, you can mount a volume containing `.
 Example:
 ```yaml
 volumes:
-    - ./conf/php-fpm-override:/etc/php5/fpm/user-conf.d
+    - ./conf/php-fpm-override:/etc/php/7.3/fpm/user-conf.d
 ```
 
 If you have a file named `conf/php-fpm-override/memory.conf` containing :
@@ -79,6 +81,3 @@ The following PHP versions are available:
 ## Specific versions
 ### edyan/x.x-sqlsrv
 That one has a driver for SQL Server (with MS Drivers).
-
-### edyan/x.x-ci
-Images containing tools for CI (such as Gitlab): git, composer and ssh client (ssh-add, ssh-keygen, ...).

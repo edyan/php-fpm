@@ -4,9 +4,9 @@ MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 ARG         DEBIAN_FRONTEND=noninteractive
 
 # Set a default conf for apt install
-RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends
-# Upgrade the system and Install PHP
-RUN         apt-get update && \
+RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
+            # Upgrade the system and Install PHP
+            apt-get update && \
             apt-get upgrade -y && \
             apt-get install -y \
                 ca-certificates \
@@ -54,18 +54,16 @@ COPY        www.conf       /etc/php/7.0/fpm/pool.d/
 
 
 # For custom Configuration that comes from outside (via a docker compose mount)
-RUN         mkdir /etc/php/7.0/fpm/user-conf.d
-RUN         echo "; Default empty file" > /etc/php/7.0/fpm/user-conf.d/example.conf
-RUN         mkdir /var/log/php
-
-
-# Create home for www-data
-RUN         mkdir /home/www-data
-RUN         chown www-data:www-data /home/www-data
-RUN         usermod -d /home/www-data www-data
-RUN         mkdir -p /run/php
-RUN         chown www-data:www-data /run/php
-
+RUN         mkdir /etc/php/7.0/fpm/user-conf.d && \
+            echo "; Default empty file" > /etc/php/7.0/fpm/user-conf.d/example.conf && \
+            # Global Logs
+            mkdir /var/log/php && \
+            # Create home for www-data
+            mkdir /home/www-data && \
+            chown www-data:www-data /home/www-data && \
+            usermod -d /home/www-data www-data && \
+            mkdir -p /run/php && \
+            chown www-data:www-data /run/php
 
 COPY        run.sh     /run.sh
 RUN         chmod +x    /run.sh
