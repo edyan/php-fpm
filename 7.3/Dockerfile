@@ -49,18 +49,31 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php-geoip \
                 php-imagick \
                 php-memcache \
-                php-memcached \
-                php-mongodb \
-                php-redis \
                 php-ssh2 \
-                php-tideways \
-                php-xdebug && \
+                php-tideways && \
+            # Install a few extensions with PECL instead of distro ones
+            apt install -y build-essential libmemcached11 libmemcachedutil2 libmemcached-dev php-pear php7.3-dev pkg-config zlib1g-dev && \
+            pecl channel-update pecl.php.net && \
+            pecl install memcached mongodb redis xdebug && \
+            # Activate it
+            echo "extension=mongodb.so" > /etc/php/7.3/mods-available/mongodb.ini && \
+            phpenmod mongodb && \
+            echo "extension=memcached.so" > /etc/php/7.3/mods-available/memcached.ini && \
+            phpenmod memcached && \
+            echo "extension=redis.so" > /etc/php/7.3/mods-available/redis.ini && \
+            phpenmod redis && \
+            echo "zend_extension=xdebug.so" > /etc/php/7.3/mods-available/xdebug.ini && \
+            phpenmod xdebug && \
+            apt purge --autoremove -y build-essential libmemcached-dev php-pear php7.3-dev pkg-config zlib1g-dev && \
             # Clean
             apt-get autoremove -y && \
             apt-get autoclean && \
             apt-get clean && \
-            rm -rf /usr/lib/php/20170718 /etc/php/7.2 && \
-            rm -rf /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+            # Empty some directories from all files and hidden files
+            find /root /tmp -mindepth 1 -delete && \
+            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+                   /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests \
+                   /usr/lib/php/20170718 /etc/php/7.2
 
 
 COPY        php-cli.ini    /etc/php/7.3/cli/conf.d/30-custom-php.ini

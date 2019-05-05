@@ -19,14 +19,8 @@ RUN         apt update && \
                 gcc g++ build-essential && \
             # sqlsrv from PECL
             pecl channel-update pecl.php.net && \
-            # upgrade Tar as it contains a bug
-            cd /tmp && \
-            curl http://download.pear.php.net/package/Archive_Tar-1.4.3.tgz --output Archive_Tar-1.4.3.tgz && \
-            tar -zxf Archive_Tar-1.4.3.tgz && \
-            cp /tmp/Archive_Tar-1.4.3/Archive/Tar.php /usr/share/php/Archive/Tar.php && \
             # Compile
-            pecl install sqlsrv && \
-            pecl install pdo_sqlsrv && \
+            pecl install sqlsrv pdo_sqlsrv && \
             # Activate
             echo "extension=sqlsrv.so" > /etc/php/7.2/mods-available/sqlsrv.ini && \
             ln -s /etc/php/7.2/mods-available/sqlsrv.ini /etc/php/7.2/cli/conf.d/20-sqlsrv.ini && \
@@ -39,7 +33,10 @@ RUN         apt update && \
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \
-            rm -Rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/* /tmp/*
+            # Empty some directories from all files and hidden files
+            find /root /tmp -mindepth 1 -delete && \
+            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+                   /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
 
 COPY        test.php /root/test.php
 

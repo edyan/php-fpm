@@ -53,22 +53,27 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php-ssh2 \
                 php-tideways && \
             # Install a few extensions with PECL instead of distro ones
-            apt install -y build-essential libmemcached11 libmemcached-dev php-pear php7.2-dev pkg-config zlib1g-dev && \
+            apt install -y build-essential libmemcached11 libmemcachedutil2 libmemcached-dev php-pear php7.2-dev pkg-config zlib1g-dev && \
             pecl channel-update pecl.php.net && \
             pecl install memcached mongodb redis xdebug && \
             # Activate it
             echo "extension=mongodb.so" > /etc/php/7.2/mods-available/mongodb.ini && \
-            echo "extension=memcached.so" > /etc/php/7.2/mods-available/memcached.ini && \
-            echo "extension=redis.so" > /etc/php/7.2/mods-available/redis.ini && \
             phpenmod mongodb && \
+            echo "extension=memcached.so" > /etc/php/7.2/mods-available/memcached.ini && \
             phpenmod memcached && \
+            echo "extension=redis.so" > /etc/php/7.2/mods-available/redis.ini && \
             phpenmod redis && \
+            echo "zend_extension=xdebug.so" > /etc/php/7.2/mods-available/xdebug.ini && \
+            phpenmod xdebug && \
             apt purge --autoremove -y build-essential libmemcached-dev php-pear php7.2-dev pkg-config zlib1g-dev && \
             # Clean & Remove useless packages / files
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \
-            rm -rf /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+            # Empty some directories from all files and hidden files
+            find /root /tmp -mindepth 1 -delete && \
+            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+                   /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
 
 COPY        php-cli.ini    /etc/php/7.2/cli/conf.d/30-custom-php.ini
 COPY        php-fpm.ini    /etc/php/7.2/fpm/conf.d/30-custom-php.ini

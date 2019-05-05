@@ -3,14 +3,13 @@ MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
 ARG         ACCEPT_EULA=Y
+ARG         LIBSSL_STRETCH_DEB=http://ftp.us.debian.org/debian/pool/main/o/openssl1.0/libssl1.0.2_1.0.2r-1~deb9u1_amd64.deb
 
-# Setup MS repo and install SQL Server client
 RUN         apt update && \
             apt install -y curl gnupg && \
-            curl -L https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-            echo "deb [arch=amd64] https://packages.microsoft.com/debian/9/prod stretch main" > /etc/apt/sources.list.d/microsoft.list && \
+            echo "deb [arch=amd64] https://packages.microsoft.com/debian/9/prod stretch main" > /etc/apt/sources.list.d/mssql.list && \
+            curl -sS https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
             apt update && \
-            apt upgrade -y && \
             apt install -y \
                 # To keep
                 msodbcsql17 mssql-tools unixodbc php7.3-sybase \
@@ -19,29 +18,25 @@ RUN         apt update && \
                 gcc g++ build-essential && \
             # sqlsrv from PECL
             pecl channel-update pecl.php.net && \
-            # upgrade Tar as it contains a bug
-            cd /tmp && \
-            curl http://download.pear.php.net/package/Archive_Tar-1.4.3.tgz --output Archive_Tar-1.4.3.tgz && \
-            tar -zxf Archive_Tar-1.4.3.tgz && \
-            cp /tmp/Archive_Tar-1.4.3/Archive/Tar.php /usr/share/php/Archive/Tar.php && \
             # Compile
-            pecl install sqlsrv-5.4.0preview && \
-            pecl install pdo_sqlsrv-5.4.0preview && \
+            pecl install sqlsrv install pdo_sqlsrv && \
             # Activate
             echo "extension=sqlsrv.so" > /etc/php/7.3/mods-available/sqlsrv.ini && \
-            ln -s /etc/php/7.3/mods-available/sqlsrv.ini /etc/php/7.3/cli/conf.d/20-sqlsrv.ini && \
+            phpenmod sqlsrv && \
             echo "extension=pdo_sqlsrv.so" > /etc/php/7.3/mods-available/pdo_sqlsrv.ini && \
-            ln -s /etc/php/7.3/mods-available/pdo_sqlsrv.ini /etc/php/7.3/cli/conf.d/20-pdo_sqlsrv.ini && \
+            phpenmod pdo_sqlsrv && \
+            # I need that to make it work (as we use debian stretch repo for mssql)
+            curl $LIBSSL_STRETCH_DEB -s -o /tmp/libssl1.0.2_1.0.2r-1~deb9u1_amd64.deb && \
+            dpkg -i /tmp/libssl1.0.2_1.0.2r-1~deb9u1_amd64.deb && \
             # Remove useless packages / files
-            apt purge --autoremove -y \
-                curl gnupg \
-                unixodbc-dev php-pear php7.3-dev gcc g++ build-essential && \
-            # I need that to make it work
-            apt install -y libssl1.0 && \
+            apt purge --autoremove -y curl gnupg unixodbc-dev php-pear php7.3-dev gcc g++ build-essential && \
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \
-            rm -Rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/* /tmp/*
+            # Empty some directories from all files and hidden files
+            find /root /tmp -mindepth 1 -delete && \
+            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+                   /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
 
 COPY        test.php /root/test.php
 

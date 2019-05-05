@@ -30,7 +30,10 @@ RUN         apt update && \
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \
-            rm -Rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+            # Empty some directories from all files and hidden files
+            find /root /tmp -mindepth 1 -delete && \
+            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+                   /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
 
 COPY        test.php /root/test.php
 

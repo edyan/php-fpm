@@ -55,21 +55,34 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php-apcu \
                 php-geoip \
                 php-imagick \
-                php-memcached \
-                php-mongodb \
-                php-redis \
                 php-ssh2 \
-                php-tideways \
-                php-xdebug && \
+                php-tideways && \
             # Clean
             # Remove useless files installed for other PHP Versions
             rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 /usr/lib/php/20170718 /usr/lib/php/20180731 && \
             rm -rf /etc/php/5.6 /etc/php/7.0 /etc/php/7.2 /etc/php/7.3 && \
-            apt purge --autoremove -y curl gnupg && \
-            apt autoremove -y && \
-            apt autoclean && \
-            apt clean && \
-            rm -rf /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+            # Install a few extensions with PECL instead of distro ones
+            apt install -y build-essential libmemcached11 libmemcachedutil2 libmemcached-dev php-pear php7.1-dev pkg-config zlib1g-dev && \
+            pecl channel-update pecl.php.net && \
+            pecl install memcached mongodb redis xdebug && \
+            # Activate it
+            echo "extension=mongodb.so" > /etc/php/7.1/mods-available/mongodb.ini && \
+            phpenmod mongodb && \
+            echo "extension=memcached.so" > /etc/php/7.1/mods-available/memcached.ini && \
+            phpenmod memcached && \
+            echo "extension=redis.so" > /etc/php/7.1/mods-available/redis.ini && \
+            phpenmod redis && \
+            echo "zend_extension=xdebug.so" > /etc/php/7.1/mods-available/xdebug.ini && \
+            phpenmod xdebug && \
+            apt purge --autoremove -y build-essential libmemcached-dev php-pear php7.1-dev pkg-config zlib1g-dev && \
+            # Clean
+            apt-get autoremove -y && \
+            apt-get autoclean && \
+            apt-get clean && \
+            # Empty some directories from all files and hidden files
+            find /root /tmp -mindepth 1 -delete && \
+            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+                   /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
 
 COPY        php-cli.ini    /etc/php/7.1/cli/conf.d/30-custom-php.ini
 COPY        php-fpm.ini    /etc/php/7.1/fpm/conf.d/30-custom-php.ini

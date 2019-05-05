@@ -25,6 +25,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php7.0-mysql \
                 php7.0-opcache \
                 php7.0-odbc \
+                # php7.0-phpdbg \
                 php7.0-pgsql \
                 php7.0-readline \
                 php7.0-soap \
@@ -37,15 +38,28 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php-bcmath \
                 php-geoip \
                 php-imagick \
-                php-mongodb \
-                php-redis \
                 php-ssh2 \
                 php-tideways && \
+            # Install a few extensions with PECL instead of distro ones
+            apt install -y build-essential libmemcached11 libmemcachedutil2 libmemcached-dev php-pear php7.0-dev pkg-config zlib1g-dev && \
+            pecl channel-update pecl.php.net && \
+            pecl install memcached mongodb redis && \
+            # Activate it
+            echo "extension=mongodb.so" > /etc/php/7.0/mods-available/mongodb.ini && \
+            phpenmod mongodb && \
+            echo "extension=memcached.so" > /etc/php/7.0/mods-available/memcached.ini && \
+            phpenmod memcached && \
+            echo "extension=redis.so" > /etc/php/7.0/mods-available/redis.ini && \
+            phpenmod redis && \
+            apt purge --autoremove -y build-essential libmemcached-dev php-pear php7.0-dev pkg-config zlib1g-dev && \
             # Clean
             apt-get autoremove -y && \
             apt-get autoclean && \
             apt-get clean && \
-            rm -rf /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+            # Empty some directories from all files and hidden files
+            find /root /tmp -mindepth 1 -delete && \
+            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+                   /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
 
 
 COPY        php-cli.ini    /etc/php/7.0/cli/conf.d/30-custom-php.ini
