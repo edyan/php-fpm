@@ -50,12 +50,20 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php-geoip \
                 php-imagick \
                 php-memcache \
-                php-memcached \
-                php-mongodb \
-                php-redis \
                 php-ssh2 \
-                php-tideways \
-                php-xdebug && \
+                php-tideways && \
+            # Install a few extensions with PECL instead of distro ones
+            apt install -y build-essential libmemcached11 libmemcached-dev php-pear php7.2-dev pkg-config zlib1g-dev && \
+            pecl channel-update pecl.php.net && \
+            pecl install memcached mongodb redis xdebug && \
+            # Activate it
+            echo "extension=mongodb.so" > /etc/php/7.2/mods-available/mongodb.ini && \
+            echo "extension=memcached.so" > /etc/php/7.2/mods-available/memcached.ini && \
+            echo "extension=redis.so" > /etc/php/7.2/mods-available/redis.ini && \
+            phpenmod mongodb && \
+            phpenmod memcached && \
+            phpenmod redis && \
+            apt purge --autoremove -y build-essential libmemcached-dev php-pear php7.2-dev pkg-config zlib1g-dev && \
             # Clean & Remove useless packages / files
             apt autoremove -y && \
             apt autoclean && \

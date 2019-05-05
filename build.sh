@@ -34,7 +34,7 @@ if [ $? -eq 0 ]; then
     echo "  docker stop php${VERSION}-test-ctn"
     echo ""
     echo "Or if you want to directly enter the container, then remove it : "
-    echo "  docker run -ti --rm edyan_php${VERSION}_test /bin/bash"
+    echo "  docker run -ti --rm ${TAG} /bin/bash"
     echo "To push that version (and other of the same repo):"
-    echo "docker push edyan/php"
+    echo "  docker push edyan/php"
 fi
