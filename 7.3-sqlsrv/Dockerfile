@@ -1,9 +1,12 @@
 FROM        edyan/php:7.3
-MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
+ARG         BUILD_DATE
 ARG         DEBIAN_FRONTEND=noninteractive
 ARG         ACCEPT_EULA=Y
 ARG         LIBSSL_STRETCH_DEB=http://ftp.us.debian.org/debian/pool/main/o/openssl1.0/libssl1.0.2_1.0.2r-1~deb9u1_amd64.deb
+
+LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>"
+LABEL       org.label-schema.build-date=$BUILD_DATE
 
 RUN         apt update && \
             apt install -y curl gnupg && \
@@ -30,12 +33,13 @@ RUN         apt update && \
             dpkg -i /tmp/libssl1.0.2_1.0.2r-1~deb9u1_amd64.deb && \
             # Remove useless packages / files
             apt purge --autoremove -y curl gnupg unixodbc-dev php-pear php7.3-dev gcc g++ build-essential && \
+            # Clean
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \
             # Empty some directories from all files and hidden files
             find /root /tmp -mindepth 1 -delete && \
-            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+            rm -rf /build /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
                    /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
 
 COPY        test.php /root/test.php

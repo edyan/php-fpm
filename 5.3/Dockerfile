@@ -1,7 +1,10 @@
 FROM        ubuntu:12.04
-MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
+ARG         BUILD_DATE
 ARG         DEBIAN_FRONTEND=noninteractive
+
+LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>"
+LABEL       org.label-schema.build-date=$BUILD_DATE
 
 # Set a default conf for apt install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
@@ -64,27 +67,23 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php5-xsl \
                 php-apc \
                 libssh2-php && \
-            # Clean and save space
-            apt-get clean && \
-            rm -rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/*
-
-# Install xhprof and mongo
-RUN         apt-get update && \
             # Build tools
-            apt-get install --force-yes -y build-essential php-pear php5-dev && \
+            apt-get install --force-yes -y build-essential pkg-config libssl-dev php-pear php5-dev && \
             # pear for mongo
             pecl channel-update pecl.php.net && \
-            pecl install -f mongo xhprof && \
+            pecl install mongo xhprof-beta && \
             rm -Rf /tmp/pear && \
             # Activate extension
             echo "extension=mongo.so" > /etc/php5/conf.d/mongo.ini && \
             echo "extension=xhprof.so" > /etc/php5/conf.d/xhprof.ini && \
             # Clean
-            apt-get purge build-essential php-pear php5-dev -y && \
+            apt-get purge build-essential pkg-config libssl-dev php-pear php5-dev -y && \
             apt-get autoremove -y && \
             apt-get autoclean && \
             apt-get clean && \
-            rm -rf /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+            find /root /tmp -mindepth 1 -delete && \
+            rm -rf /build /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+                   /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
 
 COPY        php-cli.ini    /etc/php5/cli/conf.d/zz-custom-php.ini
 COPY        php-fpm.ini    /etc/php5/fpm/conf.d/zz-custom-php.ini

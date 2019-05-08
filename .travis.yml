@@ -1,0 +1,27 @@
+sudo: required
+
+language: shell
+
+services:
+  - docker
+
+env:
+  - GOSS_FILES_STRATEGY=cp
+
+script:
+  - sudo apt-get update
+  # Don't do that else it's too slow : - sudo apt-get upgrade
+  - sudo apt-get install -y --no-install-recommends curl
+  - curl -fsSL https://goss.rocks/install | sudo sh
+  - ./test.sh 5.3
+  - ./test.sh 5.4
+  - ./test.sh 5.5
+  - ./test.sh 5.6
+  - ./test.sh 7.0
+  - ./test.sh 7.0-sqlsrv
+  - ./test.sh 7.1
+  - ./test.sh 7.1-sqlsrv
+  - ./test.sh 7.2
+  - ./test.sh 7.2-sqlsrv
+  - ./test.sh 7.3
+  - ./test.sh 7.3-sqlsrv

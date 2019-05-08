@@ -1,8 +1,11 @@
 FROM        edyan/php:7.1
-MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
+ARG         BUILD_DATE
 ARG         DEBIAN_FRONTEND=noninteractive
 ARG         ACCEPT_EULA=Y
+
+LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>"
+LABEL       org.label-schema.build-date=$BUILD_DATE
 
 RUN         apt update && \
             apt install -y curl gnupg && \
@@ -27,12 +30,13 @@ RUN         apt update && \
             rm -rf /etc/php/5.6 /etc/php/7.0 /etc/php/7.2 && \
             # Remove useless packages / files
             apt purge --autoremove -y curl gnupg unixodbc-dev php-pear php7.1-dev gcc g++ build-essential && \
+            # Clean
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \
             # Empty some directories from all files and hidden files
             find /root /tmp -mindepth 1 -delete && \
-            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+            rm -rf /build /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
                    /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
 
 COPY        test.php /root/test.php

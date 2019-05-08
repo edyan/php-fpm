@@ -1,0 +1,19 @@
+port:
+  tcp:9000:
+    listening: true
+    ip:
+    - 0.0.0.0
+
+command:
+  php -m|grep -e ^pdo_sqlsrv$:
+    exit-status: 0
+    stdout: [pdo_sqlsrv]
+    stderr: []
+  php -m|grep -e ^sqlsrv$:
+    exit-status: 0
+    stdout: [sqlsrv]
+    stderr: []
+file:
+  /opt/mssql-tools/bin/sqlcmd:
+    exists: true
+    filetype: file

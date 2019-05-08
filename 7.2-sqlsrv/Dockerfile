@@ -1,10 +1,13 @@
 FROM        edyan/php:7.2
-MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
+ARG         BUILD_DATE
 ARG         DEBIAN_FRONTEND=noninteractive
 ARG         ACCEPT_EULA=Y
 ARG         MS_REMOTE_PACKAGE=https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
 ARG         MS_LOCAL_PACKAGE=/tmp/packages-microsoft-prod.deb
+
+LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>"
+LABEL       org.label-schema.build-date=$BUILD_DATE
 
 RUN         apt update && \
             apt install -y curl gnupg && \
@@ -30,12 +33,13 @@ RUN         apt update && \
             apt purge --autoremove -y curl gnupg unixodbc-dev php-pear php7.2-dev gcc g++ build-essential && \
             # I need that to make it work
             apt install -y libssl1.0 && \
+            # Clean
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \
             # Empty some directories from all files and hidden files
             find /root /tmp -mindepth 1 -delete && \
-            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+            rm -rf /build /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
                    /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
 
 COPY        test.php /root/test.php

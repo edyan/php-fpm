@@ -1,7 +1,10 @@
 FROM        ubuntu:18.04
-MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
+ARG         BUILD_DATE
 ARG         DEBIAN_FRONTEND=noninteractive
+
+LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>"
+LABEL       org.label-schema.build-date=$BUILD_DATE
 
 # Set a default conf for apt install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
@@ -66,13 +69,13 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             echo "zend_extension=xdebug.so" > /etc/php/7.2/mods-available/xdebug.ini && \
             phpenmod xdebug && \
             apt purge --autoremove -y build-essential libmemcached-dev php-pear php7.2-dev pkg-config zlib1g-dev && \
-            # Clean & Remove useless packages / files
+            # Clean
             apt autoremove -y && \
             apt autoclean && \
             apt clean && \
             # Empty some directories from all files and hidden files
             find /root /tmp -mindepth 1 -delete && \
-            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+            rm -rf /build /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
                    /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
 
 COPY        php-cli.ini    /etc/php/7.2/cli/conf.d/30-custom-php.ini

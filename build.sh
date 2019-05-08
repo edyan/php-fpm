@@ -15,7 +15,7 @@ TAG=edyan/php:${VERSION}
 cd $1
 
 echo "Building ${TAG}"
-docker build -t ${TAG} .
+docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -t ${TAG} .
 if [[ "$VERSION" == "7.3" ]]; then
   echo ""
   echo "${TAG} will also be tagged 'latest'"

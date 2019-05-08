@@ -1,8 +1,10 @@
 FROM        debian:wheezy-slim
-MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
+ARG         BUILD_DATE
 ARG         DEBIAN_FRONTEND=noninteractive
 
+LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>"
+LABEL       org.label-schema.build-date=$BUILD_DATE
 
 # Set a default conf for apt install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
@@ -20,7 +22,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php-apc \
                 php5-cli \
                 php5-curl \
-                php5-ffmpeg \
+                # php5-ffmpeg \
                 php5-fpm \
                 php5-gd \
                 php5-geoip \
@@ -30,6 +32,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php5-json \
                 php5-ldap \
                 php5-mcrypt \
+                php5-memcache \
                 php5-memcached \
                 php5-mysql \
                 php5-odbc \
@@ -42,19 +45,19 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             apt-get install -y \
                 build-essential php-pear php5-dev libcurl4-openssl-dev pkg-config && \
             pecl channel-update pecl.php.net && \
-            pecl install -f xhprof-beta mongo && \
-            rm -Rf /tmp/pear && \
+            pecl install xhprof-beta mongo && \
+            echo "extension=xhprof.so" > /etc/php5/mods-available/xhprof.ini && \
+            php5enmod xhprof && \
+            echo "extension=mongo.so" > /etc/php5/mods-available/mongo.ini && \
+            php5enmod mongo && \
             apt-get purge -y build-essential php-pear php5-dev libcurl4-openssl-dev pkg-config && \
             # Clean
             apt-get autoremove -y && \
             apt-get autoclean && \
             apt-get clean && \
-            rm -Rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
-
-RUN         echo "extension=xhprof.so" > /etc/php5/mods-available/xhprof.ini && \
-            php5enmod xhprof && \
-            echo "extension=mongo.so" > /etc/php5/mods-available/mongo.ini && \
-            php5enmod mongo
+            find /root /tmp -mindepth 1 -delete && \
+            rm -rf /build /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+                   /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
 
 COPY        php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
 COPY        php-fpm.ini    /etc/php5/fpm/conf.d/30-custom-php.ini

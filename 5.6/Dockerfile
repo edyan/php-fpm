@@ -1,7 +1,10 @@
 FROM        debian:jessie-slim
-MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
+ARG         BUILD_DATE
 ARG         DEBIAN_FRONTEND=noninteractive
+
+LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>"
+LABEL       org.label-schema.build-date=$BUILD_DATE
 
 # Set a default conf for apt install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
@@ -33,7 +36,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 # php5-lasso \
                 php5-ldap \
                 php5-mcrypt \
-                # php5-memcache \
+                php5-memcache \
                 php5-memcached \
                 php5-mongo \
                 # php5-msgpack \
@@ -70,11 +73,14 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 build-essential php-pear php5-dev pkg-config libssl-dev && \
             # Build modules
             pecl channel-update pecl.php.net && \
-            pecl install -f mongodb xhprof && \
+            pecl install mongodb redis xhprof-beta && \
             rm -Rf /tmp/pear && \
             # Enable module mongodb
             echo "extension=mongodb.so" > /etc/php5/mods-available/mongodb.ini && \
             php5enmod mongodb && \
+            # Enable Redis
+            echo "extension=redis.so" > /etc/php5/mods-available/redis.ini && \
+            php5enmod redis && \
             # Enable XhProf
             echo "extension=xhprof.so" > /etc/php5/mods-available/xhprof.ini && \
             php5enmod xhprof && \
@@ -85,9 +91,8 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             apt-get clean && \
             # Empty some directories from all files and hidden files
             find /root /tmp -mindepth 1 -delete && \
-            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+            rm -rf /build /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
                    /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
-
 
 COPY        php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
 COPY        php-fpm.ini    /etc/php5/fpm/conf.d/30-custom-php.ini
