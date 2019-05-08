@@ -64,28 +64,29 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 # php5-uprofiler \
                 # php5-xcache \
                 php5-xdebug \
-                php5-xhprof \
                 php5-xmlrpc \
                 php5-xsl \
                 # To Build modules from pear
                 build-essential php-pear php5-dev pkg-config libssl-dev && \
             # Build modules
             pecl channel-update pecl.php.net && \
-            pecl install -f mongodb && \
+            pecl install -f mongodb xhprof && \
             rm -Rf /tmp/pear && \
             # Enable module mongodb
             echo "extension=mongodb.so" > /etc/php5/mods-available/mongodb.ini && \
             php5enmod mongodb && \
             # Enable XhProf
+            echo "extension=xhprof.so" > /etc/php5/mods-available/xhprof.ini && \
             php5enmod xhprof && \
-            # Because of a wrong comment in the official xhprof ini file
-            echo "extension = xhprof.so" > /etc/php5/cli/conf.d/20-xhprof.ini && \
             # Clean
             apt-get purge build-essential php-pear php5-dev pkg-config libssl-dev -y && \
             apt-get autoremove -y && \
             apt-get autoclean && \
             apt-get clean && \
-            rm -Rf /build /root/.bashrc /root/.profile /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
+            # Empty some directories from all files and hidden files
+            find /root /tmp -mindepth 1 -delete && \
+            rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* \
+                   /var/cache/* /var/log/* /usr/share/php/docs /usr/share/php/tests
 
 
 COPY        php-cli.ini    /etc/php5/cli/conf.d/30-custom-php.ini
