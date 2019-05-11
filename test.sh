@@ -13,7 +13,8 @@ TAG=edyan/php:${VERSION}
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
-./build.sh ${VERSION}
+echo "Building image"
+./build.sh ${VERSION} > /dev/null
 
 echo ""
 echo -e "${GREEN}Testing version ${VERSION} ${NC}"
