@@ -23,6 +23,7 @@ cd $1
 
 echo "Building ${TAG}"
 docker build --tag ${TAG} \
+             --cache-from ${TAG} \
              --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
              --build-arg VCS_REF=$(git rev-parse --short HEAD) \
              --build-arg DOCKER_TAG=${TAG} \
