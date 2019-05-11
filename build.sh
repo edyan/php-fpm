@@ -15,7 +15,7 @@ TAG=edyan/php:${VERSION}
 GIT_AVAILABLE=$(which git)
 GIT_FILES_TO_COMMIT=$(git status --porcelain)
 if [ "$GIT_AVAILABLE" != "" -a "$GIT_FILES_TO_COMMIT" != "" ]; then
-    echo "You must make sure Git repo has been commited"
+    echo "You must make sure Git repo has been commited" >&2
     exit 1
 fi
 

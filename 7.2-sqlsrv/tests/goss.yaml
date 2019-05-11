@@ -13,6 +13,10 @@ command:
     exit-status: 0
     stdout: [sqlsrv]
     stderr: []
+  php /root/test.php:
+    exit-status: 0
+    stdout: []
+    stderr: []
 file:
   /opt/mssql-tools/bin/sqlcmd:
     exists: true
