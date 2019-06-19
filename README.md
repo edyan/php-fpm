@@ -32,6 +32,7 @@ php:
     environment:
         FPM_UID: 1000
         FPM_GID: 1000
+        PHP_ENABLED_MODULES: "curl sqlite3"
 
 ```
 
