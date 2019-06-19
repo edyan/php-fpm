@@ -112,10 +112,10 @@ COPY        run.sh     /run.sh
 RUN         chmod +x    /run.sh
 
 ENV         ENVIRONMENT dev
+ENV         PHP_ENABLED_MODULES ""
 ENV         FPM_UID 33
 ENV         FPM_GID 33
 
 EXPOSE      9000
 
 CMD         ["/run.sh"]
-
