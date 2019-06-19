@@ -14,13 +14,13 @@ The aim of these containers is to be used with docker-compose and especially wit
 [our Stakkr Tool](https://github.com/stakkr-org/stakkr).
 
 **Why using Debian / Ubuntu and not the official PHP images?**
-*Because a lot of hosts are based on Debian or Ubuntu, so it's to have in development 
+*Because a lot of hosts are based on Debian or Ubuntu, so it's to have in development
 the same environment than in dev*
 
 We try to use, as much as possible, distros officials PHP versions to avoid extra repositories.
 
 **Why iptables?**
-*Because [stakkr](https://github.com/stakkr-org/stakkr) blocks SMTP ports to avoid a 
+*Because [stakkr](https://github.com/stakkr-org/stakkr) blocks SMTP ports to avoid a
 lot of emails to be send during developments and by mistake*
 
 
@@ -41,8 +41,12 @@ Giving the current user login / pass that runs the container, it will allow anyb
 read / written by the fpm daemon (started by www-data).
 
 Another variable will activate / deactivate development modules: `ENVIRONMENT`.
-Set to `dev` it'll activate xhprof and xdebug as well as changing `max_execution_time` to `-1` and `display_errors`
-to `On`. Set to something else (Example: `production`) it'll do the opposite.
+Set to `dev` it'll change `max_execution_time` to `-1` and `display_errors` to `On`.
+Set to something else (Example: `production`) it'll do the opposite.
+
+Finally, it's possible to personnalize the enabled PHP modules by changing `PHP_ENABLED_MODULES`
+and setting the list, separated with a space of modules to activate.
+Example : `PHP_ENABLED_MODULES="curl sqlite3"`
 
 ## Custom php.ini directives
 If you need to alter the php configuration, you can mount a volume containing `.conf` files to
