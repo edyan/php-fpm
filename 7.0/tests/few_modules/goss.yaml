@@ -1,0 +1,39 @@
+package:
+  php7.0-fpm:
+    installed: true
+
+port:
+  tcp:9000:
+    listening: true
+    ip:
+    - 0.0.0.0
+
+command:
+  php -m|grep -e ^apcu$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^curl$:
+    exit-status: 0
+    stdout: [curl]
+    stderr: []
+  php -m|grep -e ^gd$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^imagick$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^redis$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^xdebug$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^tideways$:
+    exit-status: 1
+    stdout: []
+    stderr: []

@@ -17,7 +17,14 @@ echo "Building image"
 ./build.sh ${VERSION} > /dev/null
 
 echo ""
-echo -e "${GREEN}Testing version ${VERSION} ${NC}"
-cd ${DIRECTORY}/${VERSION}/tests
+echo -e "${GREEN}Testing version ${VERSION} ${NC} with all modules"
+cd ${DIRECTORY}/${VERSION}/tests/all_modules
 export GOSS_FILES_STRATEGY=cp
 dgoss run ${TAG}
+
+if [[ -d ${DIRECTORY}/${VERSION}/tests/few_modules ]]; then
+    echo -e "${GREEN}Testing version ${VERSION} ${NC} with only one module"
+    cd ${DIRECTORY}/${VERSION}/tests/few_modules
+    export GOSS_FILES_STRATEGY=cp
+    dgoss run -e "PHP_ENABLED_MODULES=curl" ${TAG}
+fi

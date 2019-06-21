@@ -1,0 +1,48 @@
+package:
+  php5-fpm:
+    installed: true
+    versions:
+      contain-element:
+        match-regexp: "5.5.+"
+port:
+  tcp:9000:
+    listening: true
+    ip:
+    - 0.0.0.0
+process:
+  php5-fpm:
+    running: true
+
+command:
+  php -m|grep -e ^apc$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^curl$:
+    exit-status: 0
+    stdout: [curl]
+    stderr: []
+  php -m|grep -e ^gd$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^imagick$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^imap$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^ldap$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^xdebug$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^xhprof$:
+    exit-status: 1
+    stdout: []
+    stderr: []

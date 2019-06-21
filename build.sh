@@ -28,7 +28,7 @@ docker build . --tag ${TAG} \
                --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
                --build-arg DOCKER_TAG="${TAG}"
 
-if [[ "$VERSION" == "7.3" ]]; then
+if [[ "${VERSION}" == "7.3" ]]; then
   echo ""
   echo "${TAG} will also be tagged 'latest'"
   docker tag ${TAG} edyan/php:latest
@@ -48,5 +48,5 @@ if [ $? -eq 0 ]; then
     echo "Or if you want to directly enter the container, then remove it : "
     echo "  docker run -ti --rm ${TAG} /bin/bash"
     echo "To push that version (and other of the same repo):"
-    echo "  docker push edyan/php"
+    echo "  docker push edyan/php:${VERSION}"
 fi

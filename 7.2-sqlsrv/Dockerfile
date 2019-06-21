@@ -1,24 +1,23 @@
 FROM        edyan/php:7.2
 
+ARG         ACCEPT_EULA=Y
+ARG         MS_REMOTE_PACKAGE=https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+ARG         MS_LOCAL_PACKAGE=/tmp/packages-microsoft-prod.deb
 ARG         DEBIAN_FRONTEND=noninteractive
 ARG         BUILD_DATE
 ARG         DOCKER_TAG
 ARG         VCS_REF
-ARG         ACCEPT_EULA=Y
-ARG         MS_REMOTE_PACKAGE=https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
-ARG         MS_LOCAL_PACKAGE=/tmp/packages-microsoft-prod.deb
 
 LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>" \
-            org.label-schema.build-date=$BUILD_DATE \
-            org.label-schema.name=$DOCKER_TAG \
+            org.label-schema.build-date=${BUILD_DATE} \
+            org.label-schema.name=${DOCKER_TAG} \
             org.label-schema.description="Docker PHP Image based on Debian and including main modules" \
             org.label-schema.url="https://cloud.docker.com/u/edyan/repository/docker/edyan/php" \
             org.label-schema.vcs-url="https://github.com/edyan/docker-php" \
-            org.label-schema.vcs-ref=$VCS_REF \
+            org.label-schema.vcs-ref=${VCS_REF} \
             org.label-schema.schema-version="1.0" \
             org.label-schema.vendor="edyan" \
-            org.label-schema.version=$VERSION \
-            org.label-schema.docker.cmd="docker run -d --rm $DOCKER_TAG"
+            org.label-schema.docker.cmd="docker run -d --rm ${DOCKER_TAG}"
 
 RUN         apt update && \
             apt install -y curl gnupg && \

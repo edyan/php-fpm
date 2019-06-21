@@ -1,10 +1,20 @@
 FROM        ubuntu:12.04
 
-ARG         BUILD_DATE
 ARG         DEBIAN_FRONTEND=noninteractive
+ARG         BUILD_DATE
+ARG         DOCKER_TAG
+ARG         VCS_REF
 
-LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>"
-LABEL       org.label-schema.build-date=$BUILD_DATE
+LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>" \
+            org.label-schema.build-date=${BUILD_DATE} \
+            org.label-schema.name=${DOCKER_TAG} \
+            org.label-schema.description="Docker PHP Image based on Debian and including main modules" \
+            org.label-schema.url="https://cloud.docker.com/u/edyan/repository/docker/edyan/php" \
+            org.label-schema.vcs-url="https://github.com/edyan/docker-php" \
+            org.label-schema.vcs-ref=${VCS_REF} \
+            org.label-schema.schema-version="1.0" \
+            org.label-schema.vendor="edyan" \
+            org.label-schema.docker.cmd="docker run -d --rm ${DOCKER_TAG}"
 
 # Set a default conf for apt install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
@@ -76,6 +86,8 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             # Activate extension
             echo "extension=mongo.so" > /etc/php5/conf.d/mongo.ini && \
             echo "extension=xhprof.so" > /etc/php5/conf.d/xhprof.ini && \
+            # Rename what is wrong
+            mv /etc/php5/conf.d/10-mysqlnd.ini /etc/php5/conf.d/mysqlnd.ini && \
             # Clean
             apt-get purge build-essential pkg-config libssl-dev php-pear php5-dev -y && \
             apt-get autoremove -y && \
@@ -107,6 +119,7 @@ COPY        run.sh     /run.sh
 RUN         chmod +x    /run.sh
 
 ENV         ENVIRONMENT dev
+ENV         PHP_ENABLED_MODULES ""
 ENV         FPM_UID 33
 ENV         FPM_GID 33
 
