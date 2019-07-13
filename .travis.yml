@@ -13,15 +13,15 @@ script:
   # Don't do that else it's too slow : - sudo apt-get upgrade
   - sudo apt-get install -y --no-install-recommends curl
   - curl -fsSL https://goss.rocks/install | sudo sh
-  - ./test.sh 5.3
-  - ./test.sh 5.4
-  - ./test.sh 5.5
-  - ./test.sh 5.6
-  - ./test.sh 7.0
-  - ./test.sh 7.0-sqlsrv
-  - ./test.sh 7.1
-  - ./test.sh 7.1-sqlsrv
-  - ./test.sh 7.2
-  - ./test.sh 7.2-sqlsrv
-  - ./test.sh 7.3
-  - ./test.sh 7.3-sqlsrv
+  - scripts/test.sh 5.3
+  - scripts/test.sh 5.4
+  - scripts/test.sh 5.5
+  - scripts/test.sh 5.6
+  - scripts/test.sh 7.0
+  - scripts/test.sh 7.0-sqlsrv
+  - scripts/test.sh 7.1
+  - scripts/test.sh 7.1-sqlsrv
+  - scripts/test.sh 7.2
+  - scripts/test.sh 7.2-sqlsrv
+  - scripts/test.sh 7.3
+  - scripts/test.sh 7.3-sqlsrv
