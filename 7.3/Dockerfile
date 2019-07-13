@@ -78,6 +78,9 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             echo "zend_extension=xdebug.so" > /etc/php/7.3/mods-available/xdebug.ini && \
             phpenmod xdebug && \
             apt purge --autoremove -y build-essential libmemcached-dev php-pear php7.3-dev pkg-config zlib1g-dev && \
+            # Set a symlink to simplify the configuration, as we use a single php version
+            ln -s /etc/php/7.3 /etc/php/current && \
+            ln -s /usr/sbin/php-fpm7.3 /usr/sbin/php-fpm-current && \
             # Clean
             apt autoremove -y && \
             apt autoclean && \
@@ -87,14 +90,14 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             find /root /tmp /var/lib/apt/lists /usr/share/man /usr/share/doc /var/cache /var/log -type f -delete 
 
 
-COPY        php-cli.ini    /etc/php/7.3/cli/conf.d/30-custom-php.ini
-COPY        php-fpm.ini    /etc/php/7.3/fpm/conf.d/30-custom-php.ini
-COPY        www.conf       /etc/php/7.3/fpm/pool.d/
+COPY        php-cli.ini    /etc/php/current/cli/conf.d/30-custom-php.ini
+COPY        php-fpm.ini    /etc/php/current/fpm/conf.d/30-custom-php.ini
+COPY        www.conf       /etc/php/current/fpm/pool.d/
 
 
 # For custom Configuration that comes from outside (via a docker compose mount)
-RUN         mkdir /etc/php/7.3/fpm/user-conf.d && \
-            echo "; Default empty file" > /etc/php/7.3/fpm/user-conf.d/example.conf && \
+RUN         mkdir /etc/php/current/fpm/user-conf.d && \
+            echo "; Default empty file" > /etc/php/current/fpm/user-conf.d/example.conf && \
 # Global Logs
             mkdir /var/log/php && \
 # Create home for www-data
