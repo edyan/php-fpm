@@ -5,6 +5,6 @@ command:
   php -r '$v=explode(".", phpversion());echo "{$v[0]}.$v[1]";':
     exit-status: 0
     stdout:
-      - 7.3
+      - {{.Env.VERSION}}
     stderr: []
     timeout: 300

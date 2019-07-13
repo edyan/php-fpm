@@ -1,0 +1,141 @@
+FROM        debian:jessie-slim
+
+ARG         DEBIAN_FRONTEND=noninteractive
+
+# Set a default conf for apt-get install
+RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
+            # Upgrade the system + Install all packages
+            apt-get update && \
+            apt-get upgrade -y && \
+            apt-get install -y \
+                ca-certificates \
+                # Calling fpm locally
+                libfcgi0ldbl \
+                # Manipulate iptables rules (example: block smtps)
+                iptables \
+                # php5-adodb \
+                php5-apcu \
+                # php5-cgi \
+                php5-cli \
+                php5-curl \
+                # php5-dbg \
+                # php5-dev \
+                # php5-enchant \
+                php5-fpm \
+                php5-gd \
+                php5-geoip \
+                # php5-geos \
+                # php5-gmp \
+                # php5-gnupg \
+                php5-imagick \
+                php5-imap \
+                php5-interbase \
+                php5-intl \
+                php5-json \
+                # php5-lasso \
+                php5-ldap \
+                php5-mcrypt \
+                php5-memcache \
+                php5-memcached \
+                php5-mongo \
+                # php5-msgpack \
+                # php5-mysql \
+                php5-mysqlnd \
+                # php5-mysqlnd-ms \
+                # php5-oauth \
+                php5-odbc \
+                # php5-pecl-http \
+                # php5-pecl-http-dev \
+                php5-pgsql \
+                # php5-phpdbg \
+                # php5-pspell \
+                # php5-radius \
+                php5-readline \
+                # php5-recode \
+                php5-redis \
+                # php5-remctl \
+                # php5-rrd \
+                # php5-sasl \
+                # php5-snmp \
+                php5-sqlite \
+                php5-ssh2 \
+                # php5-stomp \
+                # php5-svn \
+                # php5-sybase \
+                # php5-tidy \
+                # php5-uprofiler \
+                # php5-xcache \
+                php5-xdebug \
+                php5-xmlrpc \
+                php5-xsl \
+                # To Build modules from pear
+                build-essential libssl-dev php-pear php5-dev pkg-config && \
+            # Set a symlink to simplify the configuration, as we use a single php version
+            mkdir -p /etc/php && ln -s /etc/php5 /etc/php/current && \
+            # Log to stdout
+            sed -i 's/^error_log.*/error_log = \/proc\/self\/fd\/2/g' /etc/php/current/fpm/php-fpm.conf && \
+            echo 'access.log = /proc/self/fd/2' >> /etc/php/current/fpm/php-fpm.conf && \
+            # Build modules
+            pecl channel-update pecl.php.net && \
+            pecl install mongodb redis xhprof-beta && \
+            rm -Rf /tmp/pear && \
+            # Enable module mongodb
+            echo "extension=mongodb.so" > /etc/php/current/mods-available/mongodb.ini && \
+            php5enmod mongodb && \
+            # Enable Redis
+            echo "extension=redis.so" > /etc/php/current/mods-available/redis.ini && \
+            php5enmod redis && \
+            # Enable XhProf
+            echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
+            php5enmod xhprof && \
+            # Clean
+            apt-get purge -y build-essential libssl-dev php-pear php5-dev pkg-config && \
+            apt-get autoremove -y && \
+            apt-get autoclean && \
+            apt-get clean && \
+            # Empty some directories from all files and hidden files
+            rm -rf /build /tmp/* /usr/share/php/docs /usr/share/php/tests && \
+            find /root /var/lib/apt/lists /usr/share/man /usr/share/doc /var/cache /var/log -type f -delete
+
+COPY        files/common/php-cli.ini /etc/php/current/cli/conf.d/30-custom-php.ini
+COPY        files/common/php-fpm.ini /etc/php/current/fpm/conf.d/30-custom-php.ini
+COPY        files/common/www.conf    /etc/php/current/fpm/pool.d/
+
+# For custom Configuration that comes from outside (via a docker compose mount)
+RUN         mkdir /etc/php/current/fpm/user-conf.d && \
+            echo "; Default empty file" > /etc/php/current/fpm/user-conf.d/example.conf && \
+            # Create home for www-data
+            mkdir /home/www-data && \
+            chown www-data:www-data /home/www-data && \
+            usermod -d /home/www-data www-data && \
+            mkdir -p /run/php && \
+            chown www-data:www-data /run/php
+
+COPY        files/5.x/docker-entrypoint.sh /docker-entrypoint.sh
+RUN         chmod +x /docker-entrypoint.sh
+
+ENV         ENVIRONMENT dev
+ENV         PHP_ENABLED_MODULES ""
+ENV         FPM_UID 33
+ENV         FPM_GID 33
+
+EXPOSE      9000
+
+# At the end as it changes everytime ;)
+ARG         BUILD_DATE
+ARG         DOCKER_TAG
+ARG         VCS_REF
+LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>" \
+            org.label-schema.build-date=${BUILD_DATE} \
+            org.label-schema.name=${DOCKER_TAG} \
+            org.label-schema.description="Docker PHP Image based on Debian and including main modules" \
+            org.label-schema.url="https://cloud.docker.com/u/edyan/repository/docker/edyan/php" \
+            org.label-schema.vcs-url="https://github.com/edyan/docker-php" \
+            org.label-schema.vcs-ref=${VCS_REF} \
+            org.label-schema.schema-version="1.0" \
+            org.label-schema.vendor="edyan" \
+            org.label-schema.docker.cmd="docker run -d --rm ${DOCKER_TAG}"
+
+ENTRYPOINT  ["/docker-entrypoint.sh"]
+
+CMD         ["/usr/sbin/php5-fpm", "--allow-to-run-as-root", "-c", "/etc/php/current/fpm", "--nodaemonize"]
