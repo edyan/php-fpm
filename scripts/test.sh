@@ -39,7 +39,7 @@ for TESTS in ${!LIST_TESTS}; do
 
     if [[ ${TESTS} == */few_modules ]]
     then
-        dgoss run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} -e PHP_ENABLED_MODULES=curl ${TAG}
+        dgoss run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} -e "PHP_ENABLED_MODULES=curl xml" ${TAG}
     else
         dgoss run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} ${TAG}
     fi

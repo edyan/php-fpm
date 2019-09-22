@@ -70,10 +70,11 @@ sure the parameters are taken into account.
 ## PHP version
 To use a specific PHP version, append the version number to the image name.
 
-Eg: `image: edyan/php:5.6`
+Eg: `image: edyan/php:7.2`
 
 The following PHP versions are available:
 
+* PHP 7.3 (buster slim + sury packages. **Be careful it's a BETA version**)
 * PHP 7.3 (buster slim)
 * PHP 7.2 (Ubuntu 18.04)
 * PHP 7.1 (stretch slim + sury packages)

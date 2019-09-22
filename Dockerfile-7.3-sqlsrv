@@ -1,7 +1,7 @@
 FROM        edyan/php:7.3
 
 ARG         ACCEPT_EULA=Y
-ARG         LIBSSL_STRETCH_DEB=http://ftp.us.debian.org/debian/pool/main/o/openssl1.0/libssl1.0.2_1.0.2r-1~deb9u1_amd64.deb
+ARG         LIBSSL_STRETCH_DEB=http://ftp.us.debian.org/debian/pool/main/o/openssl1.0/libssl1.0.2_1.0.2s-1~deb9u1_amd64.deb
 ARG         DEBIAN_FRONTEND=noninteractive
 
 RUN         apt update && \
@@ -25,7 +25,7 @@ RUN         apt update && \
             echo "extension=pdo_sqlsrv.so" > /etc/php/current/mods-available/pdo_sqlsrv.ini && \
             phpenmod pdo_sqlsrv && \
             # I need that to make it work (as we use debian stretch repo for mssql)
-            curl $LIBSSL_STRETCH_DEB -s -o /tmp/libssl1.0.2_1.0.2r-1~deb9u1_amd64.deb && \
+            curl ${LIBSSL_STRETCH_DEB} -s -o /tmp/libssl1.0.2_1.0.2r-1~deb9u1_amd64.deb && \
             dpkg -i /tmp/libssl1.0.2_1.0.2r-1~deb9u1_amd64.deb && \
             # Remove useless packages / files
             apt purge --autoremove -y curl gnupg unixodbc-dev php-pear php7.3-dev gcc g++ build-essential && \
