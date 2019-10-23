@@ -5,7 +5,7 @@ CURRENT_FPM_ID=$(id -u www-data)
 if [[ "${CURRENT_FPM_ID}" != "${FPM_UID}" ]]; then
     echo "Fixing permissions for php-fpm"
     usermod -u ${FPM_UID:=33} www-data
-    groupmod -g ${FPM_GID:=33} www-data
+    groupmod -g ${FPM_GID:=33} www-data || true
 fi
 
 # We'll say that we are by default in dev
