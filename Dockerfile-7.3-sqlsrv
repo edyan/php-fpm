@@ -9,7 +9,7 @@ RUN         apt update && \
             echo "deb [arch=amd64] https://packages.microsoft.com/debian/9/prod stretch main" > /etc/apt/sources.list.d/mssql.list && \
             curl -sS https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
             apt update && \
-            apt install -y \
+            apt install -y -o Dpkg::Options::="--force-confold" \
                 # To keep
                 msodbcsql17 mssql-tools unixodbc php7.3-sybase \
                 # remove later
