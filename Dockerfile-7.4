@@ -7,11 +7,10 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             # Install a few required packages
             apt update -y && \
             apt install -y apt-utils && \
-            apt install -y apt-transport-https gnupg ca-certificates curl && \
+            apt install -y apt-transport-https gnupg ca-certificates wget && \
             # Setup sury repos
             echo "deb https://packages.sury.org/php/ stretch main" > /etc/apt/sources.list.d/sury.org.list && \
-            curl -sS https://packages.sury.org/php/apt.gpg | apt-key add - && \
-            apt purge -y curl && \
+            wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
             # Update, upgrade
             apt update -y && \
             apt upgrade -y && \
@@ -81,7 +80,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             apt purge --autoremove -y apt-utils \
                                       build-essential php-pear php7.4-dev pkg-config zlib1g-dev \
                                       libgeoip-dev \
-                                      libmemcached-dev && \
+                                      libmemcached-dev wget && \
             # Clean
             apt autoremove -y && \
             apt autoclean && \
