@@ -14,7 +14,7 @@ NC='\033[0m' # No Color
 
 cd
 echo "Building image"
-${DIRECTORY}/build.sh ${VERSION} > /dev/null
+${DIRECTORY}/build.sh ${VERSION}
 
 # List tests
 declare -a "TESTS_5=(5.x/all_modules 5.x/few_modules)"

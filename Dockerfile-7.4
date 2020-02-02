@@ -6,10 +6,9 @@ ARG         DEBIAN_FRONTEND=noninteractive
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
             # Install a few required packages
             apt update -y && \
-            apt install -y apt-utils && \
             apt install -y apt-transport-https gnupg ca-certificates wget && \
             # Setup sury repos
-            echo "deb https://packages.sury.org/php/ stretch main" > /etc/apt/sources.list.d/sury.org.list && \
+            echo "deb https://packages.sury.org/php/ buster main" > /etc/apt/sources.list.d/sury.org.list && \
             wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
             # Update, upgrade
             apt update -y && \
@@ -52,10 +51,9 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php7.4-xml \
                 php7.4-xmlrpc \
                 php7.4-xsl \
-                php7.4-zip && \
-                # TO BE ADDED LATER !!! php-memcache \
-                # TO BE ADDED LATER !!! php-tideways \
-                # TO BE ADDED LATER !!! php-imagick \
+                php7.4-zip \
+                php-memcache \
+                php-imagick && \
             # Set a symlink to simplify the configuration, as we use a single php version
             ln -s /etc/php/7.4 /etc/php/current && \
             # Log to stdout
@@ -67,18 +65,18 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                            libmemcached11 libmemcachedutil2 libmemcached-dev && \
             # Install extensions
             pecl channel-update pecl.php.net && \
-            pecl -D "error_reporting=32759" install apcu geoip-beta memcached mongodb redis ssh2-beta xdebug-beta && \
+            pecl -D "error_reporting=32759" install apcu geoip-beta memcached mongodb redis ssh2 xdebug-beta xhprof && \
             # Activate modules
             echo "extension=apcu.so" > /etc/php/current/mods-available/apcu.ini && \
             echo "extension=geoip.so" > /etc/php/current/mods-available/geoip.ini && \
             echo "extension=memcached.so" > /etc/php/current/mods-available/memcached.ini && \
             echo "extension=mongodb.so" > /etc/php/current/mods-available/mongodb.ini && \
             echo "extension=redis.so" > /etc/php/current/mods-available/redis.ini && \
-            # TO BE ADDED LATER !!! echo "extension=ssh2.so" > /etc/php/current/mods-available/ssh2.ini && \
+            echo "extension=ssh2.so" > /etc/php/current/mods-available/ssh2.ini && \
             echo "zend_extension=xdebug.so" > /etc/php/current/mods-available/xdebug.ini && \
-            phpenmod apcu geoip memcached mongodb redis ssh2 xdebug && \
-            apt purge --autoremove -y apt-utils \
-                                      build-essential php-pear php7.4-dev pkg-config zlib1g-dev \
+            echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
+            phpenmod apcu geoip memcached mongodb redis ssh2 xdebug xhprof && \
+            apt purge --autoremove -y build-essential php-pear php7.4-dev pkg-config zlib1g-dev \
                                       libgeoip-dev \
                                       libmemcached-dev wget && \
             # Clean

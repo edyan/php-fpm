@@ -51,8 +51,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php-geoip \
                 php-imagick \
                 php-memcache \
-                php-ssh2 \
-                php-tideways && \
+                php-ssh2 && \
             # Set a symlink to simplify the configuration, as we use a single php version
             ln -s /etc/php/7.2 /etc/php/current && \
             # Log to stdout
@@ -61,16 +60,14 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             # Install a few extensions with PECL instead of distro ones
             apt install -y build-essential libmemcached11 libmemcachedutil2 libmemcached-dev php-pear php7.2-dev pkg-config zlib1g-dev && \
             pecl channel-update pecl.php.net && \
-            pecl install memcached mongodb redis xdebug && \
+            pecl install memcached mongodb redis xdebug xhprof && \
             # Activate it
-            echo "extension=mongodb.so" > /etc/php/current/mods-available/mongodb.ini && \
-            phpenmod mongodb && \
             echo "extension=memcached.so" > /etc/php/current/mods-available/memcached.ini && \
-            phpenmod memcached && \
+            echo "extension=mongodb.so" > /etc/php/current/mods-available/mongodb.ini && \
             echo "extension=redis.so" > /etc/php/current/mods-available/redis.ini && \
-            phpenmod redis && \
             echo "zend_extension=xdebug.so" > /etc/php/current/mods-available/xdebug.ini && \
-            phpenmod xdebug && \
+            echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
+            phpenmod memcached mongodb memcached redis xdebug xhprof && \
             apt purge --autoremove -y build-essential libmemcached-dev php-pear php7.2-dev pkg-config zlib1g-dev && \
             # Clean
             apt autoremove -y && \
