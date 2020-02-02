@@ -77,7 +77,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             apt-get install --force-yes -y build-essential pkg-config libssl-dev php-pear php5-dev && \
             # pear for mongo
             pecl channel-update pecl.php.net && \
-            pecl install mongo redis-4.3.0 xhprof-beta && \
+            pecl install mongo redis-4.3.0 xhprof-0.9.4 && \
             rm -Rf /tmp/pear && \
             # Patch too look like php 5.4
             chmod +x /usr/sbin/php5*mod && \

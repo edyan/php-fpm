@@ -77,7 +77,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             echo 'access.log = /proc/self/fd/2' >> /etc/php/current/fpm/php-fpm.conf && \
             # Build modules
             pecl channel-update pecl.php.net && \
-            pecl install mongodb redis xhprof-beta && \
+            pecl install mongodb redis xhprof-0.9.4 && \
             rm -Rf /tmp/pear && \
             # Enable module mongodb
             echo "extension=mongodb.so" > /etc/php/current/mods-available/mongodb.ini && \

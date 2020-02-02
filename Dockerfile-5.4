@@ -48,7 +48,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             apt-get install -y \
                 build-essential php-pear php5-dev libcurl4-openssl-dev pkg-config && \
             pecl channel-update pecl.php.net && \
-            pecl install mongo redis-4.3.0 xhprof-beta && \
+            pecl install mongo redis-4.3.0 xhprof-0.9.4 && \
             echo "extension=mongo.so" > /etc/php/current/mods-available/mongo.ini && \
             php5enmod mongo && \
             echo "extension=redis.so" > /etc/php/current/mods-available/redis.ini && \
