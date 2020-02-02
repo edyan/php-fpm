@@ -14,8 +14,7 @@ RUN         apt update && \
             # sqlsrv from PECL
             pecl channel-update pecl.php.net && \
             # Compile
-            pecl install sqlsrv && \
-            pecl install pdo_sqlsrv && \
+            pecl install sqlsrv-5.6.1 pdo_sqlsrv-5.6.1 && \
             # Activate
             echo "extension=sqlsrv.so" > /etc/php/current/mods-available/sqlsrv.ini && \
             phpenmod sqlsrv && \
