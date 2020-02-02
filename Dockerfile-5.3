@@ -2,9 +2,6 @@ FROM        ubuntu:12.04
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
-COPY        --from=edyan/php:5.4  /usr/sbin/php5enmod /usr/sbin/php5enmod
-COPY        --from=edyan/php:5.4  /usr/sbin/php5dismod /usr/sbin/php5dismod
-
 # Set a default conf for apt install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
             # Upgrade the system + Install all packages
@@ -80,18 +77,11 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             pecl install mongo redis-4.3.0 xhprof-0.9.4 && \
             rm -Rf /tmp/pear && \
             # Patch too look like php 5.4
-            chmod +x /usr/sbin/php5*mod && \
             mv /etc/php5/conf.d /etc/php5/mods-available && mkdir /etc/php5/conf.d && \
             # Create extension conf
             echo "extension=mongo.so" > /etc/php/current/mods-available/mongo.ini && \
             echo "extension=redis.so" > /etc/php/current/mods-available/redis.ini && \
             echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
-            # Activate everything
-            EXT_DIR=$(php -i | grep ^extension_dir | cut -d'=' -f2 | cut -d' ' -f2) && \
-            for MODULE in $(ls -1 ${EXT_DIR}|cut -d'.' -f1); do php5enmod ${MODULE}; done && \
-            # Rename and fix what is wrong
-            sed -i 's/;daemonize = yes/daemonize = no/g' /etc/php/current/fpm/php-fpm.conf && \
-            sed -i 's/^#/;/g' /etc/php/current/mods-available/interbase.ini && \
             # Clean
             apt-get purge build-essential pkg-config libssl-dev php-pear php5-dev -y && \
             apt-get autoremove -y && apt-get autoclean && apt-get clean && \
@@ -99,12 +89,24 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             rm -rf /build /usr/share/php/docs /usr/share/php/tests /tmp/* && \
             find /root /var/lib/apt/lists /usr/share/man /usr/share/doc /var/cache /var/log -type f -delete
 
+# Manage modules activation / deactivation
+COPY        --from=edyan/php:5.4  /usr/sbin/php5enmod /usr/sbin/php5enmod
+COPY        --from=edyan/php:5.4  /usr/sbin/php5dismod /usr/sbin/php5dismod
+# Get configuration
 COPY        files/common/php-cli.ini /etc/php/current/cli/conf.d/30-custom-php.ini
 COPY        files/common/php-fpm.ini /etc/php/current/fpm/conf.d/30-custom-php.ini
 COPY        files/common/www.conf    /etc/php/current/fpm/pool.d/
 
-# For custom Configuration that comes from outside (via a docker compose mount)
-RUN         mkdir /etc/php/current/fpm/user-conf.d && \
+# Activate / deactivate modules and set configuration
+RUN         EXT_DIR=$(php -i | grep ^extension_dir | cut -d'=' -f2 | cut -d' ' -f2) && \
+            for MODULE in $(ls -1 ${EXT_DIR}|cut -d'.' -f1); do php5enmod ${MODULE}; done && \
+            # Patch to look like PHP 5.4
+            chmod +x /usr/sbin/php5*mod && \
+            # Rename and fix what is wrong
+            sed -i 's/;daemonize = yes/daemonize = no/g' /etc/php/current/fpm/php-fpm.conf && \
+            sed -i 's/^#/;/g' /etc/php/current/mods-available/interbase.ini && \
+            # For custom Configuration that comes from outside (via a docker compose mount)
+            mkdir /etc/php/current/fpm/user-conf.d && \
             echo "; Default empty file" > /etc/php/current/fpm/user-conf.d/example.conf && \
             # Create home for www-data
             mkdir /home/www-data && \
