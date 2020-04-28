@@ -61,7 +61,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                            libmemcached11 libmemcachedutil2 libmemcached-dev && \
             # Install extensions
             pecl channel-update pecl.php.net && \
-            pecl -D "error_reporting=32759" install apcu geoip-beta memcached mongodb redis xdebug-beta xhprof && \
+            pecl -q -D "error_reporting=32759" install apcu geoip-beta memcached mongodb redis xdebug-beta xhprof && \
             # Activate modules
             echo "extension=apcu.so" > /etc/php/current/mods-available/apcu.ini && \
             echo "extension=geoip.so" > /etc/php/current/mods-available/geoip.ini && \

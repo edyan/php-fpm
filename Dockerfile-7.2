@@ -63,7 +63,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 libmemcached11 libmemcachedutil2 libmemcached-dev \
                 php-pear php7.2-dev pkg-config zlib1g-dev && \
             pecl channel-update pecl.php.net && \
-            pecl install memcached mongodb redis xdebug xhprof && \
+            pecl -q install memcached mongodb redis xdebug xhprof && \
             # Activate it
             echo "extension=memcached.so" > /etc/php/current/mods-available/memcached.ini && \
             echo "extension=mongodb.so" > /etc/php/current/mods-available/mongodb.ini && \
