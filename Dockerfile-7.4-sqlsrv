@@ -1,7 +1,6 @@
-FROM        edyan/php:7.3
+FROM        edyan/php:7.4
 
 ARG         ACCEPT_EULA=Y
-ARG         LIBSSL_STRETCH_DEB=http://ftp.us.debian.org/debian/pool/main/o/openssl1.0/libssl1.0.2_1.0.2s-1~deb9u1_amd64.deb
 ARG         DEBIAN_FRONTEND=noninteractive
 
 RUN         apt update && \
@@ -11,9 +10,9 @@ RUN         apt update && \
             apt update && \
             apt install -y -o Dpkg::Options::="--force-confold" \
                 # To keep
-                msodbcsql17 mssql-tools unixodbc php7.3-sybase \
+                msodbcsql17 mssql-tools unixodbc php7.4-sybase \
                 # remove later
-                unixodbc-dev php-pear php7.3-dev  \
+                unixodbc-dev php-pear php7.4-dev  \
                 gcc g++ build-essential && \
             # sqlsrv from PECL
             pecl channel-update pecl.php.net && \
@@ -24,11 +23,8 @@ RUN         apt update && \
             phpenmod sqlsrv && \
             echo "extension=pdo_sqlsrv.so" > /etc/php/current/mods-available/pdo_sqlsrv.ini && \
             phpenmod pdo_sqlsrv && \
-            # I need that to make it work (as we use debian stretch repo for mssql)
-            curl ${LIBSSL_STRETCH_DEB} -s -o /tmp/libssl1.0.2_1.0.2r-1~deb9u1_amd64.deb && \
-            dpkg -i /tmp/libssl1.0.2_1.0.2r-1~deb9u1_amd64.deb && \
             # Remove useless packages / files
-            apt purge --autoremove -y curl gnupg unixodbc-dev php-pear php7.3-dev gcc g++ build-essential && \
+            apt purge --autoremove -y curl gnupg unixodbc-dev php-pear php7.4-dev gcc g++ build-essential && \
             # Clean
             apt autoremove -y && \
             apt autoclean && \

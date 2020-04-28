@@ -16,22 +16,18 @@ command:
     exit-status: 0
     stdout: [apcu]
     stderr: []
-{{if ne .Env.VERSION "7.4" }}
   php -m|grep -e ^curl$:
     exit-status: 0
     stdout: [curl]
     stderr: []
-{{end}}
   php -m|grep -e ^gd$:
     exit-status: 0
     stdout: [gd]
     stderr: []
-{{if ne .Env.VERSION "7.4" }}
   php -m|grep -e ^imagick$:
     exit-status: 0
     stdout: [imagick]
     stderr: []
-{{end}}
   php -m|grep -e ^imap$:
     exit-status: 0
     stdout: [imap]
@@ -68,12 +64,10 @@ command:
     exit-status: 0
     stdout: [xdebug]
     stderr: []
-{{if ne .Env.VERSION "7.4" }}
-  php -m|grep -e ^tideways$:
+  php -m|grep -e ^xhprof$:
     exit-status: 0
-    stdout: [tideways]
+    stdout: [xhprof]
     stderr: []
-{{end}}
   php -m|grep -e ^xsl$:
     exit-status: 0
     stdout: [xsl]

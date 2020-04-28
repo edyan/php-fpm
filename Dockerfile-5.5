@@ -79,7 +79,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             php5enmod imap mcrypt && \
             apt-get install -y build-essential pkg-config libssl-dev php5-dev && \
             pecl channel-update pecl.php.net && \
-            pecl install mongo xhprof-beta && \
+            pecl install mongo xhprof-0.9.4 && \
             echo "extension=mongo.so" > /etc/php/current/mods-available/mongo.ini && \
             php5enmod mongo && \
             echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
