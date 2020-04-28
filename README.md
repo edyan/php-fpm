@@ -74,7 +74,7 @@ Eg: `image: edyan/php:7.2`
 
 The following PHP versions are available:
 
-* PHP 7.3 (buster slim + sury packages. **Be careful it's a BETA version**)
+* PHP 7.4 (Ubuntu 20.04)
 * PHP 7.3 (buster slim)
 * PHP 7.2 (Ubuntu 18.04)
 * PHP 7.1 (stretch slim + sury packages)
