@@ -5,16 +5,16 @@ ARG         DEBIAN_FRONTEND=noninteractive
 # Set a default conf for apt install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
             # Install a few required packages
-            apt update -y && \
-            apt install -y apt-transport-https gnupg ca-certificates curl && \
+            apt update -qq -y && \
+            apt install -qq -y apt-transport-https gnupg ca-certificates curl && \
             # Setup sury repos
             echo "deb https://packages.sury.org/php/ stretch main" > /etc/apt/sources.list.d/sury.org.list && \
             curl -sS https://packages.sury.org/php/apt.gpg | apt-key add - && \
             # Update, upgrade
-            apt update -y && \
-            apt upgrade -y && \
+            apt update -qq -y && \
+            apt upgrade -qq -y && \
             # Packages
-            apt install -y \
+            apt install -qq -y \
                 # Calling fpm locally
                 libfcgi-bin \
                 # Manipulate iptables rules (example: block smtps)
@@ -66,7 +66,10 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             sed -i 's/^error_log.*/error_log = \/proc\/self\/fd\/2/g' /etc/php/current/fpm/php-fpm.conf && \
             echo 'access.log = /proc/self/fd/2' >> /etc/php/current/fpm/php-fpm.conf && \
             # Install a few extensions with PECL instead of distro ones
-            apt install -y build-essential libmemcached11 libmemcachedutil2 libmemcached-dev php-pear php7.1-dev pkg-config zlib1g-dev && \
+            apt install -qq -y \
+                build-essential \
+                libmemcached11 libmemcachedutil2 libmemcached-dev \
+                php-pear php7.1-dev pkg-config zlib1g-dev && \
             pecl channel-update pecl.php.net && \
             pecl -q install memcached mongodb redis xdebug xhprof && \
             # Activate it
@@ -76,11 +79,11 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             echo "zend_extension=xdebug.so" > /etc/php/current/mods-available/xdebug.ini && \
             echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
             phpenmod memcached mongodb redis xdebug xhprof && \
-            apt purge --autoremove -y build-essential libmemcached-dev php-pear php7.1-dev pkg-config zlib1g-dev && \
+            apt purge -qq --autoremove -y build-essential libmemcached-dev php-pear php7.1-dev pkg-config zlib1g-dev && \
             # Clean
-            apt autoremove -y && \
-            apt autoclean && \
-            apt clean && \
+            apt autoremove -qq -y && \
+            apt autoclean -qq && \
+            apt clean -qq && \
             # Empty some directories from all files and hidden files
             rm -rf /build /tmp/* /usr/share/php/docs /usr/share/php/tests && \
             find /root /var/lib/apt/lists /usr/share/man /usr/share/doc /var/cache /var/log -type f -delete

@@ -5,9 +5,9 @@ ARG         DEBIAN_FRONTEND=noninteractive
 # Set a default conf for apt install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
             # Upgrade the system + Install all packages
-            apt update -y && \
-            apt upgrade -y && \
-            apt install -y \
+            apt update -qq -y && \
+            apt upgrade -qq -y && \
+            apt install -qq -y \
                 ca-certificates \
                 # Calling fpm locally
                 libfcgi-bin \
@@ -68,11 +68,11 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             echo "zend_extension=xdebug.so" > /etc/php/current/mods-available/xdebug.ini && \
             echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
             phpenmod memcached mongodb redis xdebug xhprof && \
-            apt purge --autoremove -y build-essential libmemcached-dev php-pear php7.3-dev pkg-config zlib1g-dev && \
+            apt purge -qq --autoremove -y build-essential libmemcached-dev php-pear php7.3-dev pkg-config zlib1g-dev && \
             # Clean
-            apt autoremove -y && \
-            apt autoclean && \
-            apt clean && \
+            apt autoremove -qq -y && \
+            apt autoclean -qq && \
+            apt clean -qq && \
             # Empty some directories from all files and hidden files
             rm -rf /build /tmp/* /usr/share/php/docs /usr/share/php/tests /usr/lib/php/20170718 /etc/php/7.2 && \
             find /root /var/lib/apt/lists /usr/share/man /usr/share/doc /var/cache /var/log -type f -delete

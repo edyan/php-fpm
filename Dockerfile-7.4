@@ -5,9 +5,9 @@ ARG         DEBIAN_FRONTEND=noninteractive
 # Set a default conf for apt install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
             # Install a few required packages
-            apt update -y && \
-            apt upgrade -y && \
-            apt install -y \
+            apt update -qq -y && \
+            apt upgrade -qq -y && \
+            apt install -qq -y \
                 ca-certificates \
                 # Calling fpm locally
                 libfcgi-bin \
@@ -56,9 +56,10 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             sed -i 's/^error_log.*/error_log = \/proc\/self\/fd\/2/g' /etc/php/current/fpm/php-fpm.conf && \
             echo 'access.log = /proc/self/fd/2' >> /etc/php/current/fpm/php-fpm.conf && \
             # Install a few extensions with PECL instead of distro ones
-            apt install -y build-essential php-pear php7.4-dev pkg-config zlib1g-dev \
-                           geoip-bin libgeoip-dev \
-                           libmemcached11 libmemcachedutil2 libmemcached-dev && \
+            apt install -qq -y \
+                build-essential php-pear php7.4-dev pkg-config zlib1g-dev \
+                geoip-bin libgeoip-dev \
+                libmemcached11 libmemcachedutil2 libmemcached-dev && \
             # Install extensions
             pecl channel-update pecl.php.net && \
             pecl -q -D "error_reporting=32759" install apcu geoip-beta memcached mongodb redis xdebug-beta xhprof && \
@@ -76,9 +77,9 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                                       libgeoip-dev \
                                       libmemcached-dev && \
             # Clean
-            apt autoremove -y && \
-            apt autoclean && \
-            apt clean && \
+            apt autoremove -qq -y && \
+            apt autoclean -qq && \
+            apt clean -qq && \
             # Empty some directories from all files and hidden files
             rm -rf /build /tmp/* /usr/share/php/docs /usr/share/php/tests && \
             find /root /var/lib/apt/lists /usr/share/man /usr/share/doc /var/cache /var/log -type f -delete
