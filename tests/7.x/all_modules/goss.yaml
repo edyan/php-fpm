@@ -36,6 +36,10 @@ command:
     exit-status: 0
     stdout: [ldap]
     stderr: []
+  php -m|grep -e ^memcache$:
+    exit-status: 0
+    stdout: [memcache]
+    stderr: []
   php -m|grep -e ^memcached$:
     exit-status: 0
     stdout: [memcached]

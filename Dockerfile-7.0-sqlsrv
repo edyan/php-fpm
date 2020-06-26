@@ -3,12 +3,12 @@ FROM        edyan/php:7.0
 ARG         ACCEPT_EULA=Y
 ARG         DEBIAN_FRONTEND=noninteractive
 
-RUN         apt update -qq && \
-            apt install -qq -y apt-transport-https curl gnupg && \
+RUN         apt-get update -qq && \
+            apt-get install -qq -y apt-transport-https curl gnupg && \
             echo "deb [arch=amd64] https://packages.microsoft.com/debian/9/prod stretch main" > /etc/apt/sources.list.d/mssql.list && \
             curl -sS https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-            apt update -qq && \
-            apt install -qq -y \
+            apt-get update -qq && \
+            apt-get install -qq -y \
                 msodbcsql17 mssql-tools unixodbc unixodbc-dev php-pear php7.0-dev php7.0-sybase \
                 gcc g++ build-essential && \
             # sqlsrv from PECL
@@ -20,11 +20,11 @@ RUN         apt update -qq && \
             echo "extension=sqlsrv.so" > /etc/php/current/mods-available/sqlsrv.ini && \
             phpenmod pdo_sqlsrv sqlsrv && \
             # Remove useless packages / files
-            apt purge -qq --autoremove -y curl gnupg unixodbc-dev php-pear php7.0-dev gcc g++ build-essential && \
+            apt-get purge -qq --autoremove -y curl gnupg unixodbc-dev php-pear php7.0-dev gcc g++ build-essential && \
             # Clean
-            apt autoremove -qq -y && \
-            apt autoclean -qq && \
-            apt clean -qq && \
+            apt-get autoremove -qq -y && \
+            apt-get autoclean -qq && \
+            apt-get clean -qq && \
             # Empty some directories from all files and hidden files
             find /root /var/lib/apt/lists /usr/share/man /usr/share/doc /var/cache /var/log -type f -delete && \
             rm -rf /build /tmp/* /usr/share/php/docs /usr/share/php/tests

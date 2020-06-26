@@ -5,12 +5,12 @@ ARG         MS_REMOTE_PACKAGE=https://packages.microsoft.com/config/ubuntu/18.04
 ARG         MS_LOCAL_PACKAGE=/tmp/packages-microsoft-prod.deb
 ARG         DEBIAN_FRONTEND=noninteractive
 
-RUN         apt update -qq && \
-            apt install -qq -y curl gnupg && \
+RUN         apt-get update -qq && \
+            apt-get install -qq -y curl gnupg && \
             curl $MS_REMOTE_PACKAGE --output $MS_LOCAL_PACKAGE && \
             dpkg -i $MS_LOCAL_PACKAGE && \
-            apt update -qq && \
-            apt install -qq -y \
+            apt-get update -qq && \
+            apt-get install -qq -y \
                 # To keep
                 msodbcsql17 mssql-tools unixodbc php7.2-sybase \
                 # remove later
@@ -25,13 +25,13 @@ RUN         apt update -qq && \
             echo "extension=sqlsrv.so" > /etc/php/current/mods-available/sqlsrv.ini && \
             phpenmod pdo_sqlsrv sqlsrv && \
             # Remove useless packages / files
-            apt purge -qq --autoremove -y curl gnupg unixodbc-dev php-pear php7.2-dev gcc g++ build-essential && \
+            apt-get purge -qq --autoremove -y curl gnupg unixodbc-dev php-pear php7.2-dev gcc g++ build-essential && \
             # I need that to make it work
-            apt install -qq -y libssl1.0 && \
+            apt-get install -qq -y libssl1.0 && \
             # Clean
-            apt autoremove -qq -y && \
-            apt autoclean -qq && \
-            apt clean -qq && \
+            apt-get autoremove -qq -y && \
+            apt-get autoclean -qq && \
+            apt-get clean -qq && \
             # Empty some directories from all files and hidden files
             rm -rf /build /tmp/* /usr/share/php/docs /usr/share/php/tests && \
             find /root /var/lib/apt/lists /usr/share/man /usr/share/doc /var/cache /var/log -type f -delete

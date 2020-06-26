@@ -2,7 +2,7 @@ FROM        debian:wheezy-slim
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
-# Set a default conf for apt install
+# Set a default conf for apt-get install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
             # Set right repos
             echo "deb http://archive.debian.org/debian wheezy main contrib" > /etc/apt/sources.list && \
@@ -44,20 +44,19 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             # Log to stdout
             sed -i 's/^error_log.*/error_log = \/proc\/self\/fd\/2/g' /etc/php/current/fpm/php-fpm.conf && \
             echo 'access.log = /proc/self/fd/2' >> /etc/php/current/fpm/php-fpm.conf && \
+            # Create log dir
+            mkdir /var/log/php && \
             # Now Build
-            apt-get install -y  build-essential php-pear php5-dev libcurl4-openssl-dev pkg-config && \
+            apt-get install -y build-essential php-pear php5-dev libcurl4-openssl-dev pkg-config && \
             pecl channel-update pecl.php.net && \
             pecl install mongo redis-4.3.0 xhprof-0.9.4 && \
             echo "extension=mongo.so" > /etc/php/current/mods-available/mongo.ini && \
-            php5enmod mongo && \
             echo "extension=redis.so" > /etc/php/current/mods-available/redis.ini && \
-            php5enmod redis && \
             echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
-            php5enmod xhprof && \
             mv /etc/php/current/conf.d/imagick.ini /etc/php/current/mods-available/imagick.ini && \
-            php5enmod imagick && \
-            apt-get purge -y build-essential php-pear php5-dev libcurl4-openssl-dev pkg-config && \
+            php5enmod mongo redis xhprof imagick && \
             # Clean
+            apt-get purge -y build-essential php-pear php5-dev libcurl4-openssl-dev pkg-config && \
             apt-get autoremove -y && \
             apt-get autoclean && \
             apt-get clean && \

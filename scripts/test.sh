@@ -24,6 +24,9 @@ declare -a "TESTS_7=(7.x/all_modules 7.x/few_modules)"
 VERSION_MINOR="$( echo ${VERSION} | sed -e "s/-sqlsrv//g" )"
 LIST_TESTS="TESTS_${VERSION::1}[@]"
 
+# Get goss Path
+export GOSS_PATH=/usr/local/bin/goss 
+
 for TESTS in ${!LIST_TESTS}; do
     echo ""
     echo -e "${GREEN}Testing version ${VERSION} with ${TESTS}${NC}"

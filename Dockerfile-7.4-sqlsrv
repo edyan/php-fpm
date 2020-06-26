@@ -3,31 +3,32 @@ FROM        edyan/php:7.4
 ARG         ACCEPT_EULA=Y
 ARG         DEBIAN_FRONTEND=noninteractive
 
-RUN         apt update && \
-            apt install -y curl gnupg && \
-            echo "deb [arch=amd64] https://packages.microsoft.com/debian/9/prod stretch main" > /etc/apt/sources.list.d/mssql.list && \
+RUN         apt-get update -qq && \
+            apt-get install -qq -y curl gnupg && \
+            echo "deb [arch=amd64] https://packages.microsoft.com//ubuntu/19.10/prod eoan main" > /etc/apt/sources.list.d/mssql.list && \
             curl -sS https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-            apt update -qq && \
-            apt install -qq -y -o Dpkg::Options::="--force-confold" \
+            apt-get update -qq && \
+            apt-get install -qq -y -o Dpkg::Options::="--force-confold" \
                 # To keep
-                msodbcsql17 mssql-tools unixodbc php7.4-sybase \
+                mssql-tools unixodbc php7.4-sybase \
                 # remove later
-                unixodbc-dev php-pear php7.4-dev  \
+                unixodbc-dev php-pear php7.4-dev \
                 gcc g++ build-essential && \
             # sqlsrv from PECL
             pecl channel-update pecl.php.net && \
             # Compile
-            pecl -q install sqlsrv pdo_sqlsrv && \
+            pecl -q -D "error_reporting=32759" install sqlsrv pdo_sqlsrv && \
             # Activate
             echo "extension=pdo_sqlsrv.so" > /etc/php/current/mods-available/pdo_sqlsrv.ini && \
             echo "extension=sqlsrv.so" > /etc/php/current/mods-available/sqlsrv.ini && \
             phpenmod pdo_sqlsrv sqlsrv && \
             # Remove useless packages / files
-            apt purge -qq --autoremove -y curl gnupg unixodbc-dev php-pear php7.4-dev gcc g++ build-essential && \
+            pear clear-cache && \
+            apt-get purge -qq --autoremove -y curl gnupg unixodbc-dev php-pear php7.4-dev gcc g++ build-essential && \
             # Clean
-            apt autoremove -qq -y && \
-            apt autoclean -qq && \
-            apt clean -qq && \
+            apt-get autoremove -qq -y && \
+            apt-get autoclean -qq && \
+            apt-get clean -qq && \
             # Empty some directories from all files and hidden files
             rm -rf /build /tmp/* /usr/share/php/docs /usr/share/php/tests && \
             find /root /var/lib/apt/lists /usr/share/man /usr/share/doc /var/cache /var/log -type f -delete

@@ -2,7 +2,7 @@ FROM        ubuntu:12.04
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
-# Set a default conf for apt install
+# Set a default conf for apt-get install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
             # Upgrade the system + Install all packages
             apt-get update && \
@@ -70,6 +70,8 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             # Log to stdout
             sed -i 's/^error_log.*/error_log = \/proc\/self\/fd\/2/g' /etc/php/current/fpm/php-fpm.conf && \
             echo 'access.log = /proc/self/fd/2' >> /etc/php/current/fpm/php-fpm.conf && \
+            # Create log dir
+            mkdir /var/log/php && \
             # Build tools
             apt-get install --force-yes -y build-essential pkg-config libssl-dev php-pear php5-dev && \
             # pear for mongo

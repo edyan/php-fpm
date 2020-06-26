@@ -75,17 +75,17 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             # Log to stdout
             sed -i 's/^error_log.*/error_log = \/proc\/self\/fd\/2/g' /etc/php/current/fpm/php-fpm.conf && \
             echo 'access.log = /proc/self/fd/2' >> /etc/php/current/fpm/php-fpm.conf && \
+            # Create log dir
+            mkdir /var/log/php && \
             # Now Build
-            php5enmod imap mcrypt && \
             apt-get install -y build-essential pkg-config libssl-dev php5-dev && \
             pecl channel-update pecl.php.net && \
             pecl install mongo xhprof-0.9.4 && \
             echo "extension=mongo.so" > /etc/php/current/mods-available/mongo.ini && \
-            php5enmod mongo && \
             echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
-            php5enmod xhprof && \
-            apt-get purge -y build-essential pkg-config libssl-dev php5-dev && \
+            php5enmod imap mcrypt mongo xhprof && \
             # Clean
+            apt-get purge -y build-essential pkg-config libssl-dev php5-dev && \
             apt-get autoremove -y && \
             apt-get autoclean && \
             apt-get clean && \

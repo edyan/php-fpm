@@ -2,12 +2,12 @@ FROM        ubuntu:20.04
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
-# Set a default conf for apt install
+# Set a default conf for apt-get install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
             # Install a few required packages
-            apt update -qq -y && \
-            apt upgrade -qq -y && \
-            apt install -qq -y \
+            apt-get update -qq -y && \
+            apt-get upgrade -qq -y && \
+            apt-get install -qq -y \
                 ca-certificates \
                 # Calling fpm locally
                 libfcgi-bin \
@@ -47,39 +47,41 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php7.4-xmlrpc \
                 # php7.4-xsl \
                 php7.4-zip \
+                php-apcu \
                 php-imagick \
                 php-memcache \
+                php-memcached \
                 php-ssh2 && \
             # Set a symlink to simplify the configuration, as we use a single php version
             ln -s /etc/php/7.4 /etc/php/current && \
             # Log to stdout
             sed -i 's/^error_log.*/error_log = \/proc\/self\/fd\/2/g' /etc/php/current/fpm/php-fpm.conf && \
             echo 'access.log = /proc/self/fd/2' >> /etc/php/current/fpm/php-fpm.conf && \
+            # Create log dir
+            mkdir /var/log/php && \
             # Install a few extensions with PECL instead of distro ones
-            apt install -qq -y \
-                build-essential php-pear php7.4-dev pkg-config zlib1g-dev \
-                geoip-bin libgeoip-dev \
-                libmemcached11 libmemcachedutil2 libmemcached-dev && \
+            apt-get install -qq -y \
+                build-essential geoip-bin libgeoip-dev \
+                php-pear php7.4-dev pkg-config zlib1g-dev && \
             # Install extensions
             pecl channel-update pecl.php.net && \
-            pecl -q -D "error_reporting=32759" install apcu geoip-beta memcached mongodb redis xdebug-beta xhprof && \
-            # Activate modules
-            echo "extension=apcu.so" > /etc/php/current/mods-available/apcu.ini && \
+            # pecl -q -D "error_reporting=32759" install apcu geoip-beta memcached mongodb redis xdebug-beta xhprof && \
+            pecl channel-update pecl.php.net && \
+            pecl -q -D "error_reporting=32759" install geoip-beta mongodb redis xdebug xhprof && \
+            # Activate it
             echo "extension=geoip.so" > /etc/php/current/mods-available/geoip.ini && \
-            echo "extension=memcached.so" > /etc/php/current/mods-available/memcached.ini && \
             echo "extension=mongodb.so" > /etc/php/current/mods-available/mongodb.ini && \
             echo "extension=redis.so" > /etc/php/current/mods-available/redis.ini && \
             echo "zend_extension=xdebug.so" > /etc/php/current/mods-available/xdebug.ini && \
             echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
-            phpenmod apcu geoip memcached mongodb redis ssh2 xdebug && \
-            apt purge --autoremove -y apt-utils \
-                                      build-essential php-pear php7.4-dev pkg-config zlib1g-dev \
-                                      libgeoip-dev \
-                                      libmemcached-dev && \
+            phpenmod geoip mongodb redis ssh2 xdebug xhprof && \
             # Clean
-            apt autoremove -qq -y && \
-            apt autoclean -qq && \
-            apt clean -qq && \
+            apt-get purge -qq --autoremove -y \
+                build-essential libgeoip-dev \
+                php-pear php7.4-dev pkg-config zlib1g-dev && \
+            apt-get autoremove -qq -y && \
+            apt-get autoclean -qq && \
+            apt-get clean -qq && \
             # Empty some directories from all files and hidden files
             rm -rf /build /tmp/* /usr/share/php/docs /usr/share/php/tests && \
             find /root /var/lib/apt/lists /usr/share/man /usr/share/doc /var/cache /var/log -type f -delete
