@@ -51,7 +51,8 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php-imagick \
                 php-memcache \
                 php-memcached \
-                php-ssh2 && \
+                php-ssh2 \
+                php-tideways && \
             # Set a symlink to simplify the configuration, as we use a single php version
             ln -s /etc/php/7.4 /etc/php/current && \
             # Log to stdout
