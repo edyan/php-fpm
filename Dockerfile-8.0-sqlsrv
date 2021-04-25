@@ -1,6 +1,5 @@
-FROM        edyan/php:7.4
+FROM        edyan/php:8.0
 
-ARG         ACCEPT_EULA=Y
 ARG         DEBIAN_FRONTEND=noninteractive
 
 RUN         apt-get update -qq && \
@@ -8,23 +7,23 @@ RUN         apt-get update -qq && \
             echo "deb [arch=amd64] https://packages.microsoft.com/ubuntu/20.04/prod focal main" > /etc/apt/sources.list.d/mssql.list && \
             curl -sS https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
             apt-get update -qq && \
-            apt-get install -qq -y -o Dpkg::Options::="--force-confold" \
+            ACCEPT_EULA=Y apt-get install -qq -y \
                 # To keep
-                mssql-tools unixodbc php7.4-sybase \
+                mssql-tools unixodbc php8.0-sybase \
                 # remove later
-                unixodbc-dev php-pear php7.4-dev \
+                unixodbc-dev php-pear php8.0-dev \
                 gcc g++ build-essential && \
             # sqlsrv from PECL
             pecl channel-update pecl.php.net && \
             # Compile
-            pecl -q -D "error_reporting=32759" install sqlsrv pdo_sqlsrv && \
+            pecl -q install sqlsrv pdo_sqlsrv && \
             # Activate
             echo "extension=pdo_sqlsrv.so" > /etc/php/current/mods-available/pdo_sqlsrv.ini && \
             echo "extension=sqlsrv.so" > /etc/php/current/mods-available/sqlsrv.ini && \
             phpenmod pdo_sqlsrv sqlsrv && \
             # Remove useless packages / files
             pear clear-cache && \
-            apt-get purge -qq --autoremove -y curl gnupg unixodbc-dev php-pear php7.4-dev gcc g++ build-essential && \
+            apt-get purge -qq --autoremove -y curl gnupg unixodbc-dev php-pear php8.0-dev gcc g++ build-essential && \
             # Clean
             apt-get autoremove -qq -y && \
             apt-get autoclean -qq && \

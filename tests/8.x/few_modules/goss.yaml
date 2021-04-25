@@ -1,0 +1,58 @@
+package:
+  php{{.Env.VERSION}}-fpm:
+    installed: true
+
+port:
+  tcp:9000:
+    listening: true
+    ip:
+      - 0.0.0.0
+
+command:
+  "SCRIPT_NAME=/status SCRIPT_FILENAME=/status REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9000":
+    exit-status: 0
+    stdout: ["pool:                 wwww"]
+  php -m|grep -e ^apcu$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+{{if ne .Env.VERSION "7.4" }}
+  php -m|grep -e ^curl$:
+    exit-status: 0
+    stdout: [curl]
+    stderr: []
+{{end}}
+  php -m|grep -e ^gd$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^imagick$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^redis$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^xdebug$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^xml$:
+    exit-status: 0
+    stdout: [xml]
+    stderr: []
+  php -m|grep -e ^tideways$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+{{if eq .Env.SQLSRV "yes"}}
+  php -m|grep -e ^pdo_sqlsrv$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+  php -m|grep -e ^sqlsrv$:
+    exit-status: 1
+    stdout: []
+    stderr: []
+{{end}}

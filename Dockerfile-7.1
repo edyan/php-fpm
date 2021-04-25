@@ -19,17 +19,26 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 libfcgi-bin \
                 # Manipulate iptables rules (example: block smtps)
                 iptables \
-                php7.1-bcmath \
-                php7.1-bz2 \
                 # php7.1-cgi \
-                php7.1-cli \
-                php7.1-curl \
                 # php7.1-dba \
                 # php7.1-dev \
                 # php7.1-enchant \
+                # php7.1-phpdbg \
+                # php7.1-pspell \
+                # php7.1-recode \
+                # php7.1-snmp \
+                # php7.1-sybase \
+                # php7.1-tidy \
+                php7.1-apcu \
+                php7.1-bcmath \
+                php7.1-bz2 \
+                php7.1-cli \
+                php7.1-curl \
                 php7.1-fpm \
                 php7.1-gd \
+                php7.1-geoip \
                 php7.1-gmp \
+                php7.1-imagick \
                 php7.1-imap \
                 php7.1-interbase \
                 php7.1-intl \
@@ -37,31 +46,23 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php7.1-ldap \
                 php7.1-mbstring \
                 php7.1-mcrypt \
+                php7.1-memcache \
+                php7.1-memcached \
+                php7.1-mongodb \
                 php7.1-mysql \
                 php7.1-odbc \
                 php7.1-opcache \
                 php7.1-pgsql \
-                # php7.1-phpdbg \
-                # php7.1-pspell \
+                php7.1-redis \
                 php7.1-readline \
-                # php7.1-recode \
-                # php7.1-snmp \
                 php7.1-soap \
                 php7.1-sqlite3 \
-                # php7.1-sybase \
-                # php7.1-tidy \
+                php7.1-ssh2 \
+                php7.1-xdebug \
+                php7.1-xhprof \
                 php7.1-xml \
                 php7.1-xmlrpc \
-                php7.1-zip \
-                php-apcu \
-                php-geoip \
-                php-imagick \
-                php-memcache \
-                php-memcached \
-                php-ssh2 && \
-            # Remove useless files installed for other PHP Versions
-            rm -rf /usr/lib/php/20131226 /usr/lib/php/20151012 /usr/lib/php/20170718 /usr/lib/php/20180731 && \
-            rm -rf /etc/php/5.6 /etc/php/7.0 /etc/php/7.2 /etc/php/7.3 && \
+                php7.1-zip && \
             # Set a symlink to simplify the configuration, as we use a single php version
             ln -s /etc/php/7.1 /etc/php/current && \
             # Log to stdout
@@ -69,22 +70,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
             echo 'access.log = /proc/self/fd/2' >> /etc/php/current/fpm/php-fpm.conf && \
             # Create log dir
             mkdir /var/log/php && \
-            # Install a few extensions with PECL instead of distro ones
-            apt-get install -qq -y \
-                build-essential \
-                php-pear php7.1-dev pkg-config zlib1g-dev && \
-            pecl channel-update pecl.php.net && \
-            pecl -q install mongodb redis xdebug-2.9.8 xhprof && \
-            # Activate it
-            echo "extension=mongodb.so" > /etc/php/current/mods-available/mongodb.ini && \
-            echo "extension=redis.so" > /etc/php/current/mods-available/redis.ini && \
-            echo "zend_extension=xdebug.so" > /etc/php/current/mods-available/xdebug.ini && \
-            echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
-            phpenmod mongodb redis xdebug xhprof && \
             # Clean
-            apt-get purge -qq --autoremove -y \
-                build-essential \
-                php-pear php7.1-dev pkg-config zlib1g-dev && \
             apt-get autoremove -qq -y && \
             apt-get autoclean -qq && \
             apt-get clean -qq && \

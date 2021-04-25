@@ -1,4 +1,4 @@
-FROM        ubuntu:20.04
+FROM        debian:buster-slim
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
@@ -6,78 +6,71 @@ ARG         DEBIAN_FRONTEND=noninteractive
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
             # Install a few required packages
             apt-get update -qq -y && \
+            apt-get install -qq -y apt-transport-https gnupg ca-certificates curl && \
+            # Setup sury repos
+            echo "deb https://packages.sury.org/php/ buster main" > /etc/apt/sources.list.d/sury.org.list && \
+            curl -sS https://packages.sury.org/php/apt.gpg | apt-key add - && \
+            # Update, upgrade
+            apt-get update -qq -y && \
             apt-get upgrade -qq -y && \
+            # Packages
             apt-get install -qq -y \
-                ca-certificates \
                 # Calling fpm locally
                 libfcgi-bin \
                 # Manipulate iptables rules (example: block smtps)
                 iptables \
-                # php7.4-cgi \
-                # php7.4-dba \
-                # php7.4-dev \
-                # php7.4-enchant \
-                # php7.4-gmp \
-                # php7.4-interbase \
-                # php7.4-odbc \
-                # php7.4-phpdbg \
-                # php7.4-pspell \
-                # php7.4-recode \
-                # php7.4-snmp \
-                # php7.4-sybase \
-                # php7.4-tidy \
-                # php7.4-xsl \
-                php7.4-apcu \
-                php7.4-bcmath \
-                php7.4-bz2 \
-                php7.4-cli \
-                php7.4-curl \
-                php7.4-fpm \
-                php7.4-gd \
-                php7.4-geoip \
-                php7.4-imagick \
-                php7.4-imap \
-                php7.4-intl \
-                php7.4-json \
-                php7.4-ldap \
-                php7.4-mbstring \
-                php7.4-memcache \
-                php7.4-memcached \
-                php7.4-mysql \
-                php7.4-opcache \
-                php7.4-pgsql \
-                php7.4-readline \
-                php7.4-soap \
-                php7.4-sqlite3 \
-                php7.4-ssh2 \
-                php7.4-tideways \
-                php7.4-xml \
-                php7.4-xmlrpc \
-                php7.4-zip && \
+                # php8.0-cgi \
+                # php8.0-dba \
+                # php8.0-dev \
+                # php8.0-enchant \
+                # php8.0-phpdbg \
+                # php8.0-pspell \
+                # php8.0-recode \
+                # php8.0-snmp \
+                # php8.0-sybase \
+                # php8.0-tidy \
+                php8.0-apcu \
+                php8.0-bcmath \
+                php8.0-bz2 \
+                php8.0-cli \
+                php8.0-curl \
+                php8.0-fpm \
+                php8.0-gd \
+                # php8.0-geoip \
+                php8.0-gmp \
+                php8.0-imagick \
+                php8.0-imap \
+                php8.0-interbase \
+                php8.0-intl \
+                # php8.0-json \
+                php8.0-ldap \
+                php8.0-mbstring \
+                php8.0-mcrypt \
+                php8.0-memcache \
+                php8.0-memcached \
+                php8.0-mongodb \
+                php8.0-mysql \
+                php8.0-odbc \
+                php8.0-opcache \
+                php8.0-pgsql \
+                php8.0-readline \
+                php8.0-redis \
+                php8.0-soap \
+                php8.0-sqlite3 \
+                php8.0-ssh2 \
+                php8.0-xdebug \
+                php8.0-xhprof \
+                php8.0-xml \
+                php8.0-xmlrpc \
+                php8.0-zip && \
             # Set a symlink to simplify the configuration, as we use a single php version
-            ln -s /etc/php/7.4 /etc/php/current && \
+            ln -s /etc/php/8.0 /etc/php/current && \
             # Log to stdout
             sed -i 's/^error_log.*/error_log = \/proc\/self\/fd\/2/g' /etc/php/current/fpm/php-fpm.conf && \
             echo 'access.log = /proc/self/fd/2' >> /etc/php/current/fpm/php-fpm.conf && \
             # Create log dir
             mkdir /var/log/php && \
-            # Install a few extensions with PECL instead of distro ones
-            apt-get install -qq -y \
-                build-essential geoip-bin libgeoip-dev \
-                php-pear php7.4-dev pkg-config zlib1g-dev && \
-            # Install extensions
-            pecl channel-update pecl.php.net && \
-            pecl -q install mongodb redis xdebug xhprof && \
-            # Activate it
-            echo "extension=mongodb.so" > /etc/php/current/mods-available/mongodb.ini && \
-            echo "extension=redis.so" > /etc/php/current/mods-available/redis.ini && \
-            echo "zend_extension=xdebug.so" > /etc/php/current/mods-available/xdebug.ini && \
-            echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
-            phpenmod mongodb redis ssh2 xdebug xhprof && \
             # Clean
-            apt-get purge -qq --autoremove -y \
-                build-essential libgeoip-dev \
-                php-pear php7.4-dev pkg-config zlib1g-dev && \
             apt-get autoremove -qq -y && \
             apt-get autoclean -qq && \
             apt-get clean -qq && \
@@ -99,7 +92,7 @@ RUN         mkdir /etc/php/current/fpm/user-conf.d && \
             mkdir -p /run/php && \
             chown www-data:www-data /run/php
 
-COPY        files/7.x/docker-entrypoint.sh /docker-entrypoint.sh
+COPY        files/8.x/docker-entrypoint.sh /docker-entrypoint.sh
 RUN         chmod +x /docker-entrypoint.sh
 
 ENV         ENVIRONMENT dev
@@ -126,4 +119,4 @@ LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>" \
 
 ENTRYPOINT  ["/docker-entrypoint.sh"]
 
-CMD         ["/usr/sbin/php-fpm7.4", "--allow-to-run-as-root", "-c", "/etc/php/current/fpm", "--nodaemonize"]
+CMD         ["/usr/sbin/php-fpm8.0", "--allow-to-run-as-root", "-c", "/etc/php/current/fpm", "--nodaemonize"]

@@ -19,13 +19,14 @@ ${DIRECTORY}/build.sh ${VERSION}
 # List tests
 declare -a "TESTS_5=(5.x/all_modules 5.x/few_modules)"
 declare -a "TESTS_7=(7.x/all_modules 7.x/few_modules)"
+declare -a "TESTS_8=(8.x/all_modules 7.x/few_modules)"
 
 # Get tests and loop to run all
 VERSION_MINOR="$( echo ${VERSION} | sed -e "s/-sqlsrv//g" )"
 LIST_TESTS="TESTS_${VERSION::1}[@]"
 
 # Get goss Path
-export GOSS_PATH=/usr/local/bin/goss 
+export GOSS_PATH=/usr/local/bin/goss
 
 for TESTS in ${!LIST_TESTS}; do
     echo ""

@@ -5,7 +5,7 @@
 # PHP FPM Docker Image
 Docker Hub: https://hub.docker.com/r/edyan/php
 
-Docker containers to expose PHP FPM with a specific version of PHP (5.3 -> 7.3) installed
+Docker containers to expose PHP FPM with a specific version of PHP (5.3 -> 8.0) installed
 with main PHP extensions (curl, pdo, gd, etc ....) as well as XDebug.
 
 It's mainly made for development purposes but can also be used as Production.
@@ -73,7 +73,7 @@ To use a specific PHP version, append the version number to the image name.
 Eg: `image: edyan/php:7.2`
 
 The following PHP versions are available:
-
+* PHP 8.0 (Ubuntu 20.04 + sury packages)
 * PHP 7.4 (Ubuntu 20.04)
 * PHP 7.3 (buster slim)
 * PHP 7.2 (Ubuntu 18.04)
