@@ -1,0 +1,129 @@
+FROM        ubuntu:22.04
+
+ARG         DEBIAN_FRONTEND=noninteractive
+
+# Set a default conf for apt-get install
+RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
+            # Install a few required packages
+            apt-get update -qq -y && \
+            apt-get upgrade -qq -y && \
+            apt-get install -qq -y \
+                ca-certificates \
+                # Calling fpm locally
+                libfcgi-bin \
+                # Manipulate iptables rules (example: block smtps)
+                iptables \
+                # php8.1-cgi \
+                # php8.1-dba \
+                # php8.1-dev \
+                # php8.1-enchant \
+                # php8.1-gmp \
+                # php8.1-interbase \
+                # php8.1-odbc \
+                # php8.1-phpdbg \
+                # php8.1-pspell \
+                # php8.1-recode \
+                # php8.1-snmp \
+                # php8.1-sybase \
+                # php8.1-tidy \
+                # php8.1-xsl \
+                php8.1-apcu \
+                php8.1-bcmath \
+                php8.1-bz2 \
+                php8.1-cli \
+                php8.1-curl \
+                php8.1-fpm \
+                php8.1-gd \
+                # php8.1-geoip \
+                php8.1-imagick \
+                php8.1-imap \
+                php8.1-intl \
+                # php8.1-json \
+                php8.1-ldap \
+                php8.1-mbstring \
+                php8.1-memcache \
+                php8.1-memcached \
+                php8.1-mysql \
+                php8.1-mongodb \
+                php8.1-opcache \
+                php8.1-pgsql \
+                php8.1-readline \
+                php8.1-redis \
+                php8.1-soap \
+                php8.1-sqlite3 \
+                php8.1-ssh2 \
+                # php-tideways \
+                php8.1-xdebug \
+                php8.1-xml \
+                php8.1-xmlrpc \
+                php8.1-zip && \
+            # Set a symlink to simplify the configuration, as we use a single php version
+            ln -s /etc/php/8.1 /etc/php/current && \
+            # Log to stdout
+            sed -i 's/^error_log.*/error_log = \/proc\/self\/fd\/2/g' /etc/php/current/fpm/php-fpm.conf && \
+            echo 'access.log = /proc/self/fd/2' >> /etc/php/current/fpm/php-fpm.conf && \
+            # Create log dir
+            mkdir /var/log/php && \
+            # Install a few extensions with PECL instead of distro ones
+            apt-get install -qq -y \
+                build-essential \
+                php-pear php8.1-dev pkg-config zlib1g-dev && \
+            # Install extensions
+            pecl channel-update pecl.php.net && \
+            pecl -q install xhprof && \
+            # Activate it
+            echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
+            phpenmod mongodb redis ssh2 xdebug xhprof && \
+            # Clean
+            apt-get purge -qq --autoremove -y \
+                build-essential \
+                php-pear php8.1-dev pkg-config zlib1g-dev && \
+            apt-get autoremove -qq -y && \
+            apt-get autoclean -qq && \
+            apt-get clean -qq && \
+            # Empty some directories from all files and hidden files
+            rm -rf /build /tmp/* /usr/share/php/docs /usr/share/php/tests && \
+            find /root /var/lib/apt/lists /usr/share/man /usr/share/doc /var/cache /var/log -type f -delete
+
+COPY        files/common/php-cli.ini /etc/php/current/cli/conf.d/30-custom-php.ini
+COPY        files/common/php-fpm.ini /etc/php/current/fpm/conf.d/30-custom-php.ini
+COPY        files/common/www.conf    /etc/php/current/fpm/pool.d/
+
+# For custom Configuration that comes from outside (via a docker compose mount)
+RUN         mkdir /etc/php/current/fpm/user-conf.d && \
+            echo "; Default empty file" > /etc/php/current/fpm/user-conf.d/example.conf && \
+            # Create home for www-data
+            mkdir /home/www-data && \
+            chown www-data:www-data /home/www-data && \
+            usermod -d /home/www-data www-data && \
+            mkdir -p /run/php && \
+            chown www-data:www-data /run/php
+
+COPY        files/8.x/docker-entrypoint.sh /docker-entrypoint.sh
+RUN         chmod +x /docker-entrypoint.sh
+
+ENV         ENVIRONMENT dev
+ENV         PHP_ENABLED_MODULES ""
+ENV         FPM_UID 33
+ENV         FPM_GID 33
+
+EXPOSE      9000
+
+# At the end as it changes everytime ;)
+ARG         BUILD_DATE
+ARG         DOCKER_TAG
+ARG         VCS_REF
+LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>" \
+            org.label-schema.build-date=${BUILD_DATE} \
+            org.label-schema.name=${DOCKER_TAG} \
+            org.label-schema.description="Docker PHP Image based on Debian and including main modules" \
+            org.label-schema.url="https://cloud.docker.com/u/edyan/repository/docker/edyan/php" \
+            org.label-schema.vcs-url="https://github.com/edyan/docker-php" \
+            org.label-schema.vcs-ref=${VCS_REF} \
+            org.label-schema.schema-version="1.0" \
+            org.label-schema.vendor="edyan" \
+            org.label-schema.docker.cmd="docker run -d --rm ${DOCKER_TAG}"
+
+ENTRYPOINT  ["/docker-entrypoint.sh"]
+
+CMD         ["/usr/sbin/php-fpm8.1", "--allow-to-run-as-root", "-c", "/etc/php/current/fpm", "--nodaemonize"]
