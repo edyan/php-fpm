@@ -4,6 +4,7 @@ ARG         DEBIAN_FRONTEND=noninteractive
 
 # Set a default conf for apt-get install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
+            sed -i s/archive.ubuntu/old-releases.ubuntu/g /etc/apt/sources.list && \
             # Upgrade the system + Install all packages
             apt-get update && \
             # Install all packages below :
