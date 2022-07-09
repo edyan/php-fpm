@@ -56,7 +56,7 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php-pear php7.0-dev pkg-config zlib1g-dev && \
             pecl channel-update pecl.php.net && \
             # Required extensions
-            pecl -q install mongodb redis xhprof && \
+            pecl -q install mongodb-1.9.2 redis xhprof && \
             echo "extension=mongodb.so" > /etc/php/current/mods-available/mongodb.ini && \
             echo "extension=redis.so" > /etc/php/current/mods-available/redis.ini && \
             echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
