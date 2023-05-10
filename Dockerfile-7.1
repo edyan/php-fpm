@@ -1,4 +1,4 @@
-FROM        debian:buster-slim
+FROM        ubuntu:22.04
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
@@ -6,10 +6,8 @@ ARG         DEBIAN_FRONTEND=noninteractive
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
             # Install a few required packages
             apt-get update -qq -y && \
-            apt-get install -qq -y apt-transport-https gnupg ca-certificates curl && \
-            # Setup sury repos
-            echo "deb https://packages.sury.org/php/ buster main" > /etc/apt/sources.list.d/sury.org.list && \
-            curl -sS https://packages.sury.org/php/apt.gpg | apt-key add - && \
+            apt install -qq -y curl gnupg2 software-properties-common && \
+            add-apt-repository ppa:ondrej/php --yes && \
             # Update, upgrade
             apt-get update -qq -y && \
             apt-get upgrade -qq -y && \

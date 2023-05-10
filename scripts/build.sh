@@ -12,7 +12,7 @@ fi
 VERSION=$1
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
-TAG=edyan/php:${VERSION}
+TAG="${REGISTRY_PREFIX}edyan/php:${VERSION}"
 
 cd ${DIR}/../
 
@@ -35,10 +35,10 @@ docker build --tag ${TAG} \
              .
 
 # Tag latest
-if [[ "${VERSION}" == "7.3" ]]; then
+if [[ "${VERSION}" == "8.2" ]]; then
   echo ""
   echo "${TAG} will also be tagged 'latest'"
-  docker tag ${TAG} edyan/php:latest
+  docker tag ${TAG} ${REGISTRY_PREFIX}edyan/php:latest
 fi
 
 # Nice Message
@@ -56,5 +56,5 @@ if [[ $? -eq 0 ]]; then
     echo "Or if you want to directly enter the container, then remove it : "
     echo "  docker run -ti --rm ${TAG} /bin/bash"
     echo "To push that version (and other of the same repo):"
-    echo "  docker push edyan/php:${VERSION}"
+    echo "  docker push ${TAG}"
 fi

@@ -3,7 +3,9 @@ FROM        debian/eol:jessie-slim
 ARG         DEBIAN_FRONTEND=noninteractive
 
 # Set a default conf for apt-get install
-RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
+RUN         echo "deb http://archive.debian.org/debian/ jessie main non-free contrib" > /etc/apt/sources.list && \
+            echo "deb http://archive.debian.org/debian-security/ jessie/updates main non-free contrib" >> /etc/apt/sources.list && \
+            echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
             # Upgrade the system + Install all packages
             apt-get update && \
             apt-get upgrade -y && \

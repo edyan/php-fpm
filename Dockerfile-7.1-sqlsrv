@@ -3,10 +3,8 @@ FROM        edyan/php:7.1
 ARG         ACCEPT_EULA=Y
 ARG         DEBIAN_FRONTEND=noninteractive
 
-RUN         apt-get update && \
-            apt-get install -y curl gnupg && \
-            echo "deb [arch=amd64] https://packages.microsoft.com/debian/9/prod stretch main" > /etc/apt/sources.list.d/mssql.list && \
-            curl -sS https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+RUN         curl -sSLo /etc/apt/trusted.gpg.d/microsoft.asc https://packages.microsoft.com/keys/microsoft.asc && \
+            echo "deb [arch=amd64] https://packages.microsoft.com/ubuntu/22.04/prod/ jammy main" > /etc/apt/sources.list.d/mssql.list && \
             apt-get update -qq && \
             apt-get install -qq -y \
                 msodbcsql17 mssql-tools unixodbc unixodbc-dev php-pear php7.1-dev php7.1-sybase \

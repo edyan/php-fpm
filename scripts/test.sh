@@ -8,12 +8,12 @@ fi
 
 VERSION=${1}
 DIRECTORY="$( cd "$( dirname "$0" )" && pwd )"
-TAG=edyan/php:${VERSION}
+TAG="${REGISTRY_PREFIX}edyan/php:${VERSION}"
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
 cd
-echo "Building image"
+echo "Building image ${TAG}"
 ${DIRECTORY}/build.sh ${VERSION}
 
 # List tests
