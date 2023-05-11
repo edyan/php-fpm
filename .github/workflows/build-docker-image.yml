@@ -40,7 +40,7 @@ jobs:
         run: bash scripts/build_all.sh
 
       - name: Push all images to docker hub
-        run: docker push edyan/php
+        run: docker push edyan/php --all-tags
 
       - name: Tag all images with ghcr.io
         run: |
@@ -50,4 +50,4 @@ jobs:
           docker tag edyan/php:latest ghcr.io/${{ github.repository }}:latest
 
       - name: Push all images to ghcr
-        run: docker push ghcr.io/${{ github.repository }}
+        run: docker push ghcr.io/${{ github.repository }} --all-tags
