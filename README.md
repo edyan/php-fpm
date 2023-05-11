@@ -56,7 +56,7 @@ If you need to alter the php configuration, you can mount a volume containing `.
 Example:
 ```yaml
 volumes:
-    - ./conf/php-fpm-override:/etc/php/current/fpm/user-conf.d
+  - "./conf/php-fpm-override:/etc/php/current/fpm/user-conf.d"
 ```
 
 If you have a file named `conf/php-fpm-override/memory.conf` containing :
