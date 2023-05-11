@@ -10,8 +10,6 @@ on:
 jobs:
   push_to_registries:
     name: Push Docker images to multiple registries
-    env:
-      REGISTRY_PREFIX: "ghcr.io/"    
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -33,10 +31,15 @@ jobs:
         with:
           images: ghcr.io/edyan/php
       
-      - name: Build and push Docker images
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+#      - name: Build and push Docker images
+#        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+#        with:
+#          context: .
+#          push: true
+#          tags: ${{ steps.meta.outputs.tags }}
+#          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build and Test all images
+        env:
+          REGISTRY_PREFIX: "ghcr.io/"    
+        run: bash scripts/build_all.sh

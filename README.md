@@ -1,4 +1,3 @@
-[![Layers](https://images.microbadger.com/badges/image/edyan/php.svg)](https://microbadger.com/images/edyan/php "Get your own image badge on microbadger.com")
 [![Docker Pulls](https://img.shields.io/docker/pulls/edyan/php.svg)](https://hub.docker.com/r/edyan/php/)
 [![Build Status](https://travis-ci.com/edyan/docker-php.svg?branch=master)](https://travis-ci.com/edyan/docker-php)
 
