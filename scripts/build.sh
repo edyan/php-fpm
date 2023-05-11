@@ -12,7 +12,7 @@ fi
 VERSION=$1
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
-TAG="${REGISTRY_PREFIX}edyan/php:${VERSION}"
+TAG=edyan/php:${VERSION}
 
 cd ${DIR}/../
 
@@ -38,7 +38,7 @@ docker build --tag ${TAG} \
 if [[ "${VERSION}" == "8.2" ]]; then
   echo ""
   echo "${TAG} will also be tagged 'latest'"
-  docker tag ${TAG} ${REGISTRY_PREFIX}edyan/php:latest
+  docker tag ${TAG} edyan/php:latest
 fi
 
 # Nice Message

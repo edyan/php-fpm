@@ -8,7 +8,7 @@ fi
 
 VERSION=${1}
 DIRECTORY="$( cd "$( dirname "$0" )" && pwd )"
-TAG="${REGISTRY_PREFIX}edyan/php:${VERSION}"
+TAG=edyan/php:${VERSION}
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
