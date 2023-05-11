@@ -39,12 +39,10 @@ jobs:
 #          tags: ${{ steps.meta.outputs.tags }}
 #          labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Install dgoss
-        run: |
-          sudo curl -L https://raw.githubusercontent.com/goss-org/goss/master/extras/dgoss/dgoss -o /usr/local/bin/dgoss
-          sudo chmod +rx /usr/local/bin/dgoss
-
       - name: Build and Test all images
         env:
           REGISTRY_PREFIX: "ghcr.io/"    
         run: bash scripts/build_all.sh
+
+      - name: Push all images to ghcr
+        run: docker push ghcr.io/edyan/php

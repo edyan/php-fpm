@@ -6,6 +6,11 @@ if [[ -z "${1}" || ! -f "Dockerfile-${1}" ]]; then
     exit 1
 fi
 
+if [[ ! -f /tmp/dgoss ]]; then
+    curl -sL https://raw.githubusercontent.com/goss-org/goss/master/extras/dgoss/dgoss -o /tmp/dgoss
+    chmod +rx /tmp/dgoss
+fi
+
 VERSION=${1}
 DIRECTORY="$( cd "$( dirname "$0" )" && pwd )"
 TAG="${REGISTRY_PREFIX}edyan/php:${VERSION}"
@@ -43,8 +48,8 @@ for TESTS in ${!LIST_TESTS}; do
 
     if [[ ${TESTS} == */few_modules ]]
     then
-        dgoss run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} -e "PHP_ENABLED_MODULES=curl xml" ${TAG}
+        /tmp/dgoss run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} -e "PHP_ENABLED_MODULES=curl xml" ${TAG}
     else
-        dgoss run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} ${TAG}
+        /tmp/dgoss run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} ${TAG}
     fi
 done
