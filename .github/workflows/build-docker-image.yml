@@ -38,6 +38,10 @@ jobs:
 #          push: true
 #          tags: ${{ steps.meta.outputs.tags }}
 #          labels: ${{ steps.meta.outputs.labels }}
+      - name: Install dgoss
+        uses: e1himself/goss-installation-action
+        with:
+          version: 'v0.3.22'
 
       - name: Build and Test all images
         env:

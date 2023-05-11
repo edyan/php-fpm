@@ -6,18 +6,6 @@ if [[ -z "${1}" || ! -f "Dockerfile-${1}" ]]; then
     exit 1
 fi
 
-# Get goss Path
-GOSS_PATH="/${HOME}/bin/dgoss"
-GOSS_INSTALL_DIR="$(dirname ${GOSS_PATH})"
-
-mkdir -p ${GOSS_INSTALL_DIR}
-PATH=${PATH}:${GOSS_INSTALL_DIR}
-
-if [[ ! -f "${GOSS_PATH}" ]]; then
-    curl -sL https://raw.githubusercontent.com/goss-org/goss/master/extras/dgoss/dgoss -o "${GOSS_PATH}"
-    chmod +rx "${GOSS_PATH}"
-fi
-
 VERSION=${1}
 DIRECTORY="$( cd "$( dirname "$0" )" && pwd )"
 TAG="${REGISTRY_PREFIX}edyan/php:${VERSION}"
@@ -37,6 +25,9 @@ declare -a "TESTS_8=(8.x/all_modules 8.x/few_modules)"
 VERSION_MINOR="$( echo ${VERSION} | sed -e "s/-sqlsrv//g" )"
 LIST_TESTS="TESTS_${VERSION::1}[@]"
 
+# Get goss Path
+export GOSS_PATH=$(which goss)
+
 for TESTS in ${!LIST_TESTS}; do
     echo ""
     echo -e "${GREEN}Testing version ${VERSION} with ${TESTS}${NC}"
@@ -52,8 +43,8 @@ for TESTS in ${!LIST_TESTS}; do
 
     if [[ ${TESTS} == */few_modules ]]
     then
-        "${GOSS_PATH}" run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} -e "PHP_ENABLED_MODULES=curl xml" ${TAG}
+        dgoss run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} -e "PHP_ENABLED_MODULES=curl xml" ${TAG}
     else
-        "${GOSS_PATH}" run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} ${TAG}
+        dgoss run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} ${TAG}
     fi
 done
