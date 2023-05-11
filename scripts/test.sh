@@ -26,7 +26,17 @@ VERSION_MINOR="$( echo ${VERSION} | sed -e "s/-sqlsrv//g" )"
 LIST_TESTS="TESTS_${VERSION::1}[@]"
 
 # Get goss Path
-export GOSS_PATH=$(which goss)
+export GOSS_PATH=/tmp/goss
+if [[ ! -f "${GOSS_PATH}" ]]; then
+    curl -sL https://github.com/goss-org/goss/releases/latest/download/goss-linux-amd64 -o "${GOSS_PATH}"
+    chmod +rx "${GOSS_PATH}"
+fi
+
+export DGOSS_PATH=/tmp/dgoss
+if [[ ! -f "${DGOSS_PATH}" ]]; then
+    curl -sL https://raw.githubusercontent.com/goss-org/goss/master/extras/dgoss/dgoss -o "${DGOSS_PATH}"
+    chmod +rx "${DGOSS_PATH}"
+fi
 
 for TESTS in ${!LIST_TESTS}; do
     echo ""
@@ -43,8 +53,8 @@ for TESTS in ${!LIST_TESTS}; do
 
     if [[ ${TESTS} == */few_modules ]]
     then
-        dgoss run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} -e "PHP_ENABLED_MODULES=curl xml" ${TAG}
+        ${DGOSS_PATH} run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} -e "PHP_ENABLED_MODULES=curl xml" ${TAG}
     else
-        dgoss run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} ${TAG}
+        ${DGOSS_PATH} run -e VERSION=${VERSION_MINOR} -e GOSS_FILES_STRATEGY=cp -e SQLSRV=${SQLSRV} ${TAG}
     fi
 done
