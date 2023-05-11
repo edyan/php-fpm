@@ -3,9 +3,10 @@
 
 # PHP FPM Docker Image
 Docker Hub: https://hub.docker.com/r/edyan/php
+Github Containers Registry: https://ghcr.io/edyan/php-fpm
 
-Docker containers to expose PHP FPM with a specific version of PHP (5.3 -> 8.1) installed
-with main PHP extensions (curl, pdo, gd, etc ....) as well as XDebug.
+Docker containers to expose PHP FPM with a specific version of PHP (5.3 -> 8.2) installed
+with then main PHP extensions (curl, pdo, gd, etc ....) as well as XDebug.
 
 It's mainly made for development purposes but can also be used as Production.
 
@@ -27,11 +28,11 @@ lot of emails to be send during developments and by mistake*
 Add the following to your docker-compose.yml file:
 ```yaml
 php:
-    image: edyan/php:8.0
-    environment:
-        FPM_UID: 1000
-        FPM_GID: 1000
-        PHP_ENABLED_MODULES: "curl sqlite3"
+  image: edyan/php:8.0
+  environment:
+    FPM_UID: 1000
+    FPM_GID: 1000
+    PHP_ENABLED_MODULES: "curl sqlite3"
 
 ```
 
@@ -69,19 +70,20 @@ sure the parameters are taken into account.
 ## PHP version
 To use a specific PHP version, append the version number to the image name.
 
-Eg: `image: edyan/php:7.2`
+Eg: `image: edyan/php:8.2`
 
 The following PHP versions are available:
+* PHP 8.2 (Ubuntu 22.04 + sury packages)
 * PHP 8.1 (Ubuntu 22.04)
-* PHP 8.0 (Ubuntu 20.04 + sury packages)
+* PHP 8.0 (Ubuntu 22.04 + sury packages)
 * PHP 7.4 (Ubuntu 20.04)
 * PHP 7.3 (buster slim)
 * PHP 7.2 (Ubuntu 18.04)
-* PHP 7.1 (buster slim + sury packages)
-* PHP 7.0 (stretch slim)
-* PHP 5.6 (jessie slim)
+* PHP 7.1 (Ubuntu 22.04 + sury packages)
+* PHP 7.0 (stretch slim EOL)
+* PHP 5.6 (jessie slim EOL)
 * PHP 5.5 (Ubuntu 14.04)
-* PHP 5.4 (wheezy slim)
+* PHP 5.4 (wheezy slim EOL)
 * PHP 5.3 (Ubuntu 12.04)
 
 
