@@ -38,6 +38,7 @@ if [[ ! -f "${DGOSS_PATH}" ]]; then
     chmod +rx "${DGOSS_PATH}"
 fi
 
+export GOSS_FILES_STRATEGY=cp
 for TESTS in ${!LIST_TESTS}; do
     echo ""
     echo -e "${GREEN}Testing version ${VERSION} with ${TESTS}${NC}"

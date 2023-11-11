@@ -41,7 +41,6 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php7.4-json \
                 php7.4-ldap \
                 php7.4-mbstring \
-                php7.4-memcache \
                 php7.4-memcached \
                 php7.4-mysql \
                 php7.4-opcache \
@@ -67,13 +66,14 @@ RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-ins
                 php-pear php7.4-dev pkg-config zlib1g-dev && \
             # Install extensions
             pecl channel-update pecl.php.net && \
-            pecl -q install mongodb redis xdebug-3.1.6 xhprof && \
+            pecl -q install memcache-4.0.5.2 mongodb redis xdebug-3.1.6 xhprof && \
             # Activate it
+            echo "extension=memcache.so" > /etc/php/current/mods-available/memcache.ini && \
             echo "extension=mongodb.so" > /etc/php/current/mods-available/mongodb.ini && \
             echo "extension=redis.so" > /etc/php/current/mods-available/redis.ini && \
             echo "zend_extension=xdebug.so" > /etc/php/current/mods-available/xdebug.ini && \
             echo "extension=xhprof.so" > /etc/php/current/mods-available/xhprof.ini && \
-            phpenmod mongodb redis ssh2 xdebug xhprof && \
+            phpenmod memcache mongodb redis ssh2 xdebug xhprof && \
             # Clean
             apt-get purge -qq --autoremove -y \
                 build-essential libgeoip-dev \

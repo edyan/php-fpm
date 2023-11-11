@@ -81,10 +81,10 @@ The following PHP versions are available:
 * PHP 7.2 (Ubuntu 18.04)
 * PHP 7.1 (Ubuntu 22.04 + sury packages)
 * PHP 7.0 (stretch slim EOL)
-* PHP 5.6 (jessie slim EOL)
-* PHP 5.5 (Ubuntu 14.04)
-* PHP 5.4 (wheezy slim EOL)
-* PHP 5.3 (Ubuntu 12.04)
+* PHP 5.6 (jessie slim EOL, not supported anymore)
+* PHP 5.5 (Ubuntu 14.04, not supported anymore)
+* PHP 5.4 (wheezy slim EOL, not supported anymore)
+* PHP 5.3 (Ubuntu 12.04, not supported anymore)
 
 
 ## Specific versions

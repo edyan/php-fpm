@@ -14,6 +14,11 @@ process:
     running: true
 
 command:
+  php -r '$v=explode(".", phpversion());echo "{$v[0]}.$v[1]";':
+    exit-status: 0
+    stdout:
+      - "{{.Env.VERSION}}"
+    stderr: []
   "SCRIPT_NAME=/status SCRIPT_FILENAME=/status REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9000":
     exit-status: 0
     stdout: ["pool:                 wwww"]
