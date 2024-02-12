@@ -14,7 +14,7 @@ RUN         curl -sSLo /etc/apt/trusted.gpg.d/microsoft.asc https://packages.mic
             # sqlsrv from PECL
             pecl channel-update pecl.php.net && \
             # Compile
-            pecl -q install sqlsrv pdo_sqlsrv && \
+            pecl -q install sqlsrv-5.11.1 pdo_sqlsrv-5.11.1 && \
             # Activate
             echo "extension=pdo_sqlsrv.so" > /etc/php/current/mods-available/pdo_sqlsrv.ini && \
             echo "extension=sqlsrv.so" > /etc/php/current/mods-available/sqlsrv.ini && \
